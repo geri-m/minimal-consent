@@ -4,26 +4,40 @@ var button_click = false;
 var unset = false;
 
 
-// https://d35ojb8dweouoy.cloudfront.net/plugins/arp.privacy/arp.privacy.js
-document.body.addEventListener('DOMSubtreeModified', function () {
-    // console.log('DOM Changed at ' + new Date());
-    if(unset === false){
+var docHtml = document.documentElement.innerHTML;
+
+// based on text-Strings we define what to do.
+
+if (docHtml.includes("econda")) {
+    console.log("econda");
+    document.body.addEventListener('DOMSubtreeModified', handleEconda, false)
+} else if (docHtml.includes("traffective")) {
+    console.log("traffective");
+} else {
+    console.log("none");
+}
+
+function handleEconda(){
+    if (unset === false) {
+        console.log("Looking for Banner ...");
         var msg = document.getElementById("privacyProtectionBanner");
         if (msg != null) {
             console.log("Overlay found.");
             // button found.
             var button = document.getElementById("buttonSettingsPage");
-            if(button != null && button_click === false) {
+            if (button != null && button_click === false) {
                 // open the details
                 console.log("Clicking Button now");
                 $("#buttonSettingsPage").click();
                 button_click = true;
             }
-        } // else is not required.
+        } else {
+            console.log("Banner not found");
+        }
         var checkbox = document.getElementById("profile_toggle");
-        if(checkbox != null){
+        if (checkbox != null) {
             console.log("Checkbox found: " + checkbox.checked);
-            if(checkbox.checked === true) {
+            if (checkbox.checked === true) {
                 // Uncheck the checkbox
                 $("profile_toggle").removeAttr("Checked");
                 console.log("now unchecked");
@@ -35,27 +49,8 @@ document.body.addEventListener('DOMSubtreeModified', function () {
 
             // close overlay now
             console.log("Close overlay now");
-
-            var highlightedItems = document.querySelectorAll("span.close")
-            console.log(highlightedItems.length);
-
             $("span.close").trigger("click");
-
-            /*
-            var spans = document.getElementsByTagName("span")
-
-            var i = 0;
-            for (i = 0; i < spans.length; i++) {
-                var attr_class = spans[0].getAttribute("class");
-                if(attr_class != null && attr_class === "close") {
-                    console.log("Span with Close Attribute found");
-                    //Creates and dispatches a click event
-
-                    break;
-                }
-            }
-            */
             console.log("Unset");
         }
     }
-}, false);
+}
