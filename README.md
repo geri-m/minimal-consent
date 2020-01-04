@@ -1,0 +1,1 @@
+# Chrome Extension for Minimal Consent on Websites. 
