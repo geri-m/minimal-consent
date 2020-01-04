@@ -1,8 +1,5 @@
 // min-consent.js
-// checkForUC();
-var button_click = false;
-var unset = false;
-
+var state = 0;
 
 var docHtml = document.documentElement.innerHTML;
 
@@ -17,40 +14,28 @@ if (docHtml.includes("econda")) {
     console.log("none");
 }
 
-function handleEconda(){
-    if (unset === false) {
-        console.log("Looking for Banner ...");
-        var msg = document.getElementById("privacyProtectionBanner");
-        if (msg != null) {
-            console.log("Overlay found.");
-            // button found.
-            var button = document.getElementById("buttonSettingsPage");
-            if (button != null && button_click === false) {
-                // open the details
-                console.log("Clicking Button now");
-                $("#buttonSettingsPage").click();
-                button_click = true;
-            }
-        } else {
-            console.log("Banner not found");
-        }
-        var checkbox = document.getElementById("profile_toggle");
-        if (checkbox != null) {
-            console.log("Checkbox found: " + checkbox.checked);
-            if (checkbox.checked === true) {
-                // Uncheck the checkbox
-                $("profile_toggle").removeAttr("Checked");
-                console.log("now unchecked");
-            } else {
-                console.log("Toggle is already unchecked.");
-            }
+function handleEconda() {
+    console.log("Looking for Banner ...");
+    if ($("#buttonSettingsPage").length && state === 0) {
+        console.log("Overlay found.");
+        console.log("Clicking Button now");
+        $("#buttonSettingsPage").click();
+        state = 1;
+    }
 
-            unset = true;
-
-            // close overlay now
-            console.log("Close overlay now");
-            $("span.close").trigger("click");
-            console.log("Unset");
+    if ($("#profile_toggle").length && state === 1) {
+        console.log("Checkbox found: " + $("#profile_toggle").checked);
+        if ($("#profile_toggle").checked === true) {
+            // Uncheck the checkbox
+            $("profile_toggle").removeAttr("Checked");
+            console.log("now unchecked");
         }
+
+        // If everything is fine, remove the listener.
+        document.body.removeEventListener('DOMSubtreeModified', handleEconda, false);
+        // close overlay now
+        console.log("Close overlay now");
+        $("span.close").trigger("click");
+        console.log("Successful Denyed Econda.");
     }
 }
