@@ -1,5 +1,11 @@
 # Chrome Extension for Minimal Consent on Websites. 
 
+## Development Setup
+
+Dependency management is done using `yarn` as it is a package manager for JavaScript/Node. 
+
+To Install `yarn` use `brew install yarn` on macOS via homebrew. 
+
 ## Running the extension
 
 1) Open Chrome on your computer
