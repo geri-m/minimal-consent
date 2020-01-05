@@ -1,8 +1,11 @@
-// min_consent.js
+// contentscript.js
 var state = 0;
 var docHtml = document.documentElement.innerHTML;
 
 // based on text-Strings we define what to do.
+
+console.log("Demojjj.")
+
 
 if (docHtml.includes('econda')) {
     console.log('econda');
@@ -35,6 +38,6 @@ function handleEconda () {
         // close overlay now
         console.log('Close overlay now');
         $('span.close').trigger('click');
-        console.log('Successful Denyed Econda!');
+        console.log('Successful Denyed Econda');
     }
 }

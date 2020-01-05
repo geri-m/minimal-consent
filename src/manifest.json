@@ -3,6 +3,11 @@
   "version": "1.0",
   "description": "This Chrome extensions give minimal consent to webpages and stores only the minimum amount of cookies. .",
   "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "./background.bundle.js"
+    ]
+  },
   "icons": {
     "16": "./images/Icon_16x16.png",
     "32": "./images/Icon_32x32.png",
@@ -15,7 +20,7 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["./libs/jquery-3.4.1.min.js", "./min_consent.bundle.js"],
+      "js": ["./libs/jquery-3.4.1.min.js", "./contentscript.bundle.js"],
       "run_at": "document_end",
       "all_frames": true
     }

@@ -21,11 +21,14 @@ if (fileSystem.existsSync(secretsPath)) {
 const options = {
     mode: process.env.NODE_ENV || 'development',
     entry: {
-        min_consent: path.join(__dirname, 'src', 'js', 'min_consent.js')
+        contentscript: path.join(__dirname, 'src', 'js', 'contentscript.js'),
+        background:  path.join(__dirname, 'src', 'js', 'background.js'),
+        popup:  path.join(__dirname, 'src', 'js', 'popup.js'),
     },
     output: {
         path: path.join(__dirname, 'dist/'),
-        filename: '[name].bundle.js'
+        filename: '[name].bundle.js',
+        libraryTarget: "umd"
     },
     module: {
         rules: [
@@ -53,10 +56,19 @@ const options = {
         /***********************************************************************/
         /* By default the plugin will work only when NODE_ENV is "development" */
         /***********************************************************************/
-        new WebpackExtensionReloaderPlugin(),
+        new WebpackExtensionReloaderPlugin({
+            entries: {
+                contentScript: "contentscript",
+                background: "background",
+                extensionPage: "popup"
+            }
+            // ,
+            // Also possible to use
+            //manifest: path.join(__dirname, 'src', 'manifest.json')
+        }),
 
-        // clean the build folder
-        new CleanWebpackPlugin(),
+        // DO NOT lean the build folder -- we need to manifest.json there. 
+        // new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
             {from: './src/manifest.json'},
             {from: './src/libs', to: './libs'},
