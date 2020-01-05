@@ -37,6 +37,7 @@ function handleEconda () {
 
         // If everything is fine, remove the listener.
         document.body.removeEventListener('DOMSubtreeModified', handleEconda, false);
+        state = -1;
         // close overlay now
         console.log('Close overlay now');
         $('span.close').trigger('click');
