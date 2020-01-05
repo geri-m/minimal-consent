@@ -1,4 +1,6 @@
 // contentscript.js
+import $ from 'jquery'
+
 var state = 0;
 var docHtml = document.documentElement.innerHTML;
 

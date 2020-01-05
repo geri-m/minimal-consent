@@ -20,7 +20,7 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["./libs/jquery-3.4.1.min.js", "./contentscript.bundle.js"],
+      "js": ["./contentscript.bundle.js"],
       "run_at": "document_end",
       "all_frames": true
     }

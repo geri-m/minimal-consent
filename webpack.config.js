@@ -1,6 +1,5 @@
 const path = require('path');
 const fileSystem = require('fs');
-const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Code:    https://github.com/rubenspgcavalcante/webpack-extension-reloader
@@ -67,11 +66,10 @@ const options = {
             //manifest: path.join(__dirname, 'src', 'manifest.json')
         }),
 
-        // DO NOT lean the build folder -- we need to manifest.json there. 
+        // DO NOT lean the build folder -- we need to manifest.json there.
         // new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
             {from: './src/manifest.json'},
-            {from: './src/libs', to: './libs'},
             {from: './src/images', to: './images'}
             ]),
     ]
