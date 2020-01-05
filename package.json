@@ -8,9 +8,10 @@
   },
   "scripts": {
     "lint": "eslint . --ext .js",
-    "start": "node utils/webserver.js",
-    "build": "node utils/build.js",
-    "test": "nyc mocha --require @babel/register --recursive --reporter list"
+    "start": "NODE_ENV=development webpack --watch",
+    "build": "NODE_ENV=production webpack",
+    "test": "nyc mocha --require @babel/register --recursive --reporter list",
+    "format": "prettier --write \"{src,client,typings,specs}/**/*.ts\""
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
@@ -38,8 +39,7 @@
     "style-loader": "1.0.0",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
-    "webpack-dev-server": "3.9.0",
-    "write-file-webpack-plugin": "4.5.1"
+    "webpack-extension-reloader": "^1.1.4"
   },
   "eslintConfig": {
     "env": {

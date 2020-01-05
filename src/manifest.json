@@ -15,7 +15,7 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["./libs/jquery-3.4.1.min.js", "min-consent.js"],
+      "js": ["./libs/jquery-3.4.1.min.js", "./min_consent.bundle.js"],
       "run_at": "document_end",
       "all_frames": true
     }
@@ -23,10 +23,11 @@
   "browser_action": {
     "default_icon": {
       "16": "./images/Icon_16x16.png",
-      "32": "./images/Icon_32x32.png"
+      "32": "./images/Icon_32x32.png",
+      "48": "./images/Icon_48x48.png",
+      "128": "./images/Icon_128x128.png"
     },
-    "default_title": "Minimal Consent",
-    "default_popup": "popup.html"
+    "default_title": "Minimal Consent"
   }
 }
 

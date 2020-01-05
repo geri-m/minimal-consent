@@ -1,6 +1,8 @@
 node_modules
+dist
+build
+
 
 # Extensions related stuff
 .idea
 .sass-cache
-build

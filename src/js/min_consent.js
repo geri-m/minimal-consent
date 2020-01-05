@@ -1,6 +1,5 @@
-// min-consent.js
+// min_consent.js
 var state = 0;
-
 var docHtml = document.documentElement.innerHTML;
 
 // based on text-Strings we define what to do.
@@ -15,7 +14,7 @@ if (docHtml.includes('econda')) {
 }
 
 function handleEconda () {
-    console.log('Looking for Banner ...');
+    console.log('Looking for Banner xxx ...');
     if ($('#buttonSettingsPage').length && state === 0) {
         console.log('Overlay found.');
         console.log('Clicking Button now');
@@ -36,6 +35,6 @@ function handleEconda () {
         // close overlay now
         console.log('Close overlay now');
         $('span.close').trigger('click');
-        console.log('Successful Denyed Econda.');
+        console.log('Successful Denyed Econda!');
     }
 }
