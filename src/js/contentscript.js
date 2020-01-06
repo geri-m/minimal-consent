@@ -5,7 +5,6 @@ import Logger from 'js-logger';
 var dateFormat = require('dateformat'); // from library
 
 var state = 0;
-var docHtml = document.documentElement.innerHTML;
 
 // Adding Date to Log-output
 Logger.useDefaults({
@@ -17,26 +16,37 @@ Logger.useDefaults({
 Logger.info('Content Script Called.');
 
 // Select the node that will be observed for mutations
-const targetNode = document.getElementsByTagName('body')[0];
+const targetNode = document.getRootNode();
 
 // Options for the observer (which mutations to observe)
 const config = { attributes: true, childList: true, subtree: true };
 
+// this one is global for all the other handlers.
 var observer;
 
-if (docHtml.includes('traffective')) {
-    observer = new MutationObserver(handleTraffective);
-    observer.observe(targetNode, config);
- } else if (docHtml.includes('uc-banner-content')  || docHtml.includes("usercentrics") || docHtml.includes("#uc-")) {
-    observer = new MutationObserver(handleUserCentrics);
-    observer.observe(targetNode, config);
- } else if (docHtml.includes('econda')) {
-    observer = new MutationObserver(handleEconda);
-    observer.observe(targetNode, config);
- } else {
-    Logger.info('none');
-    Logger.info(docHtml);
+const selectCmpObserver = new MutationObserver(handleCMP);
+selectCmpObserver.observe(targetNode, config);
+
+function handleCMP(){
+    var docHtml = document.documentElement.innerHTML;
+
+    if (docHtml.includes('.traffective.com')) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleTraffective);
+        observer.observe(targetNode, config);
+    } else if (docHtml.includes('https://app.usercentrics.eu/latest/bundle.js')) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleUserCentrics);
+        observer.observe(targetNode, config);
+    } else if (docHtml.includes('econda.de')) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleEconda);
+        observer.observe(targetNode, config);
+    } else {
+        Logger.info('Nothing found yet ... ');
+    }
 }
+
 
 function handleEconda () {
     Logger.info('handleEconda');
@@ -99,7 +109,7 @@ function handleUserCentrics () {
     if (state === 0) {
         Logger.info("Deny All button found");
         // add the the Body our new link
-        $('body').append('<a href="javascript:this.usercentrics.denyAllConsentsAndCloseInitialView();" class="minimal-consent">Minimal Consent</a>');
+        $('body').append('<a href=\'javascript:function doDenyCall(counter){console.log(new Date().toUTCString() + "doDenyCall: " + counter);if(counter >= 100){console.log("Minimal Consent was unable to communicate with usercentrics");return; } if(typeof this.usercentrics !== "undefined" && typeof this.usercentrics.denyAllConsentsAndCloseInitialView !== "undefined"){ console.log("Close Popup now"); this.usercentrics.denyAllConsentsAndCloseInitialView(); } else { console.log("setTimeout again"); setTimeout(function() {doDenyCall(counter + 1)}, 25);  }}; doDenyCall(1);\' class=\'minimal-consent\'>Minimal Consent</a>');
         state = 1;
         Logger.info('Custom link added');
     } else if ($(customLink).length && state === 1) {
