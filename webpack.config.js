@@ -1,10 +1,8 @@
 const path = require('path');
 const fileSystem = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
 // Code:    https://github.com/rubenspgcavalcante/webpack-extension-reloader
 const WebpackExtensionReloaderPlugin = require('webpack-extension-reloader');
-
 
 // load the secrets
 const alias = {};
@@ -21,12 +19,12 @@ const options = {
     mode: process.env.NODE_ENV || 'development',
     entry: {
         contentscript: path.join(__dirname, 'src', 'js', 'contentscript.js'),
-        background:  path.join(__dirname, 'src', 'js', 'background.js')
+        background: path.join(__dirname, 'src', 'js', 'background.js')
     },
     output: {
         path: path.join(__dirname, 'dist/'),
         filename: '[name].bundle.js',
-        libraryTarget: "umd"
+        libraryTarget: 'umd'
     },
     module: {
         rules: [
@@ -51,25 +49,24 @@ const options = {
         alias: alias
     },
     plugins: [
-         /***********************************************************************/
+        /***********************************************************************/
         /* By default the plugin will work only when NODE_ENV is "development" */
         /***********************************************************************/
         new WebpackExtensionReloaderPlugin({
             entries: {
-                contentScript: "contentscript",
-                background: "background"
+                contentScript: 'contentscript',
+                background: 'background'
             }
             // ,
             // Also possible to use
-            //manifest: path.join(__dirname, 'src', 'manifest.json')
+            // manifest: path.join(__dirname, 'src', 'manifest.json')
         }),
 
         // DO NOT lean the build folder -- we need to manifest.json there.
         // new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
             {from: './src/manifest.json'},
-            {from: './src/images', to: './images'}
-            ]),
+            {from: './src/images', to: './images'}])
     ]
 };
 

@@ -1,6 +1,6 @@
 // contentscript.js
-import $ from 'jquery'
-import Logger from 'js-logger'
+import $ from 'jquery';
+import Logger from 'js-logger';
 
 var dateFormat = require('dateformat'); // from library
 
@@ -9,14 +9,14 @@ const mofifiedType = 'DOMSubtreeModified';
 var state = 0;
 var docHtml = document.documentElement.innerHTML;
 
-
-// based on text-Strings we define what to do.
+// Adding Date to Log-output
 Logger.useDefaults({
     formatter: function (messages, context) {
-        messages.unshift(dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss.l"));
+        messages.unshift(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l'));
     }
 });
-Logger.info("Content Script Called.");
+
+Logger.info('Content Script Called.');
 
 if (docHtml.includes('econda')) {
     Logger.info('econda');

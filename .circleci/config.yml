@@ -1,0 +1,72 @@
+version: 2.0
+
+# Job definitions
+# ===============
+jobs:
+  lint:
+    - image: "alpine:3.10.3"
+    steps:
+      - checkout
+      - run:
+          name: "Install Lint Dependencies"
+          command: |
+            apk add --no-cache yarn
+            yarn
+      - run:
+          name: "Run Lint Check"
+          command: yarn lint
+
+  test:
+    - image: "alpine:3.10.3"
+    steps:
+      - checkout
+      - run:
+          name: "Install Test Dependencies"
+          command: |
+            apk add --no-cache yarn
+            yarn
+      - run:
+          name: "Run Tests"
+          command: yarn test
+
+  build:
+    - image: "alpine:3.10.3"
+    steps:
+      - checkout
+      - run:
+          name: "Install Dependencies"
+          command: |
+            apk update
+            apk add --no-cache curl jq yarn zip
+            yarn install --force
+      - run:
+          name: "Build Extension"
+          command: |
+            yarn build
+      - run:
+          name: "Package Extension"
+          command: |
+            zip -r minimal_consent.zip dist
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - minimal_consent.zip
+
+
+# Workflow definitions
+# ====================
+workflows:
+  version: 2
+
+  build_and_test:
+    jobs:
+      - lint: {filters: {branches: {ignore: [production, staging]}}}
+      - test: {requires: [lint]}
+      - build: {requires: [test]}
+
+  build_and_deploy:
+    jobs:
+      - lint: {filters: {branches: {only: [production, staging]}}}
+      - test: {requires: [lint]}
+      - build: {requires: [test]}
+      - publish: {requires: [build]}
