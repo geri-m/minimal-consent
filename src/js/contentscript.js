@@ -2,7 +2,7 @@
 import $ from 'jquery'
 import Logger from 'js-logger'
 
-var dateFormat = require('dateformat');
+var dateFormat = require('dateformat'); // from library
 
 const mofifiedType = 'DOMSubtreeModified';
 
