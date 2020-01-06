@@ -4,8 +4,6 @@ import Logger from 'js-logger';
 
 var dateFormat = require('dateformat'); // from library
 
-const mofifiedType = 'DOMSubtreeModified';
-
 var state = 0;
 var docHtml = document.documentElement.innerHTML;
 
@@ -18,17 +16,30 @@ Logger.useDefaults({
 
 Logger.info('Content Script Called.');
 
-if (docHtml.includes('econda')) {
-    Logger.info('econda');
-    document.body.addEventListener(mofifiedType, handleEconda, false);
-} else if (docHtml.includes('traffective')) {
-    Logger.info('traffective');
-    document.body.addEventListener(mofifiedType, handleTraffective, false);
-} else {
+// Select the node that will be observed for mutations
+const targetNode = document.getElementsByTagName('body')[0];
+
+// Options for the observer (which mutations to observe)
+const config = { attributes: true, childList: true, subtree: true };
+
+var observer;
+
+if (docHtml.includes('traffective')) {
+    observer = new MutationObserver(handleTraffective);
+    observer.observe(targetNode, config);
+ } else if (docHtml.includes('uc-banner-content')  || docHtml.includes("usercentrics") || docHtml.includes("#uc-")) {
+    observer = new MutationObserver(handleUserCentrics);
+    observer.observe(targetNode, config);
+ } else if (docHtml.includes('econda')) {
+    observer = new MutationObserver(handleEconda);
+    observer.observe(targetNode, config);
+ } else {
     Logger.info('none');
+    Logger.info(docHtml);
 }
 
 function handleEconda () {
+    Logger.info('handleEconda');
     const settingsButton = '#buttonSettingsPage';
     const toggleCheckbox = '#profile_toggle';
     const closeSpan = 'span.close';
@@ -42,9 +53,9 @@ function handleEconda () {
 
     if ($(toggleCheckbox).length && state === 1) {
         Logger.info('Checkbox found: ' + $(toggleCheckbox).checked);
-        if ($(toggleCheckbox).is(":checked")) {
+        if ($(toggleCheckbox).is(':checked')) {
             // Uncheck the checkbox
-            $(toggleCheckbox).prop("checked", false );
+            $(toggleCheckbox).prop('checked', false );
             Logger.info('now unchecked');
         }
 
@@ -53,14 +64,12 @@ function handleEconda () {
         $(closeSpan).trigger('click');
         Logger.info('Consent for Econda denied');
 
-        // If everything is fine, remove the listener.
-        document.body.removeEventListener(mofifiedType, handleEconda, false);
-        state = -1;
-
+        reset();
     }
 }
 
 function handleTraffective () {
+    Logger.info('handleTraffective');
     const gdprDiv = 'div.gdpr_popup_popup';
     const gdprCheckboxed ='input[type=checkbox].gdpr_switch_native';
     const gdprSaveButton ='div.is-primary-button';
@@ -69,20 +78,39 @@ function handleTraffective () {
         Logger.info('Checkboxes found: ' + checkBoxes.length);
 
         $(gdprCheckboxed).each(function(){
-            $(this).prop("checked", false );
+            $(this).prop('checked', false );
         });
 
         if($(gdprSaveButton).length){
-            Logger.info("Button found ...");
+            Logger.info('Button found ...');
             $(gdprSaveButton).trigger('click');
-            Logger.info("... and clicked")
+            Logger.info('... and clicked')
         }
 
         Logger.info('Consent for Traffective denied');
-
-        // If everything is fine, remove the listener.
-        document.body.removeEventListener(mofifiedType, handleTraffective, false);
-        state = -1;
+        reset();
     }
+}
+function handleUserCentrics () {
+    Logger.info('handleUserCentrics');
+    const customLink = 'a.minimal-consent';
 
+    // case like on hse24.de
+    if (state === 0) {
+        Logger.info("Deny All button found");
+        // add the the Body our new link
+        $('body').append('<a href="javascript:this.usercentrics.denyAllConsentsAndCloseInitialView();" class="minimal-consent">Minimal Consent</a>');
+        state = 1;
+        Logger.info('Custom link added');
+    } else if ($(customLink).length && state === 1) {
+        Logger.info("Custom Link Found");
+        $(customLink)[0].click();
+        reset();
+    }
+}
+
+function reset() {
+    // If everything is fine, remove the listener.
+    observer.disconnect();
+    state = -1
 }

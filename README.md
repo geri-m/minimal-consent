@@ -51,5 +51,8 @@ https://medium.com/slido-dev-blog/chrome-extensions-and-continuous-integration-3
 - https://www.mactechnews.de/forum/discussion/10-11-El-Capitan-Installation-schliesst-nicht-ab--324458.html
 - https://traffective.com/cmp/
 
+# UserCentry
+
+<script type="application/javascript" src="https://app.usercentrics.eu/latest/main.js" id="uVkVWS92E"></script><script type="text/javascript" async="" src="https://app.usercentrics.eu/latest/bundle.js"></script>
 
 # List of various data management platforms.

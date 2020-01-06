@@ -15,12 +15,18 @@
     "128": "./images/Icon_128x128.png"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "tabs",
+    "activeTab"
+  ],
   "content_scripts": [
     {
       "matches": [
         "<all_urls>"
       ],
-      "js": ["./contentscript.bundle.js"],
+      "js": [
+        "./contentscript.bundle.js"
+      ],
       "run_at": "document_end",
       "all_frames": true
     }
