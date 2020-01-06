@@ -6,6 +6,16 @@ Dependency management is done using `yarn` as it is a package manager for JavaSc
 
 To Install `yarn` use `brew install yarn` on macOS via homebrew. 
 
+To Clean and Build the code
+
+```yarn build```
+
+To Clean and Start Hot Deploy
+
+```yarn start```
+
+
+
 ## Running the extension
 
 1) Open Chrome on your computer
@@ -25,7 +35,7 @@ To Install `yarn` use `brew install yarn` on macOS via homebrew.
 # traffective: https://traffective.com/cmp/
 
 - Looking for div "gdpr_popup_popup"
-- There are multiple checkboxs "gdpr_switch_native" => uncheck all. 
+- There are multiple checkboxes "gdpr_switch_native" => uncheck all. 
 - div class "cell" clicken. 
 
 - if there is already a button gdpr_opener_button -> press this. 
@@ -38,4 +48,4 @@ To Install `yarn` use `brew install yarn` on macOS via homebrew.
 - https://traffective.com/cmp/
 
 
-# List of various data managemnt platofmrs.
+# List of various data management platforms.

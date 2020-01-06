@@ -8,8 +8,9 @@
   },
   "scripts": {
     "lint": "eslint . --ext .js",
-    "start": "NODE_ENV=development webpack --watch",
-    "build": "NODE_ENV=production webpack",
+    "clean": "rm -rf ./dist/",
+    "start": "rm -rf ./dist/; NODE_ENV=development webpack --watch",
+    "build": "rm -rf ./dist/; NODE_ENV=production webpack",
     "test": "nyc mocha --require @babel/register --recursive --reporter list",
     "format": "prettier --write \"{src,client,typings,specs}/**/*.ts\""
   },

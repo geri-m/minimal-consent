@@ -51,7 +51,7 @@ const options = {
         alias: alias
     },
     plugins: [
-        /***********************************************************************/
+         /***********************************************************************/
         /* By default the plugin will work only when NODE_ENV is "development" */
         /***********************************************************************/
         new WebpackExtensionReloaderPlugin({
