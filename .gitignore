@@ -1,7 +1,7 @@
 node_modules
 dist
 build
-
+.nyc_output
 
 # Extensions related stuff
 .idea

@@ -23,37 +23,66 @@ if (docHtml.includes('econda')) {
     document.body.addEventListener(mofifiedType, handleEconda, false);
 } else if (docHtml.includes('traffective')) {
     Logger.info('traffective');
+    document.body.addEventListener(mofifiedType, handleTraffective, false);
 } else {
     Logger.info('none');
 }
 
 function handleEconda () {
-    const settingsDiv = '#buttonSettingsPage';
+    const settingsButton = '#buttonSettingsPage';
     const toggleCheckbox = '#profile_toggle';
     const closeSpan = 'span.close';
 
-    Logger.info('Looking for Banner xxx ...');
-    if ($(settingsDiv).length && state === 0) {
+    if ($(settingsButton).length && state === 0) {
         Logger.info('Overlay found.');
         Logger.info('Clicking Button now');
-        $(settingsDiv).click();
+        $(settingsButton).click();
         state = 1;
     }
 
     if ($(toggleCheckbox).length && state === 1) {
         Logger.info('Checkbox found: ' + $(toggleCheckbox).checked);
-        if ($(toggleCheckbox).checked === true) {
+        if ($(toggleCheckbox).is(":checked")) {
             // Uncheck the checkbox
-            $(toggleCheckbox).removeAttr('Checked');
+            $(toggleCheckbox).prop("checked", false );
             Logger.info('now unchecked');
         }
+
+        // close overlay now
+        Logger.info('Close overlay now');
+        $(closeSpan).trigger('click');
+        Logger.info('Consent for Econda denied');
 
         // If everything is fine, remove the listener.
         document.body.removeEventListener(mofifiedType, handleEconda, false);
         state = -1;
-        // close overlay now
-        Logger.info('Close overlay now');
-        $(closeSpan).trigger('click');
-        Logger.info('Successful Denied Econda');
+
     }
+}
+
+function handleTraffective () {
+    const gdprDiv = 'div.gdpr_popup_popup';
+    const gdprCheckboxed ='input[type=checkbox].gdpr_switch_native';
+    const gdprSaveButton ='div.is-primary-button';
+    if ($(gdprDiv).length && state === 0) {
+        var checkBoxes = $(gdprCheckboxed);
+        Logger.info('Checkboxes found: ' + checkBoxes.length);
+
+        $(gdprCheckboxed).each(function(){
+            $(this).prop("checked", false );
+        });
+
+        if($(gdprSaveButton).length){
+            Logger.info("Button found ...");
+            $(gdprSaveButton).trigger('click');
+            Logger.info("... and clicked")
+        }
+
+        Logger.info('Consent for Traffective denied');
+
+        // If everything is fine, remove the listener.
+        document.body.removeEventListener(mofifiedType, handleTraffective, false);
+        state = -1;
+    }
+
 }
