@@ -1,23 +1,30 @@
 // contentscript.js
 import $ from 'jquery'
+import Logger from 'js-logger'
+
+var dateFormat = require('dateformat');
 
 const mofifiedType = 'DOMSubtreeModified';
 
 var state = 0;
 var docHtml = document.documentElement.innerHTML;
 
+
 // based on text-Strings we define what to do.
-
-console.log("Demojjj.")
-
+Logger.useDefaults({
+    formatter: function (messages, context) {
+        messages.unshift(dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss.l"));
+    }
+});
+Logger.info("Content Script Called.");
 
 if (docHtml.includes('econda')) {
-    console.log('econda');
+    Logger.info('econda');
     document.body.addEventListener(mofifiedType, handleEconda, false);
 } else if (docHtml.includes('traffective')) {
-    console.log('traffective');
+    Logger.info('traffective');
 } else {
-    console.log('none');
+    Logger.info('none');
 }
 
 function handleEconda () {
@@ -25,28 +32,28 @@ function handleEconda () {
     const toggleCheckbox = '#profile_toggle';
     const closeSpan = 'span.close';
 
-    console.log('Looking for Banner xxx ...');
+    Logger.info('Looking for Banner xxx ...');
     if ($(settingsDiv).length && state === 0) {
-        console.log('Overlay found.');
-        console.log('Clicking Button now');
+        Logger.info('Overlay found.');
+        Logger.info('Clicking Button now');
         $(settingsDiv).click();
         state = 1;
     }
 
     if ($(toggleCheckbox).length && state === 1) {
-        console.log('Checkbox found: ' + $(toggleCheckbox).checked);
+        Logger.info('Checkbox found: ' + $(toggleCheckbox).checked);
         if ($(toggleCheckbox).checked === true) {
             // Uncheck the checkbox
             $(toggleCheckbox).removeAttr('Checked');
-            console.log('now unchecked');
+            Logger.info('now unchecked');
         }
 
         // If everything is fine, remove the listener.
         document.body.removeEventListener(mofifiedType, handleEconda, false);
         state = -1;
         // close overlay now
-        console.log('Close overlay now');
+        Logger.info('Close overlay now');
         $(closeSpan).trigger('click');
-        console.log('Successful Denyed Econda');
+        Logger.info('Successful Denied Econda');
     }
 }
