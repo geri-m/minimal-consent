@@ -4,7 +4,8 @@ version: 2.0
 # ===============
 jobs:
   lint:
-    - image: "alpine:3.10.3"
+    docker:
+      - image: "alpine:3.10.3"
     steps:
       - checkout
       - run:
@@ -17,7 +18,8 @@ jobs:
           command: yarn lint
 
   test:
-    - image: "alpine:3.10.3"
+    docker:
+      - image: "alpine:3.10.3"
     steps:
       - checkout
       - run:
@@ -30,7 +32,8 @@ jobs:
           command: yarn test
 
   build:
-    - image: "alpine:3.10.3"
+    docker:
+      - image: "alpine:3.10.3"
     steps:
       - checkout
       - run:
