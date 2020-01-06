@@ -65,8 +65,8 @@ const options = {
         // DO NOT lean the build folder -- we need to manifest.json there.
         // new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
-            {from: './src/manifest.json'},
-            {from: './src/images', to: './images'}])
+            { from: './src/manifest.json' },
+            { from: './src/images', to: './images' }])
     ]
 };
 

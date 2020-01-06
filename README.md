@@ -14,6 +14,10 @@ To Clean and Start Hot Deploy
 
 ```yarn start```
 
+## Continuos Integration with Circle CI
+
+https://circleci.com/blog/continuously-deploy-a-chrome-extension/
+https://medium.com/slido-dev-blog/chrome-extensions-and-continuous-integration-392206f7e414
 
 
 ## Running the extension
