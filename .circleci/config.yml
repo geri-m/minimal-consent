@@ -31,7 +31,7 @@ jobs:
           name: "Run Tests"
           command: yarn test
 
-  build:
+  build-and-publish-beta:
     docker:
       - image: "alpine:3.10.3"
     steps:
@@ -43,17 +43,55 @@ jobs:
             apk add --no-cache curl jq yarn zip
             yarn install --force
       - run:
-          name: "Build Extension"
+          name: "Build Extension for BETA"
+          command: |
+            webpack --config webpack.dev.js
+      - run:
+          name: "Package Extension for BETA"
+          command: |
+            zip -r minimal_consent_beta.zip dist
+      - store_artifacts:
+          name: "Storing Artifact"
+          path: ./minimal_consent_beta.zip
+      - run:
+          name: "Publish to the Google Chrome Store - BETA Channel"
+          command: |
+            echo "Publishing Extension -- Beta Channel"
+            ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
+            UPLOAD_RESULT=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T /root/workspace/minimal_consent_beta.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID_STAGING}")
+            echo $UPLOAD_RESULT && echo $UPLOAD_RESULT | grep -vi error
+            curl -f -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID_STAGING}/publish"
+
+  build-and-publish-prod:
+    docker:
+      - image: "alpine:3.10.3"
+    steps:
+      - checkout
+      - run:
+          name: "Install Dependencies"
+          command: |
+            apk update
+            apk add --no-cache curl jq yarn zip
+            yarn install --force
+      - run:
+          name: "Build Extension for PRODUCTION"
           command: |
             yarn build
       - run:
-          name: "Package Extension"
+          name: "Package Extension for PRODUCTION"
           command: |
-            zip -r minimal_consent.zip dist
-      - persist_to_workspace:
-          root: /root/project
-          paths:
-            - minimal_consent.zip
+            zip -r minimal_consent_prod.zip dist
+      - store_artifacts:
+          name: "Storing Artifact"
+          path: ./minimal_consent_prod.zip
+      - run:
+          name: "Publish to the Google Chrome Store -- Production"
+          command: |
+            echo "Publishing Extension -- Production"
+            ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
+            UPLOAD_RESULT=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T /root/workspace/minimal_consent_prod.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID_PRODUCTION}")
+            echo $UPLOAD_RESULT && echo $UPLOAD_RESULT | grep -vi error
+            curl -f -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID_PRODUCTION}/publish"
 
 
 # Workflow definitions
@@ -65,11 +103,15 @@ workflows:
     jobs:
       - lint: {filters: {branches: {ignore: [production, staging]}}}
       - test: {requires: [lint]}
-      - build: {requires: [test]}
 
-  build_and_deploy:
+  build_and_publish_beta:
     jobs:
-      - lint: {filters: {branches: {only: [production, staging]}}}
+      - lint: {filters: {branches: {only: [dev]}}}
       - test: {requires: [lint]}
-      - build: {requires: [test]}
-      - publish: {requires: [build]}
+      - build-and-publish-beta: {requires: [test]}
+
+  build_and_publish_prod:
+    jobs:
+      - lint: {filters: {branches: {only: [master]}}}
+      - test: {requires: [lint]}
+      - build-and-publish-prod: {requires: [test]}

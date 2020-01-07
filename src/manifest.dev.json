@@ -1,7 +1,8 @@
 {
-  "name": "[DEVELOPMENT] Minimal Consent Chrome extension",
-  "version": "1.0",
-  "description": "[DEVELOPMENT] This Chrome extensions give minimal consent to webpages and stores only the minimum amount of cookies.",
+  "name": "[DEVELOPMENT] Minimal Consent",
+  "short_name": "Consent and Cookie Banners -- a thing of the past.",
+  "version": "0.0.1",
+  "description": "[DEVELOPMENT] Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners.",
   "manifest_version": 2,
   "background": {
     "scripts": [
