@@ -101,9 +101,10 @@ function handleTraffective () {
 function handleUserCentrics () {
     Logger.info('handleUserCentrics');
     const customLink = 'a.minimal-consent';
+    const ucBannerContent ='div.uc-banner-content';
 
     // case like on hse24.de
-    if (state === 0) {
+    if ($(ucBannerContent).length && state === 0) {
         Logger.info('Deny All button found');
         // add the the Body our new link
         $('body').append('<a href=\'javascript:function doDenyCall(counter){console.log(new Date().toUTCString() + "doDenyCall: " + counter);if(counter >= 100){console.log("Minimal Consent was unable to communicate with usercentrics");return; } if(typeof this.usercentrics !== "undefined" && typeof this.usercentrics.denyAllConsentsAndCloseInitialView !== "undefined"){ console.log("Close Popup now"); this.usercentrics.denyAllConsentsAndCloseInitialView(); } else { console.log("setTimeout again"); setTimeout(function() {doDenyCall(counter + 1)}, 25);  }}; doDenyCall(1);\' class=\'minimal-consent\'>Minimal Consent</a>');
