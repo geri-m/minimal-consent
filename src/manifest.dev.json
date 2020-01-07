@@ -1,0 +1,45 @@
+{
+  "name": "[DEVELOPMENT] Minimal Consent Chrome extension",
+  "version": "1.0",
+  "description": "[DEVELOPMENT] This Chrome extensions give minimal consent to webpages and stores only the minimum amount of cookies.",
+  "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "./background.bundle.js"
+    ]
+  },
+  "icons": {
+    "16": "./images/Icon_16x16_dev.png",
+    "32": "./images/Icon_32x32_dev.png",
+    "48": "./images/Icon_48x48_dev.png",
+    "128": "./images/Icon_128x128_dev.png"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "tabs",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "./contentscript.bundle.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "16": "./images/Icon_16x16_dev.png",
+      "32": "./images/Icon_32x32_dev.png",
+      "48": "./images/Icon_48x48_dev.png",
+      "128": "./images/Icon_128x128_dev.png"
+    },
+    "default_title": "[DEVELOPMENT] Minimal Consent"
+  }
+}
+
+
