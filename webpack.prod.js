@@ -10,9 +10,6 @@ module.exports = merge(parentWebPack, {
         new CopyWebpackPlugin([
             { from: './src/manifest.prod.json', to: './manifest.json' },
             { from: './src/images', to: './images' }]),
-
-        new JavaScriptObfuscator ({
-            rotateUnicodeArray: true
-        })
+        new JavaScriptObfuscator({ rotateUnicodeArray: true })
     ]
 });

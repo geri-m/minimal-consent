@@ -84,11 +84,11 @@ function handleTraffective () {
         var checkBoxes = $(gdprCheckboxed);
         Logger.info('Checkboxes found: ' + checkBoxes.length);
 
-        $(gdprCheckboxed).each(function(){
+        $(gdprCheckboxed).each(function () {
             $(this).prop('checked', false);
         });
 
-        if($(gdprSaveButton).length){
+        if ($(gdprSaveButton).length) {
             Logger.info('Button found ...');
             $(gdprSaveButton).trigger('click');
             Logger.info('... and clicked');
@@ -116,7 +116,7 @@ function handleUserCentrics () {
     }
 }
 
-function reset() {
+function reset () {
     // If everything is fine, remove the listener.
     observer.disconnect();
     state = -1;

@@ -44,7 +44,7 @@ const options = {
     },
     resolve: {
         alias: alias
-    },
+    }
 };
 
 if (process.env.NODE_ENV === 'development') {
