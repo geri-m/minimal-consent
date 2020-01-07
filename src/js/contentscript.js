@@ -34,7 +34,7 @@ function handleCMP(){
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTraffective);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('https://app.usercentrics.eu/latest/bundle.js')) {
+    } else if (docHtml.includes('usercentrics.eu')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleUserCentrics);
         observer.observe(targetNode, config);
@@ -59,9 +59,7 @@ function handleEconda () {
         Logger.info('Clicking Button now');
         $(settingsButton).click();
         state = 1;
-    }
-
-    if ($(toggleCheckbox).length && state === 1) {
+    } else if ($(toggleCheckbox).length && state === 1) {
         Logger.info('Checkbox found: ' + $(toggleCheckbox).checked);
         if ($(toggleCheckbox).is(':checked')) {
             // Uncheck the checkbox
@@ -113,8 +111,8 @@ function handleUserCentrics () {
         state = 1;
         Logger.info('Custom link added');
     } else if ($(customLink).length && state === 1) {
-        Logger.info("Custom Link Found");
         $(customLink)[0].click();
+        Logger.info("Consent for User Centric denied.");
         reset();
     }
 }
