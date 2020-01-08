@@ -34,13 +34,17 @@ function handleCMP () {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTraffective);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('usercentrics.eu')) {
+    } else if (docHtml.includes('.usercentrics.eu')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleUserCentrics);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('econda.de')) {
+    } else if (docHtml.includes('.econda.de')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleEconda);
+        observer.observe(targetNode, config);
+    } else if (docHtml.includes('consentmanager.mgr.consensu.org')) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleConsentManager);
         observer.observe(targetNode, config);
     } else {
         Logger.info('Nothing found yet ... ');
@@ -116,6 +120,22 @@ function handleUserCentrics () {
         reset();
     }
 }
+
+function handleConsentManager () {
+    Logger.info('handleConsentManager');
+    const cmButtonDeny = '#cmpbntnotxt';
+
+    if($(cmButtonDeny).length){
+        $(cmButtonDeny).click();
+        reset();
+        Logger.info('Consent for Consent Manager denied.')
+    }
+
+    // TODO: Requires a second Step for the ugly guis ...
+
+}
+
+
 
 function reset () {
     // If everything is fine, remove the listener.
