@@ -110,3 +110,9 @@ this.truste.eu.prefclosebutton();
 - this.truste.eu.bindMap: holds all relevant information on the notice script including version etc. 
 
 # List of various data management platforms.1
+
+
+# List of other pages covered
+
+[NPM](https://www.npmjs.com/)
+[Tealium](https://tealium.com/)
