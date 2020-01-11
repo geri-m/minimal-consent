@@ -7,7 +7,7 @@ module.exports = merge(parentWebPack, {
     devtool: 'source-map',
     plugins: [
         new CopyWebpackPlugin([
-            { from: './src/manifest.prod.json', to: './manifest.json' },
-            { from: './src/images', to: './images' }]),
+            {from: './src/manifest.prod.json', to: './manifest.json'},
+            {from: './src/images', to: './images'}]),
     ]
 });

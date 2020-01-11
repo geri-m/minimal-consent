@@ -1,31 +1,31 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jquery": true,
-        "mocha": true
-    },
-    "extends": [
-        "standard"
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly",
+    "chrome": false,
+    "getQueryParam": false
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": [
+      "error",
+      "always"
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly",
-        "chrome": false,
-        "getQueryParam": false
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "rules": {
-        "semi": [
-            "error",
-            "always"
-        ],
-        "indent": [
-            "error",
-            4
-        ]
-    }
+    "indent": [
+      "error",
+      4
+    ]
+  }
 }

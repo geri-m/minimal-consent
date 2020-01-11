@@ -18,7 +18,7 @@ module.exports = merge(parentWebPack, {
         }),
 
         new CopyWebpackPlugin([
-            { from: './src/manifest.dev.json', to: './manifest.json' },
-            { from: './src/images/dev', to: './images' }])
+            {from: './src/manifest.dev.json', to: './manifest.json'},
+            {from: './src/images/dev', to: './images'}])
     ]
 });

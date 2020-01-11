@@ -10,7 +10,9 @@
     "48": "./images/Icon_48x48.png",
     "128": "./images/Icon_128x128.png"
   },
-  "permissions": ["activeTab"],
+  "permissions": [
+    "activeTab"
+  ],
   "content_scripts": [
     {
       "matches": [

@@ -3,20 +3,6 @@ version: 2.0
 # Job definitions
 # ===============
 jobs:
-  lint:
-    docker:
-      - image: "alpine:3.10.3"
-    steps:
-      - checkout
-      - run:
-          name: "Install Lint Dependencies"
-          command: |
-            apk add --no-cache yarn
-            yarn
-      - run:
-          name: "Run Lint Check"
-          command: yarn lint
-
   test:
     docker:
       - image: "alpine:3.10.3"
@@ -101,17 +87,14 @@ workflows:
 
   build_and_test:
     jobs:
-      - lint: {filters: {branches: {ignore: [production, staging]}}}
-      - test: {requires: [lint]}
+      - test: {filters: {branches: {ignore: [production, staging]}}}
 
   build_and_publish_beta:
     jobs:
-      - lint: {filters: {branches: {only: [dev]}}}
-      - test: {requires: [lint]}
+      - test: {filters: {branches: {only: [dev]}}}
       - build-and-publish-beta: {requires: [test]}
 
   build_and_publish_prod:
     jobs:
-      - lint: {filters: {branches: {only: [master]}}}
-      - test: {requires: [lint]}
+      - test: {filters: {branches: {only: [master]}}}
       - build-and-publish-prod: {requires: [test]}
