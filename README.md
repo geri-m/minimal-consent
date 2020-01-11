@@ -96,7 +96,7 @@ this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracke
 this.truste.eu.prefclosebutton();
 ```
 
-#### Sample Pages
+## Sample Pages
 
 - [Forbes](https://www.forbes.com)
 
@@ -108,23 +108,41 @@ this.truste.eu.prefclosebutton();
 - this.truste.eu.version => Version 1.7-1
 - this.truste.eu.bindMap: holds all relevant information on the notice script including version etc. 
 
-# [OneTrust](https://www.onetrust.com/products/cookies/)
+# [OneTrust](https://www.onetrust.com/products/cookies/) - Product Name 'Optanon', Host: cookielaw.org
 
+## Variant 1 (3 checkboxes, which are unchecked)
 
+[JavaScript](https://cdn.cookielaw.org/consent/576b8520-2cc6-4e55-b8a5-1259ebe5cc15.js) can be found here.
 
+- Look for Checkboxes
+- Uncheck all checkboxes.
+- Save
 
+## Sample Pages
 
+- [Springer](https://www.springer.com/gp)
 
-# List of various data management platforms.1
+## Variant 2 (Multiple Tabs in a <li>)
 
+[JavaScript](https://cdn.cookielaw.org/scripttemplates/5.9.0/otBannerSdk.js) con be found here.
 
-# List of other pages covered
+- Look for li.menu-item-on
+- Look for checkbox
+- Uncheck all checkboxes.
+- Save. 
+
+## Sample Pages
+
+- [CookieLaw](https://www.cookielaw.org/)
+
+# Uncovered CMPs
+
+# Other pages covered
 
 - [NPM](https://www.npmjs.com/)
 - [Tealium](https://tealium.com/) - There is more to do here.
 
-
-# Others
+# Misc
 
 - [ARD](https://www.ard.de/) - There are not cookies
 - [Spiegel](https://www.spiegel.de) - There are cookies, but no Banner => Watch!

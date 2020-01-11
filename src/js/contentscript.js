@@ -57,6 +57,10 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTruste);
         observer.observe(targetNode, config);
+    } else if (docHtml.includes('.cookielaw.org')) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleOneTrust);
+        observer.observe(targetNode, config);
     } else {
         Logger.info('Nothing found yet ... ');
 
@@ -180,7 +184,7 @@ function handleTruste() {
                 $('body').append('<a href=\'javascript:function s(){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();\' class=\'minimal-consent\'>Minimal Consent</a>');
                 Logger.info("Button Added");
                 $(minimalConsentLink)[0].click();
-                Logger.info('Consent for Truste/Trustact denied.');
+                Logger.info('Consent for Truste/Trustact (V1) denied.');
                 reset();
             }
         });
@@ -189,9 +193,60 @@ function handleTruste() {
 
     if ($(trusteSimpleOverlay).length && state === 0) {
         $(trusteSimpleOverlay).click();
+        Logger.info('Consent for Truste/Trustact (V2) denied.');
         reset();
     }
 }
+
+function handleOneTrust() {
+    Logger.info('handleOneTrust');
+
+    const optanonDetailsV1 = "#onetrust-pc-btn-handler";
+    const optanonSaveSettingsV1 = "button.save-preference-btn-handler";
+    const optanonCheckBoxesV1 = "checkbox.switch-checkbox";
+
+    const optanonDetailsV2 = "button.optanon-toggle-display";
+
+    // this button is crappy to find, as there is no ID or class.
+    const optanonSaveSettingsV2 = "button[title*='Save']";
+    const optanonListItemForTabsV2 = "li.menu-item-on";
+    const optanonCheckbox = "input[type*='checkbox']";
+
+    // Variant 1
+    if ($(optanonDetailsV1).length && state === 0) {
+        $(optanonDetailsV1).click();
+        state = 1;
+    } else if ($(optanonSaveSettingsV1).length && state === 1) {
+        $(optanonCheckBoxesV1).each(function () {
+            $(this).prop('checked', false);
+        });
+        $(optanonSaveSettingsV1).click();
+        Logger.info('Consent for OneTrust (V1) denied.');
+        reset();
+    }
+    // Variant 2
+    else if ($(optanonDetailsV2).length && state === 0) {
+        $(optanonDetailsV1).trigger('click');
+        Logger.info("Details clicked");
+        state = 2;
+    } else if ($(optanonSaveSettingsV2).length && state === 2) {
+        Logger.info("Save Button found");
+        $(optanonListItemForTabsV2).each(function () {
+            Logger.info("Tab Found");
+            $(this).click();
+            $(optanonCheckbox).each(function () {
+                Logger.info("Checkbox Unchecked");
+                $(this).prop('checked', false);
+            });
+        });
+        $(optanonSaveSettingsV2).click();
+        Logger.info('Consent for OneTrust (V2) denied.');
+        reset();
+    }
+
+
+}
+
 
 function reset() {
     // If everything is fine, remove the listener.
