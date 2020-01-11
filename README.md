@@ -28,15 +28,15 @@ https://medium.com/slido-dev-blog/chrome-extensions-and-continuous-integration-3
 4) Choose "Load unpacked"
 5) Point the file finder to `build` directory.
 
-## Econda
+## [Econda](https://www.econda.de/)
 
-- https://www.econda.de/ used arp.privacy.js (Loaded from https://d35ojb8dweouoy.cloudfront.net/plugins/arp.privacy/arp.privacy.js)
+- uses [arp.privacy.js](https://d35ojb8dweouoy.cloudfront.net/plugins/arp.privacy/arp.privacy.js)
 - Looking for privacyProtectionBanner
 - Unchecking the Checkbox
 - Banner will be opened on each new Session. 
 
 
-# traffective: https://traffective.com/cmp/
+# [traffective](https://traffective.com/cmp/)
 
 ## Variant with Div Overlay with several buttons
 
@@ -50,14 +50,13 @@ https://medium.com/slido-dev-blog/chrome-extensions-and-continuous-integration-3
 
 ## Examples
 
-[MactechNews](https://www.mactechnews.de/)
-[traffective](https://traffective.com/cmp/)
+- [MactechNews](https://www.mactechnews.de/)
 
-# usercentrics
+# [usercentrics](https://www.usercentrics.eu/)
 
 ## Variant with Links with '#'
 
-All page which is usercentrics inlcude the Main(https://app.usercentrics.eu/latest/main.js) or Bundle(https://app.usercentrics.eu/latest/bundle.js) - please validate this!
+All page which is usercentrics inlcude the [Main](https://app.usercentrics.eu/latest/main.js) or [Bundle](https://app.usercentrics.eu/latest/bundle.js) - please validate this!
 
 The Issue with this integration is, that we can not click Links with a ```<a href="#">Button</a>```. JQuery can not trigger
 a click Event on this button. Also using the DOM method ```click()````` on the Object is an issue, as this causes to page
@@ -68,12 +67,12 @@ So what we do, is inject a button which contains a javascript and then press thi
 
 ## Examples
 
-[Hirmer](https://www.hirmer.de/)
-[Heise](https://www.heise.de/)
-[fitnessfirst](https://www.fitnessfirst.come/)
-[usercentrics](https://www.usercentrics.de/)
+- [Hirmer](https://www.hirmer.de/)
+- [Heise](https://www.heise.de/)
+- [fitnessfirst](https://www.fitnessfirst.come/)
+- [usercentrics](https://www.usercentrics.de/)
 
-# Truste
+# [Trustarc](https://www.trustarc.com) aka Truste
 
 ## Variante iFrame 
 
@@ -99,7 +98,7 @@ this.truste.eu.prefclosebutton();
 
 #### Sample Pages
 
-[Forbes](https://www.forbes.com)
+- [Forbes](https://www.forbes.com)
 
 ### Other functions in the notice.js
 
@@ -109,10 +108,23 @@ this.truste.eu.prefclosebutton();
 - this.truste.eu.version => Version 1.7-1
 - this.truste.eu.bindMap: holds all relevant information on the notice script including version etc. 
 
+# [OneTrust](https://www.onetrust.com/products/cookies/)
+
+
+
+
+
+
 # List of various data management platforms.1
 
 
 # List of other pages covered
 
-[NPM](https://www.npmjs.com/)
-[Tealium](https://tealium.com/)
+- [NPM](https://www.npmjs.com/)
+- [Tealium](https://tealium.com/) - There is more to do here.
+
+
+# Others
+
+- [ARD](https://www.ard.de/) - There are not cookies
+- [Spiegel](https://www.spiegel.de) - There are cookies, but no Banner => Watch!
