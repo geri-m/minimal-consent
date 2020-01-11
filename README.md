@@ -74,7 +74,7 @@ So what we do, is inject a button which contains a javascript and then press thi
 
 # [Trustarc](https://www.trustarc.com) aka Truste
 
-## Variante iFrame 
+## Variant 1 iFrame 
 
 ### Version v1.7 (Release up from 220)
 
@@ -108,6 +108,13 @@ this.truste.eu.prefclosebutton();
 - this.truste.eu.version => Version 1.7-1
 - this.truste.eu.bindMap: holds all relevant information on the notice script including version etc. 
 
+# Varinate 2 - Decline only
+
+Look for #truste-consent-required, press and all good. 
+
+Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich. 
+
+
 # [OneTrust](https://www.onetrust.com/products/cookies/) - Product Name 'Optanon', Host: cookielaw.org
 
 ## Variant 1 (3 checkboxes, which are unchecked)
@@ -134,6 +141,29 @@ this.truste.eu.prefclosebutton();
 ## Sample Pages
 
 - [CookieLaw](https://www.cookielaw.org/)
+
+
+# [Evidon](https://www.evidon.com/) from CrownPark
+
+## Sample Pages
+
+- [RSA](http://www.rsa.com/) => Implementierung Broken, auch auf der Evidon Seite selbst auch. Später nochmal probieren.
+- [Crownpark](https://www.crownpeak.com/)
+
+# [Nymity](https://www.nymity.com/) as aquired by Trustarc
+
+# [Cookiebot](https://www.cookiebot.com/de/)
+
+## SamplePages
+
+- [SAI Global](https://www.saiglobal.com/)
+- [Possible Now](https://www.possiblenow.com/)
+
+# [OIL](https://www.oiljs.org/) by Springer
+
+## Sample Pages
+
+- [Welt](https://www.welt.de/)
 
 # Uncovered CMPs
 
