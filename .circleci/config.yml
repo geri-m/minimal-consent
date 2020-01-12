@@ -31,7 +31,7 @@ jobs:
       - run:
           name: "Build Extension for BETA"
           command: |
-            webpack --config webpack.prod.js
+            yarn build
       - run:
           name: "Package Extension for BETA"
           command: |
