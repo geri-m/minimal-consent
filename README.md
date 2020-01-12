@@ -142,7 +142,6 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 - [CookieLaw](https://www.cookielaw.org/)
 
-
 # [Evidon](https://www.evidon.com/) from CrownPark
 
 ## Sample Pages
@@ -152,18 +151,35 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 # [Nymity](https://www.nymity.com/) as aquired by Trustarc
 
+## Sample Pages
+- No Pages yet
+
 # [Cookiebot](https://www.cookiebot.com/de/)
 
 ## SamplePages
-
 - [SAI Global](https://www.saiglobal.com/)
 - [Possible Now](https://www.possiblenow.com/)
 
 # [OIL](https://www.oiljs.org/) by Springer
 
 ## Sample Pages
-
 - [Welt](https://www.welt.de/)
+
+# [EZ CMP](https://www.ezoic.com/)
+
+This [JavaScript](https://www.idownloadblog.com/cmp/cmp.js) is installed locally on the website. Contains various information
+to consensu.org.
+
+## Sample Pages
+- [iDownlaodPages](https://www.idownloadblog.com/)
+
+
+# [Conversant](https://www.conversantmedia.eu/de/)
+
+[JavaScript](https://cdn.conversant.mgr.consensu.org/gdpr/cmp/2.6.6/gdpr-cmp-ui.js) is also already loaded via consensu.org
+
+## Sample Pages
+- [Inc.com](https://www.inc.com/)
 
 # Uncovered CMPs
 
