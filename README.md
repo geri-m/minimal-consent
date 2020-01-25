@@ -28,6 +28,18 @@ https://medium.com/slido-dev-blog/chrome-extensions-and-continuous-integration-3
 4) Choose "Load unpacked"
 5) Point the file finder to `build` directory.
 
+# Comments
+
+## Adobe
+
+You can opt out [here](https://www.adobe.com/de/privacy/opt-out.html) from Adobe Tracking
+
+## Google Analytics
+
+There is a [Chrome Extensions](https://tools.google.com/dlpage/gaoptout?hl=de) for Disabling Google Analytics.
+
+# CMP in General
+
 ## [Econda](https://www.econda.de/)
 
 - uses [arp.privacy.js](https://d35ojb8dweouoy.cloudfront.net/plugins/arp.privacy/arp.privacy.js)

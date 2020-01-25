@@ -4,14 +4,21 @@
   "version": "0.0.2",
   "description": "Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners.",
   "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "./background.bundle.js"
+    ],
+    "persistent": false
+  },
   "icons": {
-    "16": "./images/Icon_16x16.png",
-    "32": "./images/Icon_32x32.png",
-    "48": "./images/Icon_48x48.png",
-    "128": "./images/Icon_128x128.png"
+    "16": "./images/icon-16x16-trans.png",
+    "32": "./images/icon-32x32-trans.png",
+    "48": "./images/icon-48x48-trans.png",
+    "128": "./images/icon-128x128-trans.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "content_scripts": [
     {
@@ -27,10 +34,10 @@
   ],
   "browser_action": {
     "default_icon": {
-      "16": "./images/Icon_16x16.png",
-      "32": "./images/Icon_32x32.png",
-      "48": "./images/Icon_48x48.png",
-      "128": "./images/Icon_128x128.png"
+      "16": "./images/icon-16x16-trans.png",
+      "32": "./images/icon-32x32-trans.png",
+      "48": "./images/icon-48x48-trans.png",
+      "128": "./images/icon-128x128-trans.png"
     },
     "default_title": "Minimal Consent"
   }

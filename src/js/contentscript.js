@@ -1,8 +1,12 @@
-// contentscript.js
 import $ from 'jquery';
-import Logger from 'js-logger';
 
 var dateFormat = require('dateformat'); // from library
+
+class Utils {
+    static log(message) {
+        console.log(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l') + " " + message);
+    }
+}
 
 var state = 0;
 
@@ -12,15 +16,6 @@ var buttons = {
     "#cookie_action_close_header": "https://tealium.com/"
 };
 const minimalConsentLink = 'a.minimal-consent';
-
-// Adding Date to Log-output
-Logger.useDefaults({
-    formatter: function (messages, context) {
-        messages.unshift(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l'));
-    }
-});
-
-Logger.info('Content Script Called.');
 
 // Select the node that will be observed for mutations
 const targetNode = document.getRootNode();
@@ -33,6 +28,7 @@ var observer;
 
 const selectCmpObserver = new MutationObserver(handleCMP);
 selectCmpObserver.observe(targetNode, config);
+
 
 function handleCMP() {
     var docHtml = document.documentElement.innerHTML;
@@ -66,12 +62,12 @@ function handleCMP() {
         observer = new MutationObserver(handleEvidon);
         observer.observe(targetNode, config);
     } else {
-        Logger.info('Nothing found yet ... ');
+        Utils.log('Nothing found yet ... ');
 
         for (var key in buttons) {
             if ($(key).length && state === 0) {
-                Logger.info("Found a page with a basic button");
-                Logger.info($(key));
+                Utils.log("Found a page with a basic button");
+                Utils.log($(key));
                 $('body').append('<a href=\'javascript:function s(){ document.getElementById("' + key.replace("#", "") + '").click();} s();\' class=\'minimal-consent\'>Minimal Consent</a>');
                 state = 1;
                 break;
@@ -79,7 +75,7 @@ function handleCMP() {
         }
 
         if ($(minimalConsentLink).length && state === 1) {
-            Logger.info("New button is here");
+            Utils.log("New button is here");
             $(minimalConsentLink)[0].click();
             selectCmpObserver.disconnect();
         }
@@ -87,90 +83,97 @@ function handleCMP() {
 }
 
 function handleEconda() {
-    Logger.info('handleEconda');
+    Utils.log('handleEconda');
     const settingsButton = '#buttonSettingsPage';
     const toggleCheckbox = '#profile_toggle';
     const closeSpan = 'span.close';
 
     if ($(settingsButton).length && state === 0) {
-        Logger.info('Clicking Button now');
+        Utils.log('Clicking Button now');
         $(settingsButton).click();
         state = 1;
     } else if ($(toggleCheckbox).length && state === 1) {
-        Logger.info('Checkbox found: ' + $(toggleCheckbox).checked);
+        Utils.log('Checkbox found: ' + $(toggleCheckbox).checked);
         if ($(toggleCheckbox).is(':checked')) {
             // Uncheck the checkbox
             $(toggleCheckbox).prop('checked', false);
-            Logger.info('now unchecked');
+            Utils.log('now unchecked');
         }
 
         // close overlay now
-        Logger.info('Close overlay now');
+        Utils.log('Close overlay now');
         $(closeSpan).trigger('click');
-        Logger.info('Consent for Econda denied');
+        Utils.log('Consent for Econda denied');
 
         reset();
     }
 }
 
 function handleTraffective() {
-    Logger.info('handleTraffective');
+    Utils.log('handleTraffective');
     const gdprDiv = 'div.gdpr_popup_popup';
     const gdprCheckboxed = 'input[type=checkbox].gdpr_switch_native';
     const gdprSaveButton = 'div.is-primary-button';
     if ($(gdprDiv).length && state === 0) {
         var checkBoxes = $(gdprCheckboxed);
-        Logger.info('Checkboxes found: ' + checkBoxes.length);
+        Utils.log('Checkboxes found: ' + checkBoxes.length);
 
         $(gdprCheckboxed).each(function () {
             $(this).prop('checked', false);
         });
 
         if ($(gdprSaveButton).length) {
-            Logger.info('Button found ...');
+            Utils.log('Button found ...');
             $(gdprSaveButton).trigger('click');
-            Logger.info('... and clicked');
+            Utils.log('... and clicked');
         }
 
-        Logger.info('Consent for Traffective denied');
+        Utils.log('Consent for Traffective denied');
         reset();
     }
 }
 
 function handleUserCentrics() {
-    Logger.info('handleUserCentrics');
+    Utils.log('handleUserCentrics');
     const ucBannerContent = 'div.uc-banner-content';
 
     // case like on hse24.de
     if ($(ucBannerContent).length && state === 0) {
-        Logger.info('Deny All button found');
+        Utils.log('Deny All button found');
         // add the the Body our new link
         // <a href=\'javascript:function doDenyCall(counter){console.log(new Date().toUTCString() + "doDenyCall: " + counter);if(counter >= 100){console.log("Minimal Consent was unable to communicate with usercentrics");return; } if(typeof this.usercentrics !== "undefined" && typeof this.usercentrics.denyAllConsentsAndCloseInitialView !== "undefined"){ console.log("Close Popup now"); this.usercentrics.denyAllConsentsAndCloseInitialView(); } else { console.log("setTimeout again"); setTimeout(function() {doDenyCall(counter + 1)}, 25);  }}; doDenyCall(1);\' class=\'minimal-consent\'>Minimal Consent</a>'
         $('body').append('<a href=\'javascript:function s(counter){if(counter >= 100){return; } if(typeof this.usercentrics !== "undefined" && typeof this.usercentrics.denyAllConsentsAndCloseInitialView !== "undefined"){ this.usercentrics.denyAllConsentsAndCloseInitialView(); } else { setTimeout(function() {s(counter + 1)}, 25);  }}; s(1);\' class=\'minimal-consent\'>Minimal Consent</a>');
         state = 1;
-        Logger.info('Custom link added');
+        Utils.log('Custom link added');
     } else if ($(minimalConsentLink).length && state === 1) {
         $(minimalConsentLink)[0].click();
-        Logger.info('Consent for User Centric denied.');
+        Utils.log('Consent for User Centric denied.');
+        chrome.runtime.sendMessage({
+            cmp: "Usercentrcis",
+            cmp_version: "5.5.5",
+            from: "contentscript"
+        }, function (response) {
+            console.log(response.farewell);
+        });
         reset();
     }
 }
 
 function handleConsentManager() {
-    Logger.info('handleConsentManager');
+    Utils.log('handleConsentManager');
     const cmButtonDeny = '#cmpbntnotxt';
 
     if ($(cmButtonDeny).length) {
         $(cmButtonDeny).click();
         reset();
-        Logger.info('Consent for Consent Manager denied.')
+        Utils.log('Consent for Consent Manager denied.')
     }
 
     // TODO: Requires a second Step for the ugly guis ...
 }
 
 function handleTruste() {
-    Logger.info('handleTruste');
+    Utils.log('handleTruste');
     // 1st Variant with iFrame
     const trusteDiv = "div.truste_box_overlay";
 
@@ -180,16 +183,16 @@ function handleTruste() {
     // this is all happening in an iFrame, hence we are interacting via the notice.js with the iFrame.
     // <a href='javascript function s (){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();' class='minimal-consent'>Minimal Consent</a>
     if ($(trusteDiv).length && state === 0) {
-        Logger.info("Div Found and Message Listener Registered.");
+        Utils.log("Div Found and Message Listener Registered.");
         state = 1;
         window.addEventListener('message', (event) => {
             var eventJson = JSON.parse(event.data);
             if (eventJson.message === "cm_loading") {
-                Logger.info("Adding Button");
+                Utils.log("Adding Button");
                 $('body').append('<a href=\'javascript:function s(){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();\' class=\'minimal-consent\'>Minimal Consent</a>');
-                Logger.info("Button Added");
+                Utils.log("Button Added");
                 $(minimalConsentLink)[0].click();
-                Logger.info('Consent for Truste/Trustact (V1) denied.');
+                Utils.log('Consent for Truste/Trustact (V1) denied.');
                 reset();
             }
         });
@@ -200,15 +203,15 @@ function handleTruste() {
 
     if ($(trusteSimpleOverlay).length && state === 0) {
         $(trusteSimpleOverlay).click();
-        Logger.info('Consent for Truste/Trustact (V2) denied.');
+        Utils.log('Consent for Truste/Trustact (V2) denied.');
         state = 1;
 
         window.addEventListener('message', (event) => {
             var eventJson = JSON.parse(event.data);
-            Logger.info(eventJson);
+            Utils.log(eventJson);
             // Now the Close Button is visbile again.
             if (eventJson.source === "preference_manager" && eventJson.data === "true" && eventJson.message === "toggle_close_button") {
-                Logger.info("We can close the iFrame. ");
+                Utils.log("We can close the iFrame. ");
                 // this is a special case, in case the "decline" is failing when sending data to the backend (Marriot Case)
                 if ($("img[alt*='close button']").length) {
                     $("img[alt*='close button']").click();
@@ -223,7 +226,7 @@ function handleTruste() {
 }
 
 function handleOneTrust() {
-    Logger.info('handleOneTrust');
+    Utils.log('handleOneTrust');
 
     const optanonDetailsV1 = "#onetrust-pc-btn-handler";
     const optanonSaveSettingsV1 = "button.save-preference-btn-handler";
@@ -245,38 +248,38 @@ function handleOneTrust() {
             $(this).prop('checked', false);
         });
         $(optanonSaveSettingsV1).click();
-        Logger.info('Consent for OneTrust (V1) denied.');
+        Utils.log('Consent for OneTrust (V1) denied.');
         reset();
     }
     // Variant 2
     else if ($(optanonDetailsV2).length && state === 0) {
         $(optanonDetailsV1).trigger('click');
-        Logger.info("Details clicked");
+        Utils.log("Details clicked");
         state = 2;
     } else if ($(optanonSaveSettingsV2).length && state === 2) {
-        Logger.info("Save Button found");
+        Utils.log("Save Button found");
         $(optanonListItemForTabsV2).each(function () {
-            Logger.info("Tab Found");
+            Utils.log("Tab Found");
             $(this).click();
             $(optanonCheckbox).each(function () {
-                Logger.info("Checkbox Unchecked");
+                Utils.log("Checkbox Unchecked");
                 $(this).prop('checked', false);
             });
         });
         $(optanonSaveSettingsV2).click();
-        Logger.info('Consent for OneTrust (V2) denied.');
+        Utils.log('Consent for OneTrust (V2) denied.');
         reset();
     }
 }
 
 function handleEvidon() {
-    Logger.info('handleEvidon');
+    Utils.log('handleEvidon');
     const evidonBannerV1 = "#_evidon_banner:visible";
     const evidonDeclineAllV1 = "#_evidon-decline-button:visible";
     // Variant 1
     if ($(evidonBannerV1).length && state === 0) {
         $(evidonDeclineAllV1).trigger('click');
-        Logger.info('Consent for Evidon (V1) denied.');
+        Utils.log('Consent for Evidon (V1) denied.');
         reset();
     }
 }
@@ -286,3 +289,8 @@ function reset() {
     observer.disconnect();
     state = -1;
 }
+
+
+
+
+

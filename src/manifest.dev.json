@@ -7,16 +7,18 @@
   "background": {
     "scripts": [
       "./background.bundle.js"
-    ]
+    ],
+    "persistent": false
   },
   "icons": {
-    "16": "./images/Icon_16x16_dev.png",
-    "32": "./images/Icon_32x32_dev.png",
-    "48": "./images/Icon_48x48_dev.png",
-    "128": "./images/Icon_128x128_dev.png"
+    "16": "./images/icon-16x16-dev.png",
+    "32": "./images/icon-32x32-dev.png",
+    "48": "./images/icon-48x48-dev.png",
+    "128": "./images/icon-128x128-dev.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "content_scripts": [
     {
@@ -32,10 +34,10 @@
   ],
   "browser_action": {
     "default_icon": {
-      "16": "./images/Icon_16x16_dev.png",
-      "32": "./images/Icon_32x32_dev.png",
-      "48": "./images/Icon_48x48_dev.png",
-      "128": "./images/Icon_128x128_dev.png"
+      "16": "./images/icon-16x16-dev.png",
+      "32": "./images/icon-32x32-dev.png",
+      "48": "./images/icon-48x48-dev.png",
+      "128": "./images/icon-128x128-dev.png"
     },
     "default_title": "[DEVELOPMENT] Minimal Consent"
   }

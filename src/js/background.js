@@ -1,12 +1,36 @@
-import Logger from 'js-logger';
-
 var dateFormat = require('dateformat'); // from library
 
-// Adding Date to Log-output
-Logger.useDefaults({
-    formatter: function (messages, context) {
-        messages.unshift(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l'));
+class Utils {
+    static log(message) {
+        console.log(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l') + " " + message);
     }
-});
+}
 
-Logger.info("Background Script is required to Connect to the Hot Reload Plugin! Don't Remove!");
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        Utils.log(sender.tab ?
+            "from a content script:" + sender.tab.url :
+            "from the extension");
+        Utils.log(request);
+        if (request.from === "contentscript" && request.cmp && request.cmp_version) {
+            logBackend(request.cmp, request.cmp_version, sender.tab.url);
+        }
+    });
+
+
+function logBackend(cmp, cmpVersion, url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/successfulConsent ', true);
+
+    //Send the proper header information along with the request
+    xhr.setRequestHeader("Content-Type", "application/json");
+    var requestJson = "{\n" +
+        "    \"cmp\": \"" + cmp + "\"," +
+        "    \"cmp-version\": \"" + cmpVersion + "\"," +
+        "    \"url\" : \"" + url + "\"" +
+        "}";
+    Utils.log(requestJson);
+    xhr.send(requestJson);
+}
+
+

@@ -64,7 +64,6 @@
   },
   "dependencies": {
     "jquery": "^3.4.1",
-    "js-logger": "^1.6.0",
     "dateformat": "^3.0.3"
   }
 }
