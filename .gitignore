@@ -7,3 +7,7 @@ build
 # Extensions related stuff
 .idea
 .sass-cache
+
+# Yarn temp files
+yarn.lock
+yarn-error.log
