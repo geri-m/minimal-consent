@@ -152,7 +152,8 @@ function handleConsentManager() {
         reset("Consent Manager", "0.0.0");
     }
 
-    // TODO: Requires a second Step for the ugly guis ...
+    // TODO: Requires a second Step for the ugly guis.
+    // Currently there is a <a href='#' with an on Click Action which is a bit painful to handle
 }
 
 function handleTruste() {
@@ -190,7 +191,7 @@ function handleTruste() {
         window.addEventListener('message', (event) => {
             var eventJson = JSON.parse(event.data);
             Utils.log(eventJson);
-            // Now the Close Button is visbile again.
+            // Now the Close Button is visible again.
             if (eventJson.source === "preference_manager" && eventJson.data === "true" && eventJson.message === "toggle_close_button") {
                 Utils.log("We can close the iFrame. ");
                 // this is a special case, in case the "decline" is failing when sending data to the backend (Marriot Case)
@@ -252,14 +253,17 @@ function handleOneTrust() {
 
 function handleEvidon() {
     Utils.log('handleEvidon');
-    const evidonBannerV1 = "#_evidon_banner:visible";
-    const evidonDeclineAllV1 = "#_evidon-decline-button:visible";
+    const evidonDenyAll = "button#_evidon-decline-button";
+
+    // const evidonDeclineAllV1 = "button#_evidon-decline-button:visible";
     // Variant 1
-    if ($(evidonBannerV1).length && state === 0) {
-        $(evidonDeclineAllV1).trigger('click');
-        reset("Evidon (V1)", "0.0.0");
+    if ($(evidonDenyAll).length && state === 0 && $(evidonDenyAll).offset().left) {
+        $(evidonDenyAll).trigger('click');
+        reset("Evidon", "4957");
     }
 }
+
+
 
 function reset(cmp, cmpVersion) {
     // If everything is fine, remove the listener.

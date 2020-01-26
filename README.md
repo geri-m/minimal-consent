@@ -81,7 +81,7 @@ So what we do, is inject a button which contains a javascript and then press thi
 
 - [Hirmer](https://www.hirmer.de/)
 - [Heise](https://www.heise.de/)
-- [fitnessfirst](https://www.fitnessfirst.come/)
+- [fitnessfirst](https://www.fitnessfirst.de/)
 - [usercentrics](https://www.usercentrics.de/)
 - [Andreas Stocker](https://www.andreasstocker.at/)
 
@@ -201,6 +201,7 @@ to consensu.org.
 
 - [programiz](https://www.programiz.com/python-programming/tutorial)
 - [Doodle](https://www.doodle.com)
+
 # Uncovered CMPs
 
 # Other pages covered
