@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint . --ext .js",
     "clean": "rm -rf ./dist/",
-    "start": "rm -rf ./dist/; webpack --watch --config webpack.dev.js",
+    "start": "rm -rf ./dist/; webpack --watch --config webpack.start.js",
+    "build-dev": "rm -rf ./dist/; webpack --config webpack.dev.js",
     "build": "rm -rf ./dist/; webpack --config webpack.prod.js",
     "test": "nyc mocha --require @babel/register --recursive --reporter list",
     "format": "prettier --write \"{src,client,typings,specs}/**/*.ts\""
