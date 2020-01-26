@@ -49,7 +49,7 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTruste);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('cookielaw.org')) {
+    } else if (docHtml.includes('cookielaw.org') || docHtml.includes('cookiepro.com')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleOneTrust);
         observer.observe(targetNode, config);
@@ -213,9 +213,11 @@ function handleOneTrust() {
     const optanonDetailsV2 = "button.optanon-toggle-display";
 
     // this button is crappy to find, as there is no ID or class.
-    const optanonSaveSettingsV2 = "button[title*='Save']";
+    const optanonSaveSettingsV2 = "button[onclick*='Save']";
     const optanonListItemForTabsV2 = "li.menu-item-on";
     const optanonCheckbox = "input[type*='checkbox']";
+
+    Utils.log(state);
 
     // Variant 1
     if ($(optanonDetailsV1).length && state === 0) {

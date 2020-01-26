@@ -83,6 +83,7 @@ So what we do, is inject a button which contains a javascript and then press thi
 - [Heise](https://www.heise.de/)
 - [fitnessfirst](https://www.fitnessfirst.come/)
 - [usercentrics](https://www.usercentrics.de/)
+- [Andreas Stocker](https://www.andreasstocker.at/)
 
 # [Trustarc](https://www.trustarc.com) aka Truste
 
@@ -140,6 +141,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 ## Sample Pages
 
 - [Springer](https://www.springer.com/gp)
+- [Mena](https://www.mona.nl/)
 
 ## Variant 2 (Multiple Tabs in a <li>)
 
@@ -193,6 +195,12 @@ to consensu.org.
 ## Sample Pages
 - [Inc.com](https://www.inc.com/)
 
+# [Quantcast](https://www.quantcast.com/)
+
+## Sample Pages
+
+- [programiz](https://www.programiz.com/python-programming/tutorial)
+- [Doodle](https://www.doodle.com)
 # Uncovered CMPs
 
 # Other pages covered
