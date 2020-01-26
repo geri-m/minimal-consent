@@ -4,6 +4,7 @@ import $ from 'jquery';
 import Utils from "./utils";
 
 var state = 0;
+const contentScript = "contentscript";
 
 // this is some static stuff for the long tail.
 var buttons = {
@@ -28,15 +29,15 @@ selectCmpObserver.observe(targetNode, config);
 function handleCMP() {
     var docHtml = document.documentElement.innerHTML;
 
-    if (docHtml.includes('.traffective.com')) {
+    if (docHtml.includes('traffective.com')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTraffective);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('.usercentrics.eu')) {
+    } else if (docHtml.includes('usercentrics.eu')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleUserCentrics);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('.econda.de')) {
+    } else if (docHtml.includes('econda.de')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleEconda);
         observer.observe(targetNode, config);
@@ -44,15 +45,15 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleConsentManager);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('.truste.com') || docHtml.includes('.trustarc.com')) {
+    } else if (docHtml.includes('truste.com') || docHtml.includes('trustarc.com')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTruste);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('.cookielaw.org')) {
+    } else if (docHtml.includes('cookielaw.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleOneTrust);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('.evidon.com')) {
+    } else if (docHtml.includes('evidon.com')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleEvidon);
         observer.observe(targetNode, config);
@@ -98,9 +99,7 @@ function handleEconda() {
         // close overlay now
         Utils.log('Close overlay now');
         $(closeSpan).trigger('click');
-        Utils.log('Consent for Econda denied');
-
-        reset();
+        reset("Econda", "0.0.0");
     }
 }
 
@@ -122,9 +121,7 @@ function handleTraffective() {
             $(gdprSaveButton).trigger('click');
             Utils.log('... and clicked');
         }
-
-        Utils.log('Consent for Traffective denied');
-        reset();
+        reset("Traffective", "0.0.0");
     }
 }
 
@@ -142,13 +139,7 @@ function handleUserCentrics() {
         Utils.log('Custom link added');
     } else if ($(minimalConsentLink).length && state === 1) {
         $(minimalConsentLink)[0].click();
-        Utils.log('Consent for User Centric denied.');
-        chrome.runtime.sendMessage({
-            cmp: "Usercentrcis",
-            cmp_version: "5.5.5",
-            from: "contentscript"
-        });
-        reset();
+        reset("UserCentrics", "0.0.0");
     }
 }
 
@@ -158,8 +149,7 @@ function handleConsentManager() {
 
     if ($(cmButtonDeny).length) {
         $(cmButtonDeny).click();
-        reset();
-        Utils.log('Consent for Consent Manager denied.')
+        reset("Consent Manager", "0.0.0");
     }
 
     // TODO: Requires a second Step for the ugly guis ...
@@ -172,6 +162,7 @@ function handleTruste() {
 
     // 2nd variant with Div overlay
     const trusteSimpleOverlay = "#truste-consent-required";
+    const closeButton = "img[alt*='close button']";
 
     // this is all happening in an iFrame, hence we are interacting via the notice.js with the iFrame.
     // <a href='javascript function s (){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();' class='minimal-consent'>Minimal Consent</a>
@@ -185,12 +176,9 @@ function handleTruste() {
                 $('body').append('<a href=\'javascript:function s(){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();\' class=\'minimal-consent\'>Minimal Consent</a>');
                 Utils.log("Button Added");
                 $(minimalConsentLink)[0].click();
-                Utils.log('Consent for Truste/Trustact (V1) denied.');
-                reset();
+                reset("Truste/Trustact (V1)", "0.0.0");
             }
         });
-        reset();
-
     }
 
 
@@ -206,16 +194,13 @@ function handleTruste() {
             if (eventJson.source === "preference_manager" && eventJson.data === "true" && eventJson.message === "toggle_close_button") {
                 Utils.log("We can close the iFrame. ");
                 // this is a special case, in case the "decline" is failing when sending data to the backend (Marriot Case)
-                if ($("img[alt*='close button']").length) {
-                    $("img[alt*='close button']").click();
-                    reset();
+                if ($(closeButton).length) {
+                    $(closeButton).click();
+                    reset("Truste/Trustact (V2)", "0.0.0");
                 }
             }
         });
-        reset();
     }
-
-
 }
 
 function handleOneTrust() {
@@ -241,8 +226,7 @@ function handleOneTrust() {
             $(this).prop('checked', false);
         });
         $(optanonSaveSettingsV1).click();
-        Utils.log('Consent for OneTrust (V1) denied.');
-        reset();
+        reset("OneTrust (V1)", "0.0.0");
     }
     // Variant 2
     else if ($(optanonDetailsV2).length && state === 0) {
@@ -260,8 +244,7 @@ function handleOneTrust() {
             });
         });
         $(optanonSaveSettingsV2).click();
-        Utils.log('Consent for OneTrust (V2) denied.');
-        reset();
+        reset("OneTrust (V2)", "0.0.0");
     }
 }
 
@@ -272,15 +255,16 @@ function handleEvidon() {
     // Variant 1
     if ($(evidonBannerV1).length && state === 0) {
         $(evidonDeclineAllV1).trigger('click');
-        Utils.log('Consent for Evidon (V1) denied.');
-        reset();
+        reset("Evidon (V1)", "0.0.0");
     }
 }
 
-function reset() {
+function reset(cmp, cmpVersion) {
     // If everything is fine, remove the listener.
     observer.disconnect();
     state = -1;
+    Utils.log('Consent for ' + cmp + ' denied.');
+    chrome.runtime.sendMessage({cmp: cmp, cmp_version: cmpVersion, from: contentScript});
 }
 
 
