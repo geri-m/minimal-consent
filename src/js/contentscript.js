@@ -1,12 +1,7 @@
+"use strict";
+
 import $ from 'jquery';
-
-var dateFormat = require('dateformat'); // from library
-
-class Utils {
-    static log(message) {
-        console.log(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l') + " " + message);
-    }
-}
+import Utils from "./utils";
 
 var state = 0;
 

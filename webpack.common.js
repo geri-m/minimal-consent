@@ -1,16 +1,6 @@
 const path = require('path');
-const fileSystem = require('fs');
-
-// load the secrets
-const alias = {};
-
-const secretsPath = path.join(__dirname, ('secrets.' + process.env.NODE_ENV + '.js'));
 
 const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
-
-if (fileSystem.existsSync(secretsPath)) {
-    alias.secrets = secretsPath;
-}
 
 const options = {
     mode: process.env.NODE_ENV || 'development',
@@ -41,9 +31,6 @@ const options = {
                 exclude: /node_modules/
             }
         ]
-    },
-    resolve: {
-        alias: alias
     }
 };
 

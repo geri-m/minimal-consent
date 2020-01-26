@@ -1,19 +1,19 @@
-var dateFormat = require('dateformat'); // from library
+"use strict";
 
-class Utils {
-    static log(message) {
-        console.log(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l') + " " + message);
-    }
-}
+import Utils from "./utils";
 
+/**
+ * This Listener is required to receive message from the Content-Script. Out of th Listener we trigger the backend Call.
+ */
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        Utils.log(sender.tab ?
-            "from a content script:" + sender.tab.url :
-            "from the extension");
-        Utils.log(request);
+        // we make sure all relevant fields are set and then trigger the call.
         if (request.from === "contentscript" && request.cmp && request.cmp_version) {
             logBackend(request.cmp, request.cmp_version, sender.tab.url);
+        }
+        // if there is something broken with the request, log the information.
+        else {
+            Utils.log("From: " + sender + ": " + request);
         }
     });
 
