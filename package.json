@@ -40,7 +40,8 @@
     "webpack-cli": "3.3.10",
     "webpack-extension-reloader": "^1.1.4",
     "webpack-merge": "^4.2.2",
-    "webpack-obfuscator": "^0.21.0"
+    "webpack-obfuscator": "^0.21.0",
+    "terser-webpack-plugin": "^2.3.2"
   },
   "eslintConfig": {
     "env": {
