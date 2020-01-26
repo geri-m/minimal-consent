@@ -147,8 +147,6 @@ function handleUserCentrics() {
             cmp: "Usercentrcis",
             cmp_version: "5.5.5",
             from: "contentscript"
-        }, function (response) {
-            console.log(response.farewell);
         });
         reset();
     }

@@ -18,7 +18,8 @@
   },
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "content_scripts": [
     {
@@ -39,7 +40,8 @@
       "48": "./images/icon-48x48-trans.png",
       "128": "./images/icon-128x128-trans.png"
     },
-    "default_title": "Minimal Consent"
+    "default_title": "Minimal Consent",
+    "default_popup": "./popup/popup.html"
   }
 }
 
