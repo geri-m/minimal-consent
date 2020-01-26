@@ -29,8 +29,15 @@ function logBackend(cmp, cmpVersion, url) {
         "    \"cmp-version\": \"" + cmpVersion + "\"," +
         "    \"url\" : \"" + url + "\"" +
         "}";
-    Utils.log(requestJson);
+    chrome.browserAction.setIcon({path: "./images/icon-48x48-ok.png"});
+    setTimeout(turnImageBack, 3000);
     xhr.send(requestJson);
 }
+
+function turnImageBack() {
+    chrome.browserAction.setIcon({path: "./images/icon-48x48-trans.png"});
+}
+
+
 
 
