@@ -109,22 +109,25 @@ function handleEconda() {
 
 function handleTraffective() {
     Utils.log('handleTraffective');
+
     const gdprDiv = 'div.gdpr_popup_popup';
-    const gdprCheckboxed = 'input[type=checkbox].gdpr_switch_native';
+    let popup = document.queryCommandSupported(gdprDiv);
+
+
+    const gdprCheckBoxes = 'input[type=checkbox].gdpr_switch_native';
+    let checkboxes = document.querySelectorAll(gdprCheckBoxes);
+
+
     const gdprSaveButton = 'div.is-primary-button';
-    if ($(gdprDiv).length && state === 0) {
-        var checkBoxes = $(gdprCheckboxed);
-        Utils.log('Checkboxes found: ' + checkBoxes.length);
+    let saveButton = document.querySelector(gdprSaveButton);
 
-        $(gdprCheckboxed).each(function () {
-            $(this).prop('checked', false);
-        });
-
-        if ($(gdprSaveButton).length) {
-            Utils.log('Button found ...');
-            $(gdprSaveButton).trigger('click');
-            Utils.log('... and clicked');
-        }
+    if (objectClickable(popup) && state === 0) {
+        Utils.log('Checkboxes found: ' + checkboxes.length);
+        checkboxes.forEach(element => element.setAttribute("checked", "false"), Utils.log("Checkbox unset"));
+        state = 1;
+    } else if (objectClickable(saveButton) && state === 1) {
+        Utils.log('Button found ...');
+        saveButton.click();
         reset("Traffective", "0.0.0");
     }
 }
