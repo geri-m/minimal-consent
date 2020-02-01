@@ -29,11 +29,11 @@ selectCmpObserver.observe(targetNode, config);
 function handleCMP() {
     var docHtml = document.documentElement.innerHTML;
 
-    if (docHtml.includes('traffective.com')) {
+    if (docHtml.includes('traffective.com') || docuHtml.includes('traffective.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTraffective);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('usercentrics.eu')) {
+    } else if (docHtml.includes('usercentrics.eu') || docHtml.includes('usercentrics.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleUserCentrics);
         observer.observe(targetNode, config);
@@ -45,11 +45,11 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleConsentManager);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('truste.com') || docHtml.includes('trustarc.com')) {
+    } else if (docHtml.includes('truste.com') || docHtml.includes('trustarc.com') || docHtml.includes('trustarc.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTruste);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('cookielaw.org') || docHtml.includes('cookiepro.com')) {
+    } else if (docHtml.includes('cookielaw.org') || docHtml.includes('cookiepro.com') || docHtml.includes('onetrust.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleOneTrust);
         observer.observe(targetNode, config);
@@ -131,10 +131,13 @@ function handleTraffective() {
 
 function handleUserCentrics() {
     Utils.log('handleUserCentrics');
-    const ucBannerContent = 'div.uc-banner-content';
 
+    const ucBannerContent = 'div.uc-banner-content';
+    let banner = document.querySelector(ucBannerContent);
+
+    // typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined'
     // case like on hse24.de
-    if ($(ucBannerContent).length && state === 0) {
+    if (objectClickable(banner) && state === 0) {
         Utils.log('Deny All button found');
         let script = document.createElement('script');
         script.type = 'text/javascript';
@@ -259,16 +262,16 @@ function handleEvidon() {
 
     let button = document.querySelector(evidonDenyAll);
 
-    // we do require 3 attempts
-    if (typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined' && state === 0) {
+    // we do require 3 attempts to decline the tracking
+    if (objectClickable(button) && state === 0) {
         state = 1;
-        document.querySelector(evidonDenyAll).click();
-    } else if (typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined' && state === 1) {
+        button.click();
+    } else if (objectClickable(button) && state === 1) {
         state = 2;
-        document.querySelector(evidonDenyAll).click();
-    } else if (typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined' && state === 2) {
+        button.click();
+    } else if (objectClickable(button) && state === 2) {
         state = 3;
-        document.querySelector(evidonDenyAll).click();
+        button.click();
         reset("Evidon", "4957");
     }
 }
@@ -276,8 +279,8 @@ function handleEvidon() {
 function handleQuantcast() {
     Utils.log('handleQuantcast');
 
-    const puropse = "a#qc-cmp-purpose-button";
-    let purposeButton = document.querySelector(puropse);
+    const purpose = "a#qc-cmp-purpose-button";
+    let purposeButton = document.querySelector(purpose);
 
     const denyAll = "button.qc-cmp-enable-button";
     let denyAllButton = document.querySelector(denyAll);
@@ -285,17 +288,27 @@ function handleQuantcast() {
     const save = "button.qc-cmp-save-and-exit";
     let saveButton = document.querySelector(save);
 
-    if (typeof purposeButton !== 'undefined' && purposeButton && typeof purposeButton.parentElement !== 'undefined' && state === 0) {
+    // press on "Options"
+    if (objectClickable(purposeButton) && state === 0) {
         state = 1;
         purposeButton.click();
-    } else if (typeof denyAllButton !== 'undefined' && denyAllButton && typeof denyAllButton.parentElement !== 'undefined' && state === 1) {
+    }
+    // disable all
+    else if (objectClickable(denyAllButton) && state === 1) {
         state = 2;
         denyAllButton.click();
-    } else if (typeof saveButton !== 'undefined' && saveButton && typeof saveButton.parentElement !== 'undefined' && state === 2) {
+    }
+    // save settings
+    else if (objectClickable(saveButton) && state === 2) {
         saveButton.click();
         reset("Quantcast", "4957");
     }
 }
+
+function objectClickable(myObject) {
+    return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';
+}
+
 
 function reset(cmp, cmpVersion) {
     // If everything is fine, remove the listener.
