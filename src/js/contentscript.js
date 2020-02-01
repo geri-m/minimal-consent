@@ -57,6 +57,10 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleEvidon);
         observer.observe(targetNode, config);
+    } else if (docHtml.includes('quantcast.com') || docHtml.includes("quantcast.mgr.consensu.org")) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleQuantcast);
+        observer.observe(targetNode, config);
     } else {
         Utils.log('Nothing found yet ... ');
 
@@ -267,8 +271,30 @@ function handleEvidon() {
         document.querySelector(evidonDenyAll).click();
         reset("Evidon", "4957");
     }
+}
 
+function handleQuantcast() {
+    Utils.log('handleQuantcast');
 
+    const puropse = "a#qc-cmp-purpose-button";
+    let purposeButton = document.querySelector(puropse);
+
+    const denyAll = "button.qc-cmp-enable-button";
+    let denyAllButton = document.querySelector(denyAll);
+
+    const save = "button.qc-cmp-save-and-exit";
+    let saveButton = document.querySelector(save);
+
+    if (typeof purposeButton !== 'undefined' && purposeButton && typeof purposeButton.parentElement !== 'undefined' && state === 0) {
+        state = 1;
+        purposeButton.click();
+    } else if (typeof denyAllButton !== 'undefined' && denyAllButton && typeof denyAllButton.parentElement !== 'undefined' && state === 1) {
+        state = 2;
+        denyAllButton.click();
+    } else if (typeof saveButton !== 'undefined' && saveButton && typeof saveButton.parentElement !== 'undefined' && state === 2) {
+        saveButton.click();
+        reset("Quantcast", "4957");
+    }
 }
 
 function reset(cmp, cmpVersion) {
