@@ -156,7 +156,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 - [CookieLaw](https://www.cookielaw.org/)
 
-# [Evidon](https://www.evidon.com/) from CrownPark
+# [Evidon](https://www.evidon.com/) from CrownPark => broken
 
 ## Sample Pages
 
@@ -177,7 +177,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 # [OIL](https://www.oiljs.org/) by Springer
 
 ## Sample Pages
-- [Welt](https://www.welt.de/)
+- [Welt](https://www.welt.de/) => broken
 
 # [EZ CMP](https://www.ezoic.com/)
 

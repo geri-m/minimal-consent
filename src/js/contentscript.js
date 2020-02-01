@@ -53,7 +53,7 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleOneTrust);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('evidon.com')) {
+    } else if (docHtml.includes('evidon.com') || docHtml.includes("evidon.mgr.consensu.org")) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleEvidon);
         observer.observe(targetNode, config);
@@ -130,7 +130,7 @@ function handleUserCentrics() {
     const ucBannerContent = 'div.uc-banner-content';
 
     // case like on hse24.de
-    if ($(ucBannerContent).length && state === 0 && $(ucBannerContent).offset().left) {
+    if ($(ucBannerContent).length && state === 0) {
         Utils.log('Deny All button found');
         let script = document.createElement('script');
         script.type = 'text/javascript';
@@ -250,18 +250,26 @@ function handleOneTrust() {
 }
 
 function handleEvidon() {
-    Utils.log('handleEvidon');
+    Utils.log('handleEvidonx');
     const evidonDenyAll = "button#_evidon-decline-button";
 
-    // const evidonDeclineAllV1 = "button#_evidon-decline-button:visible";
-    // Variant 1
-    if ($(evidonDenyAll).length && state === 0 && $(evidonDenyAll).offset().left) {
-        $(evidonDenyAll).trigger('click');
+    let button = document.querySelector(evidonDenyAll);
+
+    // we do require 3 attempts
+    if (typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined' && state === 0) {
+        state = 1;
+        document.querySelector(evidonDenyAll).click();
+    } else if (typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined' && state === 1) {
+        state = 2;
+        document.querySelector(evidonDenyAll).click();
+    } else if (typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined' && state === 2) {
+        state = 3;
+        document.querySelector(evidonDenyAll).click();
         reset("Evidon", "4957");
     }
+
+
 }
-
-
 
 function reset(cmp, cmpVersion) {
     // If everything is fine, remove the listener.
