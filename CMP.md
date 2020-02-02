@@ -10,14 +10,6 @@ There is a [Chrome Extensions](https://tools.google.com/dlpage/gaoptout?hl=de) f
 
 # CMP in General
 
-## [Econda](https://www.econda.de/)
-
-- uses [arp.privacy.js](https://d35ojb8dweouoy.cloudfront.net/plugins/arp.privacy/arp.privacy.js)
-- Looking for privacyProtectionBanner
-- Unchecking the Checkbox
-- Banner will be opened on each new Session. 
-
-
 # [traffective](https://traffective.com/cmp/)
 
 ## Variant with Div Overlay with several buttons

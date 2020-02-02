@@ -18,7 +18,8 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "https://*.cloudfunctions.net/"
   ],
   "content_scripts": [
     {

@@ -1,4 +1,4 @@
-# Chrome Extension and FireFox AddOn for Minimal Consent on Websites. 
+# Chrome Extension, Opera + FireFox AddOn for Minimal Consent
 
 ## Development Setup
 
@@ -57,6 +57,17 @@ If you make changes to `manifest.json` or `webpack.js` please restart as these f
 
 Source code and images are located in `./src/`.
 
+## Permission
+
+The chrome extension requires the following permissions
+
+- *https://\*.cloudfunctions.net/:* This is the URL we successful blocks of Consent Banners are stored. Also see data 
+protection regulation. 
+- Storage: We are already storing all blocked Consent Banners also in local storage, so the user can see, what we block.
+- Tabs: Required to get the URL of the current site, as we are logging this information in case the block of the consent
+was successful.
+- ActiveTabs: 
+
 ## Running the extension in chrome
 
 1) Open Chrome on your computer
@@ -64,4 +75,23 @@ Source code and images are located in `./src/`.
 3) On the top right, there is a switch "Developer Mode". Turn it on
 4) Choose "Load unpacked"
 5) Point the file finder to `./dist/` directory.
+
+# Store Publishing
+
+## Chrome
+
+- Images: 1280 x 800
+- Logos: 128 x 128
+
+
+## Firefox
+
+- Images: max: 2400 × 1800
+- Logos: 96 x 96 
+
+
+## Opera
+
+- Images
+- Logos: 64 x 64 
 

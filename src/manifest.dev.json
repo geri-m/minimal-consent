@@ -1,7 +1,7 @@
 {
   "name": "[BETA] Minimal Consent",
   "short_name": "Consent and Cookie Banners - A thing of the past.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "[BETA] Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners.",
   "manifest_version": 2,
   "background": {
@@ -18,7 +18,8 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "https://*.cloudfunctions.net/"
   ],
   "content_scripts": [
     {
@@ -39,7 +40,7 @@
       "48": "./images/icon-48x48-dev.png",
       "128": "./images/icon-128x128-dev.png"
     },
-    "default_title": "[DEVELOPMENT] Minimal Consent",
+    "default_title": "[BETA] Minimal Consent",
     "default_popup": "./popup/popup.html"
   }
 }

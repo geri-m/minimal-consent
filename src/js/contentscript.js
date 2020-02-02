@@ -7,8 +7,8 @@ const contentScript = "contentscript";
 
 // this is some static stuff for the long tail.
 const buttons = {
-    '#hs-eu-decline-button': "https://www.npmjs.com",
-    "#cookie_action_close_header": "https://tealium.com/"
+    '#hs-eu-decline-button': "npmjs.com",
+    "#cookie_action_close_header": "tealium.com"
 };
 const minimalConsentLink = 'a.minimal-consent';
 
