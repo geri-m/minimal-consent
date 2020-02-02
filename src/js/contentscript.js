@@ -37,10 +37,6 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleUserCentrics);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('econda.de')) {
-        selectCmpObserver.disconnect();
-        observer = new MutationObserver(handleEconda);
-        observer.observe(targetNode, config);
     } else if (docHtml.includes('consentmanager.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleConsentManager);
@@ -62,8 +58,7 @@ function handleCMP() {
         observer = new MutationObserver(handleQuantcast);
         observer.observe(targetNode, config);
     } else {
-        Utils.log('Nothing found yet ... ');
-
+        Utils.log('No CMP found yet - looking for general Cookie Banners ');
         let minimalConsent = document.querySelector(minimalConsentLink);
         if (state === 0) {
             for (let key in buttons) {
@@ -91,41 +86,14 @@ function handleCMP() {
     }
 }
 
-function handleEconda() {
-    Utils.log('handleEconda');
-    const settingsButton = '#buttonSettingsPage';
-    const toggleCheckbox = '#profile_toggle';
-    const closeSpan = 'span.close';
-
-    if ($(settingsButton).length && state === 0) {
-        Utils.log('Clicking Button now');
-        $(settingsButton).click();
-        state = 1;
-    } else if ($(toggleCheckbox).length && state === 1) {
-        Utils.log('Checkbox found: ' + $(toggleCheckbox).checked);
-        if ($(toggleCheckbox).is(':checked')) {
-            // Uncheck the checkbox
-            $(toggleCheckbox).prop('checked', false);
-            Utils.log('now unchecked');
-        }
-
-        // close overlay now
-        Utils.log('Close overlay now');
-        $(closeSpan).trigger('click');
-        reset("Econda", "0.0.0");
-    }
-}
-
 function handleTraffective() {
     Utils.log('handleTraffective');
 
     const gdprDiv = 'div.gdpr_popup_popup';
     let popup = document.queryCommandSupported(gdprDiv);
 
-
     const gdprCheckBoxes = 'input[type=checkbox].gdpr_switch_native';
     let checkboxes = document.querySelectorAll(gdprCheckBoxes);
-
 
     const gdprSaveButton = 'div.is-primary-button';
     let saveButton = document.querySelector(gdprSaveButton);
