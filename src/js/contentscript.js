@@ -55,6 +55,10 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleQuantcast);
         observer.observe(targetNode, config);
+    } else if (docHtml.includes('cookiebot.com') || docHtml.includes("cookiebot.mgr.consensu.org")) {
+        selectCmpObserver.disconnect();
+        observer = new MutationObserver(handleCookiebot);
+        observer.observe(targetNode, config);
     } else {
         Utils.log('No CMP found yet - looking for general Cookie Banners ');
         let minimalConsent = document.querySelector(minimalConsentLink);
@@ -302,6 +306,46 @@ function handleQuantcast() {
         reset("Quantcast", "4957");
     }
 }
+
+function handleCookiebot() {
+    Utils.log("handleCookiebot");
+
+    const bannerSelector = "div#CybotCookiebotDialog";
+    let bannerCookiebot = document.querySelector(bannerSelector);
+
+    const cookiebotCheckboxesSelector = "input[type*='checkbox']";
+    let cookiebotCheckBoxes = document.querySelectorAll(cookiebotCheckboxesSelector);
+
+    const allowSelectedSelector = "a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection";
+    let allowAllButton = document.querySelector(allowSelectedSelector);
+
+    const denyAllSelector = "a#CybotCookiebotDialogBodyButtonDecline";
+    let denyAll = document.querySelector(denyAllSelector);
+
+
+    Utils.log(denyAll);
+    Utils.log("State: " + state);
+
+    if (objectClickable(bannerCookiebot) && state === 0) {
+        Utils.log("CookieBot Banner found");
+        cookiebotCheckBoxes.forEach(function (checkbox) {
+            checkbox.setAttribute("checked", "false");
+            Utils.log("Checkbox unset");
+        });
+        state = 1;
+    } else if (objectClickable(allowAllButton) && state === 1) {
+        Utils.log("Click Save now");
+        allowAllButton.click();
+        reset("CookieBot", "0.0.0");
+    }
+    // this is a special Case for V2. The Banner was found and we only click on the Deny Button.
+    else if (objectClickable(denyAll) && state === 1) {
+        Utils.log("Click Deny All now");
+        denyAll.click();
+        reset("CookieBot", "0.0.0");
+    }
+}
+
 
 function objectClickable(myObject) {
     return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';

@@ -186,8 +186,18 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 # [Cookiebot](https://www.cookiebot.com/de/)
 
+
 ## SamplePages
-- [SAI Global](https://www.saiglobal.com/)
+- [SAI Global](https://www.saiglobal.com/) => Bad Example  as there is no Deny
+
+## V1 directly select cookies in banner and save
+
+## SamplePages
+
+# [Cookiebot](https://www.cookiebot.com/de/)
+
+## v2 you can deny all right on the banner
+
 - [Possible Now](https://www.possiblenow.com/)
 
 # [OIL](https://www.oiljs.org/) by Springer
@@ -217,6 +227,7 @@ to consensu.org.
 
 - [programiz](https://www.programiz.com/python-programming/tutorial)
 - [Doodle](https://www.doodle.com)
+
 
 # Uncovered CMPs
 
