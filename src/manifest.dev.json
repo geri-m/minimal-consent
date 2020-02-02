@@ -7,8 +7,7 @@
   "background": {
     "scripts": [
       "./background.bundle.js"
-    ],
-    "persistent": false
+    ]
   },
   "icons": {
     "16": "./images/icon-16x16-dev.png",

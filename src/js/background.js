@@ -23,7 +23,7 @@ function logBackend(cmp, cmpVersion, url) {
     // key for the storage to have the blocking history there.
     const historyKeyOfStorage = "history";
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", 'https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/successfulConsent ', true);
+    xhr.open("POST", 'https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/successfulConsent', true);
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json");

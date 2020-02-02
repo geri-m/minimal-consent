@@ -10,8 +10,9 @@
     "lint": "eslint . --ext .js",
     "clean": "rm -rf ./dist/",
     "start": "rm -rf ./dist/; webpack --watch --config webpack.start.js",
-    "build-dev": "rm -rf ./dist/; webpack --config webpack.dev.js",
-    "build": "rm -rf ./dist/; webpack --config webpack.prod.js",
+    "build-dev": "rm -rf ./dist/; webpack --config webpack.dev.js; cd ./dist/; zip -r ../minimal-consent-dev.zip .; cd ..",
+    "build": "rm -rf ./dist/; webpack --config webpack.prod.js; cd ./dist/; zip -r ../minimal-consent-prod.zip .; cd ..",
+    "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt",
     "test": "nyc mocha --require @babel/register --recursive --reporter list",
     "format": "prettier --write \"{src,client,typings,specs}/**/*.ts\""
   },

@@ -1,4 +1,4 @@
-version: 2.0
+-version: 2.0
 
 # Job definitions
 # ===============
@@ -29,13 +29,9 @@ jobs:
             apk add --no-cache curl jq yarn zip
             yarn install --force
       - run:
-          name: "Build Extension for BETA"
+          name: "Build and ZIP Extension for BETA"
           command: |
             yarn build-dev
-      - run:
-          name: "Package Extension for BETA"
-          command: |
-            zip -r ./minimal_consent_beta.zip dist
       - store_artifacts:
           name: "Storing Artifact"
           path: ./minimal_consent_beta.zip
@@ -60,13 +56,9 @@ jobs:
             apk add --no-cache curl jq yarn zip
             yarn install --force
       - run:
-          name: "Build Extension for PRODUCTION"
+          name: "Build and ZIP Extension for PRODUCTION"
           command: |
             yarn build
-      - run:
-          name: "Package Extension for PRODUCTION"
-          command: |
-            zip -r minimal_consent_prod.zip dist
       - store_artifacts:
           name: "Storing Artifact"
           path: ./minimal_consent_prod.zip
