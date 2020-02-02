@@ -168,6 +168,20 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 ## Sample Pages
 - No Pages yet
 
+
+# [ConsentManager](https://www.consentmanager.net/)
+
+## Sample Pages
+
+
+### V1
+- https://www.getraenkewelt.de/
+- https://www.goslarsche.de/
+
+### V2
+- https://www.monsterzeug.de/
+- https://hyscore.io/ (links unten)
+
 # [Cookiebot](https://www.cookiebot.com/de/)
 
 ## SamplePages

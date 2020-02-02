@@ -29,7 +29,7 @@ selectCmpObserver.observe(targetNode, config);
 function handleCMP() {
     var docHtml = document.documentElement.innerHTML;
 
-    if (docHtml.includes('traffective.com') || docuHtml.includes('traffective.mgr.consensu.org')) {
+    if (docHtml.includes('traffective.com') || docHtml.includes('traffective.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTraffective);
         observer.observe(targetNode, config);
@@ -64,20 +64,29 @@ function handleCMP() {
     } else {
         Utils.log('Nothing found yet ... ');
 
-        for (var key in buttons) {
-            if ($(key).length && state === 0) {
-                Utils.log("Found a page with a basic button");
-                Utils.log($(key));
-                $('body').append('<a href=\'javascript:function s(){ document.getElementById("' + key.replace("#", "") + '").click();} s();\' class=\'minimal-consent\'>Minimal Consent</a>');
-                state = 1;
-                break;
-            }
-        }
+        let minimalConsent = document.querySelector(minimalConsentLink);
+        if (state === 0) {
+            for (let key in buttons) {
+                let button = document.querySelector(key);
+                if (objectClickable(button)) {
+                    Utils.log("GDPR Button + Decline found: " + button);
 
-        if ($(minimalConsentLink).length && state === 1) {
+                    let link = document.createElement('a');
+                    link.text = 'Minimal Consent';
+                    link.setAttribute("class", "minimal-consent");
+                    link.href = 'javascript:function s(){ document.querySelector(\"' + key + '\").click();} s();';
+                    document.body.appendChild(link);
+                    state = 1;
+                    break;
+                }
+            }
+        } else if (objectClickable(minimalConsent) && state === 1) {
             Utils.log("New button is here");
-            $(minimalConsentLink)[0].click();
+            minimalConsent.click();
             selectCmpObserver.disconnect();
+            state = -1;
+            Utils.log('Consent on denied.');
+            chrome.runtime.sendMessage({cmp: "custom banner", cmp_version: "na", from: contentScript});
         }
     }
 }
@@ -153,10 +162,13 @@ function handleUserCentrics() {
 
 function handleConsentManager() {
     Utils.log('handleConsentManager');
-    const cmButtonDeny = '#cmpbntnotxt';
+    const deny = '#cmpbntnotxt';
+    let buttonDeny = document.querySelector(deny);
+    // cmpbox
 
-    if ($(cmButtonDeny).length) {
-        $(cmButtonDeny).click();
+
+    if (objectClickable(buttonDeny) && state === 0) {
+        buttonDeny.click();
         reset("Consent Manager", "0.0.0");
     }
 
