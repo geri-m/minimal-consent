@@ -17,7 +17,7 @@ module.exports = merge(parentWebPack, {
     optimization: {
         minimizer: [
             new TerserPlugin({
-                sourceMap: true, // Must be set to true if using source-maps in production
+                sourceMap: false, // We don't use Source Maps in Production
                 terserOptions: {
                     compress: {
                         drop_console: true,

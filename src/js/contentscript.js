@@ -1,13 +1,12 @@
 "use strict";
 
-import $ from 'jquery';
 import Utils from "./utils";
 
-var state = 0;
+let state = 0;
 const contentScript = "contentscript";
 
 // this is some static stuff for the long tail.
-var buttons = {
+const buttons = {
     '#hs-eu-decline-button': "https://www.npmjs.com",
     "#cookie_action_close_header": "https://tealium.com/"
 };
@@ -25,9 +24,8 @@ var observer;
 const selectCmpObserver = new MutationObserver(handleCMP);
 selectCmpObserver.observe(targetNode, config);
 
-
 function handleCMP() {
-    var docHtml = document.documentElement.innerHTML;
+    let docHtml = document.documentElement.innerHTML;
 
     if (docHtml.includes('traffective.com') || docHtml.includes('traffective.mgr.consensu.org')) {
         selectCmpObserver.disconnect();
@@ -45,7 +43,7 @@ function handleCMP() {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleTruste);
         observer.observe(targetNode, config);
-    } else if (docHtml.includes('cookielaw.org') || docHtml.includes('cookiepro.com') || docHtml.includes('onetrust.mgr.consensu.org')) {
+    } else if (docHtml.includes('cookielaw.org') || docHtml.includes('cookiepro.com') || docHtml.includes('onetrust.mgr.consensu.org') || docHtml.includes('optanon')) {
         selectCmpObserver.disconnect();
         observer = new MutationObserver(handleOneTrust);
         observer.observe(targetNode, config);
@@ -65,12 +63,8 @@ function handleCMP() {
                 let button = document.querySelector(key);
                 if (objectClickable(button)) {
                     Utils.log("GDPR Button + Decline found: " + button);
-
-                    let link = document.createElement('a');
-                    link.text = 'Minimal Consent';
-                    link.setAttribute("class", "minimal-consent");
-                    link.href = 'javascript:function s(){ document.querySelector(\"' + key + '\").click();} s();';
-                    document.body.appendChild(link);
+                    let javaScript = 'javascript:function s(){ document.querySelector(\"' + key + '\").click();} s();';
+                    Utils.createMinimalConsentButton(document, javaScript);
                     state = 1;
                     break;
                 }
@@ -100,7 +94,7 @@ function handleTraffective() {
 
     if (objectClickable(popup) && state === 0) {
         Utils.log('Checkboxes found: ' + checkboxes.length);
-        checkboxes.forEach(element => element.setAttribute("checked", "false"), Utils.log("Checkbox unset"));
+        checkboxes.forEach(checkbox => checkbox.setAttribute("checked", "false"), Utils.log("Checkbox unset"));
         state = 1;
     } else if (objectClickable(saveButton) && state === 1) {
         Utils.log('Button found ...');
@@ -132,7 +126,6 @@ function handleConsentManager() {
     Utils.log('handleConsentManager');
     const deny = '#cmpbntnotxt';
     let buttonDeny = document.querySelector(deny);
-    // cmpbox
 
 
     if (objectClickable(buttonDeny) && state === 0) {
@@ -147,44 +140,51 @@ function handleConsentManager() {
 function handleTruste() {
     Utils.log('handleTruste');
     // 1st Variant with iFrame
-    const trusteDiv = "div.truste_box_overlay";
-
-    // 2nd variant with Div overlay
-    const trusteSimpleOverlay = "#truste-consent-required";
-    const closeButton = "img[alt*='close button']";
+    const trusteBoxOverlay = "div.truste_box_overlay";
+    let divTruste = document.querySelector(trusteBoxOverlay);
+    let minimalConsentButton = document.querySelector(minimalConsentLink);
 
     // this is all happening in an iFrame, hence we are interacting via the notice.js with the iFrame.
     // <a href='javascript function s (){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();' class='minimal-consent'>Minimal Consent</a>
-    if ($(trusteDiv).length && state === 0) {
+    if (objectClickable(divTruste) && state === 0) {
         Utils.log("Div Found and Message Listener Registered.");
         state = 1;
         window.addEventListener('message', (event) => {
-            var eventJson = JSON.parse(event.data);
+            let eventJson = JSON.parse(event.data);
             if (eventJson.message === "cm_loading") {
                 Utils.log("Adding Button");
-                $('body').append('<a href=\'javascript:function s(){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();\' class=\'minimal-consent\'>Minimal Consent</a>');
+                let javaScript = 'javascript:function s(){this.truste.eu.actmessage({"source":"preference_manager", "message":"submit_preferences", "data":"0"});this.truste.eu.actmessage({"source":"preference_manager", "message":"send_tracker_list", "data":{"Required Cookies":{"value":"0", "domains":{"forbes.com":"2", "www.forbes.com":"2"}}, "Functional Cookies":{"value":"1", "domains":{"accounts.bizzabo.com":"0", "bizzabo.com":"0", "realtime.bizzabo.com":"0", "ceros.com":"0", "view.ceros.com":"0", "documentcloud.org":"0", "www.documentcloud.org":"0", "dwcdn.net":"0", "dropboxusercontent.com":"0", "cdn.embedly.com":"0", "embedly.com":"0", "live.forbes.com":"0", "google.com":"0", "e.infogram.com":"0", "infogram.com":"0", "jifo.co":"0", "instana.io":"0", "nr-data.net":"0", "omny.fm":"0", "go.pardot.com":"0", "pardot.com":"0", "pi.pardot.com":"0", "podcastone.com":"0", "az1.qualtrics.com":"0", "forbesbi.az1.qualtrics.com":"0", "qualtrics.com":"0", "siteintercept.qualtrics.com":"0", "scorecardresearch.com":"0", "speechkit.io":"0", "spkt.io":"0", "spotify.com":"0", "consent-pref.trustarc.com":"0", "prefmgr-cookie.truste-svc.net":"0", "cdn.syndication.twimg.com":"0", "verse.com":"0", "www.verse.com":"0", "vimeo.com":"0"}}, "Advertising Cookies":{"value":"2", "domains":{"aaxads.com":"0", "addtoany.com":"0", "rss.art19.com":"0", "action.media6degrees.com":"0", "facebook.com":"0", "www.facebook.com":"0", "dialog.filepicker.io":"0", "www.filepicker.io":"0", "forbes8.forbes.com":"0", "learn.forbes.com":"0", "doubleclick.net":"0", "youtube.com":"0", "www.indeed.com":"0", "ads.linkedin.com":"0", "linkedin.com":"0", "www.linkedin.com":"0", "app-ab13.marketo.com":"0", "media.net":"0", "mathtag.com":"0", "gw.oribi.io":"0", "pingdom.net":"0", "m.stripe.com":"0", "twitter.com":"0", "walls.io":"0", "yahoo.com":"0", "ziprecruiter.com":"0"}}, "version":"1"}});this.truste.eu.prefclosebutton();} s();';
+                Utils.createMinimalConsentButton(document, javaScript);
+                state = 1;
                 Utils.log("Button Added");
-                $(minimalConsentLink)[0].click();
-                reset("Truste/Trustact (V1)", "0.0.0");
             }
         });
+    } else if (objectClickable(minimalConsentButton) && state === 1) {
+        minimalConsentButton.click();
+        reset("Truste/Trustact (V1)", "0.0.0");
     }
 
+    // 2nd variant with Div overlay
+    const trusteSimpleOverlay = "#truste-consent-required";
+    let divTrusteV2 = document.querySelector(trusteSimpleOverlay);
 
-    if ($(trusteSimpleOverlay).length && state === 0) {
-        $(trusteSimpleOverlay).click();
+    const closeButton = "img[alt*='close button']";
+    let buttomTrusteV2 = document.querySelector(closeButton);
+
+    if (objectClickable(divTrusteV2) && state === 0) {
+        divTrusteV2.click();
         Utils.log('Consent for Truste/Trustact (V2) denied.');
         state = 1;
 
         window.addEventListener('message', (event) => {
-            var eventJson = JSON.parse(event.data);
+            let eventJson = JSON.parse(event.data);
             Utils.log(eventJson);
             // Now the Close Button is visible again.
             if (eventJson.source === "preference_manager" && eventJson.data === "true" && eventJson.message === "toggle_close_button") {
                 Utils.log("We can close the iFrame. ");
                 // this is a special case, in case the "decline" is failing when sending data to the backend (Marriot Case)
-                if ($(closeButton).length) {
-                    $(closeButton).click();
+                if (objectClickable(buttomTrusteV2)) {
+                    buttomTrusteV2.click();
                     reset("Truste/Trustact (V2)", "0.0.0");
                 }
             }
@@ -195,46 +195,61 @@ function handleTruste() {
 function handleOneTrust() {
     Utils.log('handleOneTrust');
 
-    const optanonDetailsV1 = "#onetrust-pc-btn-handler";
-    const optanonSaveSettingsV1 = "button.save-preference-btn-handler";
-    const optanonCheckBoxesV1 = "checkbox.switch-checkbox";
+    const optanonDetailsSelectorV1 = "#onetrust-pc-btn-handler";
+    let optananDetailsV1 = document.querySelector(optanonDetailsSelectorV1);
+
+    const optanonSaveSettingsSelectorV1 = "button.save-preference-btn-handler";
+    let optanonSaveSettingsV1 = document.querySelector(optanonSaveSettingsSelectorV1);
+
+    const optanonCheckBoxesSelectorV1 = "checkbox.switch-checkbox";
+    let optanonCheckboxesV1 = document.querySelectorAll(optanonCheckBoxesSelectorV1);
 
     const optanonDetailsV2 = "button.optanon-toggle-display";
+    let optanonDetailsButton = document.querySelector(optanonDetailsV2);
 
     // this button is crappy to find, as there is no ID or class.
-    const optanonSaveSettingsV2 = "button[onclick*='Save']";
-    const optanonListItemForTabsV2 = "li.menu-item-on";
-    const optanonCheckbox = "input[type*='checkbox']";
+    const optanonSaveSettingsSelectorV2 = "button[onclick*='Save']"; //button.optanon-save-settings-button
+    let optanonSaveSettingsV2 = document.querySelector(optanonSaveSettingsSelectorV2);
+
+    const optanonListItemsSelectorV2 = "li.menu-item-on";
+    let optanonListItemsV2 = document.querySelectorAll(optanonListItemsSelectorV2);
+
+    const optanonCheckboxesSelectorV2 = "input[type*='checkbox']";
+    let optanonCheckBoxesV2 = document.querySelectorAll(optanonCheckboxesSelectorV2);
 
     Utils.log(state);
 
     // Variant 1
-    if ($(optanonDetailsV1).length && state === 0) {
-        $(optanonDetailsV1).click();
+    if (objectClickable(optananDetailsV1) && state === 0) {
+        optananDetailsV1.click();
         state = 1;
-    } else if ($(optanonSaveSettingsV1).length && state === 1) {
-        $(optanonCheckBoxesV1).each(function () {
-            $(this).prop('checked', false);
+    } else if (objectClickable(optanonSaveSettingsV1) && state === 1) {
+
+        optanonCheckboxesV1.forEach(function (checkbox) {
+            checkbox.setAttribute("checked", "false");
+            Utils.log("Checkbox unset");
         });
-        $(optanonSaveSettingsV1).click();
+
+        optanonSaveSettingsV1.click();
         reset("OneTrust (V1)", "0.0.0");
     }
+
     // Variant 2
-    else if ($(optanonDetailsV2).length && state === 0) {
-        $(optanonDetailsV1).trigger('click');
+    else if (objectClickable(optanonDetailsButton) && state === 0) {
+        optanonDetailsButton.click();
         Utils.log("Details clicked");
         state = 2;
-    } else if ($(optanonSaveSettingsV2).length && state === 2) {
+    } else if (objectClickable(optanonSaveSettingsV2) && state === 2) {
         Utils.log("Save Button found");
-        $(optanonListItemForTabsV2).each(function () {
-            Utils.log("Tab Found");
-            $(this).click();
-            $(optanonCheckbox).each(function () {
-                Utils.log("Checkbox Unchecked");
-                $(this).prop('checked', false);
-            });
+        optanonListItemsV2.forEach(function (listItem) {
+            listItem.click();
+            Utils.log("Checkbox unset");
+            optanonCheckBoxesV2.forEach(function (checkbox) {
+                checkbox.setAttribute("checked", "false");
+                Utils.log("Checkbox unset");
+            })
         });
-        $(optanonSaveSettingsV2).click();
+        optanonSaveSettingsV2.click();
         reset("OneTrust (V2)", "0.0.0");
     }
 }

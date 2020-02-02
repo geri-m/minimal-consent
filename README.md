@@ -127,6 +127,7 @@ Look for #truste-consent-required, press and all good.
 
 Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich. 
 
+---
 
 # [OneTrust](https://www.onetrust.com/products/cookies/) - Product Name 'Optanon', Host: cookielaw.org
 
@@ -140,8 +141,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 ## Sample Pages
 
-- [Springer](https://www.springer.com/gp)
-- [Mena](https://www.mona.nl/)
+- [CookieLaw](https://www.cookielaw.org/)
 
 ## Variant 2 (Multiple Tabs in a <li>)
 
@@ -154,7 +154,9 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 ## Sample Pages
 
-- [CookieLaw](https://www.cookielaw.org/)
+- [Mena](https://www.mona.nl/)
+- [Allianz](https://www.allianz.de/)
+- [Springer](https://www.springer.com/gp)
 
 # [Evidon](https://www.evidon.com/) from CrownPark => broken
 
