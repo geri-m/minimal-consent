@@ -1,8 +1,8 @@
 {
-  "name": "Minimal Consent",
-  "short_name": "A Browser Extension that makes cookie banners a thing of the past.",
+  "name": "__MSG_appName__",
+  "short_name": "__MSG_appShortName__",
   "version": "0.0.5",
-  "description": "Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners.",
+  "description": "__MSG_appDesc__",
   "manifest_version": 2,
   "default_locale": "en",
   "background": {
