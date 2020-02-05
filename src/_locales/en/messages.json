@@ -2,7 +2,7 @@
   "appName": {
     "message": "Minimal Consent"
   },
-  "appShortName": {
+  "appShort": {
     "message": "A Browser Extension that makes cookie banners a thing of the past."
   },
   "appDesc": {
