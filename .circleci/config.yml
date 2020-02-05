@@ -34,13 +34,13 @@ jobs:
             yarn build-dev
       - store_artifacts:
           name: "Storing Artifact"
-          path: ./minimal_consent_beta.zip
+          path: ./minimal-consent-dev.zip
       - run:
           name: "Publish to the Google Chrome Store - BETA Channel"
           command: |
             echo "Publishing Extension -- Beta Channel"
             ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
-            UPLOAD_RESULT=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T ./minimal_consent_beta.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID_STAGING}")
+            UPLOAD_RESULT=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T ./minimal-consent-dev.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID_STAGING}")
             echo $UPLOAD_RESULT && echo $UPLOAD_RESULT | grep -vi error
             curl -f -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID_STAGING}/publish"
 
@@ -61,13 +61,13 @@ jobs:
             yarn build
       - store_artifacts:
           name: "Storing Artifact"
-          path: ./minimal_consent_prod.zip
+          path: ./minimal-consent-prod.zip
       - run:
           name: "Publish to the Google Chrome Store -- Production"
           command: |
             echo "Publishing Extension -- Production"
             ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
-            UPLOAD_RESULT=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T ./minimal_consent_prod.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID_PRODUCTION}")
+            UPLOAD_RESULT=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T ./minimal-consent-prod.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID_PRODUCTION}")
             echo $UPLOAD_RESULT && echo $UPLOAD_RESULT | grep -vi error
             curl -f -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID_PRODUCTION}/publish"
 
