@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Minimal Consent"
+  },
+  "appShortName": {
+    "message": "Keine nervigen Cookiebanner mehr bei voller Datenkontrolle"
+  },
+  "appDesc": {
+    "message": "Minimal Consent kümmert sich darum, dass nur funktionale Cookies abgelegt werden und klickt Cookie Banner für dich weg."
+  }
+}

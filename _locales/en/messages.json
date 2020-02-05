@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Minimal Consent"
+  },
+  "appShortName": {
+    "message": "A Browser Extension that makes cookie banners a thing of the past."
+  },
+  "appDesc": {
+    "message": "Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners."
+  }
+}
