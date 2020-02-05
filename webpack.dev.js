@@ -9,6 +9,7 @@ module.exports = merge(parentWebPack, {
         new CopyWebpackPlugin([
             {from: './src/manifest.dev.json', to: './manifest.json'},
             {from: './src/images/', to: './images/'},
-            {from: './src/popup/', to: './popup/'}])
+            {from: './src/popup/', to: './popup/'},
+            {from: './src/_locales/', to: './_locales/'}])
     ]
 });
