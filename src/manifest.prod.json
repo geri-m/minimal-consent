@@ -1,7 +1,7 @@
 {
   "name": "Minimal Consent",
   "short_name": "Consent and Cookie Banners - A thing of the past.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners.",
   "manifest_version": 2,
   "background": {
