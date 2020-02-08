@@ -1,6 +1,6 @@
 "use strict";
 
-import Utils from "./utils";
+import Utils from "./Utils";
 
 const dateFormat = require('dateformat'); // from library
 /**
@@ -11,10 +11,6 @@ chrome.runtime.onMessage.addListener(
         // we make sure all relevant fields are set and then trigger the call.
         if (request.from === "contentscript" && request.cmp && request.cmp_version) {
             logBackend(request.cmp, request.cmp_version, sender.tab.url);
-        }
-        // if there is something broken with the request, log the information.
-        else {
-            Utils.log("From: " + sender + ": " + request);
         }
     });
 
