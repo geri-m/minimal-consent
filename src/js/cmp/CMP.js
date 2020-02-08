@@ -1,42 +1,48 @@
 "use strict";
 
-import Utils from "./Utils";
+import Utils from "../Utils";
 
 const contentScript = "contentscript";
 const config = {attributes: true, childList: true, subtree: true};
+const minimalConsentLink = "a.minimal-consent";
 
 export default class CMP {
 
     constructor(node) {
-        this.node = node;
-        let self = this;
-        this.observer = new MutationObserver(function (mutations) {
-            self.handleCmp(mutations);
+        this._node = node;
+        let _self = this;
+        this._observer = new MutationObserver(function (mutations) {
+            _self.handleCmp(mutations);
         });
-        this.observer.observe(this.node, config);
-        this.processState = 0;
+        this._observer.observe(this.node, config);
+        this._state = 0;
     }
 
     get state() {
-        return this.processState;
+        return this._state;
     }
 
     set state(state) {
-        this.processState = state;
+        this._state = state;
+    }
+
+    get node() {
+        return this._node;
+    }
+
+    get minimalConsentLink() {
+        return minimalConsentLink;
     }
 
     handleCmp() {
         throw new Error("Calling Superclass handler");
     }
 
-    objectClickable(myObject) {
-        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';
-    }
 
     reset(cmp, cmpVersion) {
         // If everything is fine, remove the listener.
-        this.observer.disconnect();
-        this.processState = -1;
+        this._observer.disconnect();
+        this._processState = -1;
         Utils.log('Consent for ' + cmp + ' denied.');
         chrome.runtime.sendMessage({cmp: cmp, cmp_version: cmpVersion, from: contentScript});
     }

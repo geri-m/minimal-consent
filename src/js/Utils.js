@@ -15,4 +15,9 @@ export default class Utils {
         document.body.appendChild(link);
     }
 
+    static objectClickable(myObject) {
+        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';
+    }
+
+
 }
