@@ -5,9 +5,13 @@ import CMP from "./CMP";
 
 export default class CustomImpl extends CMP {
 
-    constructor(node, buttonToClick) {
-        super(node);
+    constructor(node, buttonToClick, scriptUrl) {
+        super(node, [], "Custom Implementation", scriptUrl);
         this._button = buttonToClick;
+    }
+
+    static urlPattern() {
+        return urlPattern;
     }
 
     handleCmp() {

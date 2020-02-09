@@ -3,11 +3,13 @@
 import Utils from "../Utils";
 import CMP from "./CMP";
 
+
 export default class Evidon extends CMP {
 
-    constructor(node) {
-        super(node);
+    constructor(node, scriptUrl) {
+        super(node, "Evidon", scriptUrl);
     }
+
 
     handleCmp() {
         Utils.log('handleEvidonx');

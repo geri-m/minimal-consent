@@ -1,6 +1,7 @@
 "use strict";
 
 const dateFormat = require('dateformat'); // from library
+const arrayOfPatterns = {};
 
 export default class Utils {
     static log(message) {
@@ -19,5 +20,12 @@ export default class Utils {
         return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';
     }
 
+    static createCmpFromScriptUrl(scriptUrl) {
+        arrayOfPatterns.each(function (entry) {
+            if (entry.url.contains(scriptUrl)) {
+                return new CMP();
+            }
+        });
+    }
 
 }

@@ -3,11 +3,13 @@
 import Utils from "../Utils";
 import CMP from "./CMP";
 
+
 export default class ConsentManager extends CMP {
 
-    constructor(node) {
-        super(node);
+    constructor(node, scriptUrl) {
+        super(node, "ConsentManager", scriptUrl);
     }
+
 
     handleCmp() {
         Utils.log('handleConsentManager');

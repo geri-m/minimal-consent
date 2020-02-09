@@ -3,10 +3,11 @@
 import Utils from "../Utils";
 import CMP from "./CMP";
 
+
 export default class CookieBot extends CMP {
 
-    constructor(node) {
-        super(node);
+    constructor(node, scriptUrl) {
+        super(node, "CookieBot", scriptUrl);
     }
 
     handleCmp() {

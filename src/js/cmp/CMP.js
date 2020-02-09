@@ -9,8 +9,11 @@ const maximalLimitOfDomChangeTillStop = 100;
 
 export default class CMP {
 
-    constructor(node) {
+    constructor(node, name, scriptUrl, pingResult) {
         this._node = node;
+        this._name = name;
+        this._pingResult = pingResult;
+        this._scriptUrl = scriptUrl;
         let _self = this;
         this._observer = new MutationObserver(function (mutations) {
             _self.mainCmpHandler(mutations);
@@ -49,17 +52,21 @@ export default class CMP {
         }
     }
 
-    handleCmp(mutations) {
-        throw new Error("Calling Superclass handler");
+    get urlPattern() {
+        return this._urlPattern;
     }
 
-    reset(cmp, cmpVersion) {
+    handleCmp(mutations) {
+        throw new Error("Calling 'handleCmp' Superclass handler");
+    }
+
+    reset() {
         // If everything is fine, remove the listener.
         this._observer.disconnect();
         this._state = -1;
-        Utils.log('Consent for ' + cmp + ' denied.');
+        Utils.log('Consent for ' + this._name + ' denied.');
         // Sending to Background Script
-        chrome.runtime.sendMessage({cmp: cmp, cmp_version: cmpVersion, from: contentScript});
+        chrome.runtime.sendMessage({cmp: this._name, cmp_version: this._scriptUrl, from: contentScript});
     }
 
     queryNodeSelector(selector) {
@@ -68,13 +75,5 @@ export default class CMP {
 
     queryNodeSelectorAll(selector) {
         return this._node.querySelectorAll(selector)
-    }
-
-    appendElementToHead(element) {
-        this._node.head.appendChild(element);
-    }
-
-    appendElementToBody(element) {
-        this._node.body.appendChild(element);
     }
 }
