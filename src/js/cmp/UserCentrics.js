@@ -13,7 +13,7 @@ export default class UserCentrics extends CMP {
         Utils.log('handleUserCentrics');
 
         const ucBannerContent = 'div.uc-banner-content';
-        let banner = super.node.querySelector(ucBannerContent);
+        let banner = super.queryNodeSelector(ucBannerContent);
 
         // typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined'
         // case like on hse24.de

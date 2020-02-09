@@ -10,6 +10,20 @@ There is a [Chrome Extensions](https://tools.google.com/dlpage/gaoptout?hl=de) f
 
 # CMP in General
 
+## Lists
+
+[CMP List](https://cmplist.consensu.org/cmp-list.json)
+[Vendor List](https://vendorlist.consensu.org/vendorlist.json)
+
+## Specifications
+
+[CMP 2.0](
+https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/TCFv2/IAB%20Tech%20Lab%20-%20CMP%20API%20v2.md)
+
+[CMP 1.1](
+https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/CMP%20JS%20API%20v1.1%20Final.md#consent-management-provider-javascript-api-v11-transparency--consent-framework)
+
+
 # [traffective](https://traffective.com/cmp/)
 
 ## Variant with Div Overlay with several buttons
@@ -189,6 +203,11 @@ to consensu.org.
 - [programiz](https://www.programiz.com/python-programming/tutorial)
 - [Doodle](https://www.doodle.com)
 
+# [SoloCMP](https://www.solocpm.com)
+
+## Sample Pages
+
+- [FarFetch](https://www.farfetch.com)
 
 # Uncovered CMPs
 

@@ -13,13 +13,13 @@ export default class QuantCast extends CMP {
         Utils.log('handleQuantcast');
 
         const purpose = "a#qc-cmp-purpose-button";
-        let purposeButton = document.querySelector(purpose);
+        let purposeButton = super.queryNodeSelector(purpose);
 
         const denyAll = "button.qc-cmp-enable-button";
-        let denyAllButton = document.querySelector(denyAll);
+        let denyAllButton = super.queryNodeSelector(denyAll);
 
         const save = "button.qc-cmp-save-and-exit";
-        let saveButton = document.querySelector(save);
+        let saveButton = super.queryNodeSelector(save);
 
         // press on "Options"
         if (Utils.objectClickable(purposeButton) && super.state === 0) {

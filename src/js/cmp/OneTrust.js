@@ -13,26 +13,26 @@ export default class OneTrust extends CMP {
         Utils.log('handleOneTrust');
 
         const optanonDetailsSelectorV1 = "#onetrust-pc-btn-handler";
-        let optananDetailsV1 = super.node.querySelector(optanonDetailsSelectorV1);
+        let optananDetailsV1 = super.queryNodeSelector(optanonDetailsSelectorV1);
 
         const optanonSaveSettingsSelectorV1 = "button.save-preference-btn-handler";
-        let optanonSaveSettingsV1 = super.node.querySelector(optanonSaveSettingsSelectorV1);
+        let optanonSaveSettingsV1 = super.queryNodeSelector(optanonSaveSettingsSelectorV1);
 
         const optanonCheckBoxesSelectorV1 = "checkbox.switch-checkbox";
-        let optanonCheckboxesV1 = super.node.querySelectorAll(optanonCheckBoxesSelectorV1);
+        let optanonCheckboxesV1 = super.queryNodeSelectorAll(optanonCheckBoxesSelectorV1);
 
         const optanonDetailsV2 = "button.optanon-toggle-display";
-        let optanonDetailsButton = super.node.querySelector(optanonDetailsV2);
+        let optanonDetailsButton = super.queryNodeSelector(optanonDetailsV2);
 
         // this button is crappy to find, as there is no ID or class.
         const optanonSaveSettingsSelectorV2 = "button[onclick*='Save']"; //button.optanon-save-settings-button
-        let optanonSaveSettingsV2 = super.node.querySelector(optanonSaveSettingsSelectorV2);
+        let optanonSaveSettingsV2 = super.queryNodeSelector(optanonSaveSettingsSelectorV2);
 
         const optanonListItemsSelectorV2 = "li.menu-item-on";
-        let optanonListItemsV2 = super.node.querySelectorAll(optanonListItemsSelectorV2);
+        let optanonListItemsV2 = super.queryNodeSelectorAll(optanonListItemsSelectorV2);
 
         const optanonCheckboxesSelectorV2 = "input[type*='checkbox']";
-        let optanonCheckBoxesV2 = super.node.querySelectorAll(optanonCheckboxesSelectorV2);
+        let optanonCheckBoxesV2 = super.queryNodeSelectorAll(optanonCheckboxesSelectorV2);
 
         Utils.log(state);
 

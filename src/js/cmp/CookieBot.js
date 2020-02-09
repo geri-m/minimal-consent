@@ -13,16 +13,16 @@ export default class CookieBot extends CMP {
         Utils.log("handleCookiebot");
 
         const bannerSelector = "div#CybotCookiebotDialog";
-        let bannerCookiebot = document.querySelector(bannerSelector);
+        let bannerCookiebot = super.queryNodeSelector(bannerSelector);
 
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
-        let cookiebotCheckBoxes = document.querySelectorAll(cookiebotCheckboxesSelector);
+        let cookiebotCheckBoxes = super.queryNodeSelectorAll(cookiebotCheckboxesSelector);
 
         const allowSelectedSelector = "a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection";
-        let allowAllButton = document.querySelector(allowSelectedSelector);
+        let allowAllButton = super.queryNodeSelector(allowSelectedSelector);
 
         const denyAllSelector = "a#CybotCookiebotDialogBodyButtonDecline";
-        let denyAll = document.querySelector(denyAllSelector);
+        let denyAll = super.queryNodeSelector(denyAllSelector);
 
 
         Utils.log(denyAll);

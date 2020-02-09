@@ -12,13 +12,13 @@ export default class Traffective extends CMP {
     handleCmp() {
         Utils.log('handleTraffective');
         const gdprDiv = 'div.gdpr_popup_popup';
-        let popup = super.node.querySelector(gdprDiv);
+        let popup = super.queryNodeSelector(gdprDiv);
 
         const gdprCheckBoxes = 'input[type=checkbox].gdpr_switch_native';
-        let checkboxes = super.node.querySelectorAll(gdprCheckBoxes);
+        let checkboxes = super.queryNodeSelectorAll(gdprCheckBoxes);
 
         const gdprSaveButton = 'div.is-primary-button';
-        let saveButton = super.node.querySelector(gdprSaveButton);
+        let saveButton = super.queryNodeSelector(gdprSaveButton);
 
         if (Utils.objectClickable(popup) && super.state === 0) {
             Utils.log('Checkboxes found: ' + checkboxes.length);

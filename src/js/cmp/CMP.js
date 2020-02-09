@@ -14,7 +14,7 @@ export default class CMP {
         this._observer = new MutationObserver(function (mutations) {
             _self.handleCmp(mutations);
         });
-        this._observer.observe(this.node, config);
+        this._observer.observe(this._node, config);
         this._state = 0;
     }
 
@@ -26,10 +26,6 @@ export default class CMP {
         this._state = state;
     }
 
-    get node() {
-        return this._node;
-    }
-
     get minimalConsentLink() {
         return minimalConsentLink;
     }
@@ -38,12 +34,20 @@ export default class CMP {
         throw new Error("Calling Superclass handler");
     }
 
-
     reset(cmp, cmpVersion) {
         // If everything is fine, remove the listener.
         this._observer.disconnect();
-        this._processState = -1;
+        this._state = -1;
         Utils.log('Consent for ' + cmp + ' denied.');
+        // Sending to Background Script
         chrome.runtime.sendMessage({cmp: cmp, cmp_version: cmpVersion, from: contentScript});
+    }
+
+    queryNodeSelector(selector) {
+        return this._node.querySelector(selector);
+    }
+
+    queryNodeSelectorAll(selector) {
+        return this._node.querySelectorAll(selector)
     }
 }

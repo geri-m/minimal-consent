@@ -9,7 +9,7 @@ import OneTrust from "./cmp/OneTrust";
 import Evidon from "./cmp/Evidon"
 import CookieBot from "./cmp/CookieBot";
 import CustomImpl from "./cmp/CustomImpl";
-
+import QuantCast from "./cmp/QuantCast";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -22,7 +22,6 @@ const config = {attributes: true, childList: true, subtree: true};
 export default class Detector {
 
     constructor(node) {
-        this.state = 0;
         this.targetNode = node;
         // Options for the observer (which mutations to observe)
         let self = this;

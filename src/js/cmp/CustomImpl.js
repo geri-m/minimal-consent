@@ -13,12 +13,12 @@ export default class CustomImpl extends CMP {
     handleCmp() {
         Utils.log('Custom Implementaiton ');
 
-        let button = super.node.querySelector(this._button);
+        let button = super.queryNodeSelector(this._button);
         let minimalConsent = this.targetNode.querySelector(super.minimalConsentLink);
 
         if (Utils.objectClickable(button) && super.state === 0) {
             Utils.log("GDPR Button + Decline found: " + this._button);
-            let javaScript = 'javascript:function s(){ document.querySelector(\"' + this._button + '\").click();} s();';
+            let javaScript = 'javascript:function s(){ super.queryNodeSelector(\"' + this._button + '\").click();} s();';
             Utils.createMinimalConsentButton(super.node, javaScript);
             super.state = 1;
         } else if (Utils.objectClickable(minimalConsent) && super.state === 1) {

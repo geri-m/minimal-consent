@@ -13,7 +13,7 @@ export default class Evidon extends CMP {
         Utils.log('handleEvidonx');
         const evidonDenyAll = "button#_evidon-decline-button";
 
-        let button = super.node.querySelector(evidonDenyAll);
+        let button = super.queryNodeSelector(evidonDenyAll);
 
         // we do require 3 attempts to decline the tracking
         if (Utils.objectClickable(button) && super.state === 0) {
@@ -28,5 +28,4 @@ export default class Evidon extends CMP {
             super.reset("Evidon", "4957");
         }
     }
-
 }
