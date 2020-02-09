@@ -23,7 +23,7 @@ export default class UserCentrics extends CMP {
             script.type = 'text/javascript';
             script.async = true;
             script.text = 'function s(counter){if(counter >= 100){return; } if(typeof this.usercentrics !== "undefined" && typeof this.usercentrics.denyAllConsentsAndCloseInitialView !== "undefined"){ this.usercentrics.denyAllConsentsAndCloseInitialView(); } else { setTimeout(function() {s(counter + 1)}, 25);  }}; s(1);';
-            super.node.getElementsByTagName('head')[0].appendChild(script);
+            super.node.head.appendChild(script);
             super.reset("UserCentrics", "0.0.0");
         }
     }

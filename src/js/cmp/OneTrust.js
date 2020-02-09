@@ -34,8 +34,6 @@ export default class OneTrust extends CMP {
         const optanonCheckboxesSelectorV2 = "input[type*='checkbox']";
         let optanonCheckBoxesV2 = super.queryNodeSelectorAll(optanonCheckboxesSelectorV2);
 
-        Utils.log(state);
-
         // Variant 1
         if (Utils.objectClickable(optananDetailsV1) && super.state === 0) {
             optananDetailsV1.click();

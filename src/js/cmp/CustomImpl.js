@@ -11,10 +11,9 @@ export default class CustomImpl extends CMP {
     }
 
     handleCmp() {
-        Utils.log('Custom Implementaiton ');
-
+        Utils.log('Custom Implementation ');
         let button = super.queryNodeSelector(this._button);
-        let minimalConsent = this.targetNode.querySelector(super.minimalConsentLink);
+        let minimalConsent = super.queryNodeSelector(super.minimalConsentLink);
 
         if (Utils.objectClickable(button) && super.state === 0) {
             Utils.log("GDPR Button + Decline found: " + this._button);

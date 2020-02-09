@@ -24,10 +24,6 @@ export default class CookieBot extends CMP {
         const denyAllSelector = "a#CybotCookiebotDialogBodyButtonDecline";
         let denyAll = super.queryNodeSelector(denyAllSelector);
 
-
-        Utils.log(denyAll);
-        Utils.log("State: " + state);
-
         if (Utils.objectClickable(bannerCookiebot) && super.state === 0) {
             Utils.log("CookieBot Banner found");
             cookiebotCheckBoxes.forEach(function (checkbox) {
