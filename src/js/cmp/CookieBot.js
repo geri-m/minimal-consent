@@ -34,6 +34,8 @@ export default class CookieBot extends CMP {
             super.state = 1;
         } else if (Utils.objectClickable(allowAllButton) && super.state === 1) {
             Utils.log("Click Save now");
+
+            // TODO: Make button for Integration to Click.
             allowAllButton.click();
             super.reset("CookieBot", "0.0.0");
         }

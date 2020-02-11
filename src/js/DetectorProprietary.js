@@ -4,6 +4,8 @@ import Utils from "./Utils";
 import Truste from "./cmp/Truste";
 import Evidon from "./cmp/Evidon"
 import CustomImpl from "./cmp/CustomImpl";
+import OneTrust from "./cmp/OneTrust";
+import CookieBot from "./cmp/CookieBot";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -42,6 +44,14 @@ export default class DetectorProprietary {
                 } else if (urlOfScript.includes('evidon.com') || urlOfScript.includes("evidon.mgr.consensu.org")) {
                     this.disconnectObserver();
                     this.cmp = new Evidon(this.targetNode, urlOfScript, "0.0.0");
+                    return;
+                } else if (urlOfScript.includes('cookiepro.com') || urlOfScript.includes('optanon') || urlOfScript.includes('cookielaw.org')) {
+                    this.disconnectObserver();
+                    new OneTrust(this.targetNode, urlOfScript, "0.0.0");
+                    return;
+                } else if (urlOfScript.includes('cookiebot.com') || urlOfScript.includes("cookiebot.mgr.consensu.org")) {
+                    this.disconnectObserver();
+                    new CookieBot(this.targetNode, urlOfScript, this._pingresult);
                     return;
                 } else {
                     for (let key in buttons) {

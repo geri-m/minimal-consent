@@ -1,14 +1,11 @@
-window.addEventListener('load', function () {
-    checkForCmp();
-}, false);
+window.addEventListener('load', checkForCmp, false);
 
-let data = {type: "FROM_MINIMAL_CONSENT"};
-let counter = 0;
+let dataframeForPingReturn = {type: "FROM_MINIMAL_CONSENT"};
+let checkForCmpCounter = 0;
 let maxTimeoutForResearch = 200;
 let maxRetryForSearch = 25;
 
 function checkForCmp() {
-    console.log("checkForCmp");
     if (this.__cmp) {
         this.__cmp("ping", 2, sendMessage);
     } else if (this.__tcfapi) {
@@ -16,18 +13,19 @@ function checkForCmp() {
     } else if (this.frames && this.frames.length && this.frames['__tcfapiLocator']) {
         this.__tcfapi("ping", 2, sendMessage);
     } else {
-        if (counter < maxRetryForSearch) {
+        if (checkForCmpCounter < maxRetryForSearch) {
             setTimeout(checkForCmp, maxTimeoutForResearch);
-            counter++;
+            checkForCmpCounter++;
+        } else {
+            window.removeEventListener('load', checkForCmp, false);
         }
     }
-
-
 }
 
 function sendMessage(pingReturn, success) {
     if (success) {
-        data.cmp = JSON.stringify(pingReturn);
-        window.postMessage(data, "*");
+        dataframeForPingReturn.cmp = JSON.stringify(pingReturn);
+        window.postMessage(dataframeForPingReturn, "*");
+        window.removeEventListener('load', checkForCmp, false);
     }
 }

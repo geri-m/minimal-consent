@@ -4,7 +4,6 @@ import Utils from "./Utils";
 import UserCentrics from "./cmp/UserCentrics";
 import Traffective from "./cmp/Traffective";
 import ConsentManager from "./cmp/ConsentManager";
-import CookieBot from "./cmp/CookieBot";
 import QuantCast from "./cmp/QuantCast";
 import OneTrust from "./cmp/OneTrust";
 
@@ -34,34 +33,30 @@ export default class DetectorTCF {
         for (scriptCounter = 0; scriptCounter < allScriptTags.length; scriptCounter++) {
             let urlOfScript = allScriptTags[scriptCounter].getAttribute("src");
             if (urlOfScript && urlOfScript !== 'undefined') {
+                Utils.log(urlOfScript);
                 if (urlOfScript.includes('usercentrics.eu') || urlOfScript.includes('usercentrics.mgr.consensu.org')) {
                     this.disconnectObserver();
-                    this.cmp = new UserCentrics(this.targetNode, urlOfScript, this._pingresult);
+                    new UserCentrics(this.targetNode, urlOfScript, this._pingresult);
                     return;
                 } else if (urlOfScript.includes('quantcast.com') || urlOfScript.includes("quantcast.mgr.consensu.org")) {
                     this.disconnectObserver();
-                    this.cmp = new QuantCast(this.targetNode, urlOfScript, this._pingresult);
+                    new QuantCast(this.targetNode, urlOfScript, this._pingresult);
                     return;
-                } else if (urlOfScript.includes('cookiebot.com') || urlOfScript.includes("cookiebot.mgr.consensu.org")) {
+                } else if (urlOfScript.includes('traffective.com') || urlOfScript.includes('traffective.mgr.consensu.org') || urlOfScript.includes('cdntrf.com')) {
                     this.disconnectObserver();
-                    this.cmp = new CookieBot(this.targetNode, urlOfScript, this._pingresult);
-                    return;
-                }
-                if (urlOfScript.includes('traffective.com') || urlOfScript.includes('traffective.mgr.consensu.org')) {
-                    this.disconnectObserver();
-                    this.cmp = new Traffective(this.targetNode, urlOfScript, this._pingresult);
+                    new Traffective(this.targetNode, urlOfScript, this._pingresult);
                     return;
                 } else if (urlOfScript.includes('usercentrics.eu') || urlOfScript.includes('usercentrics.mgr.consensu.org')) {
                     this.disconnectObserver();
-                    this.cmp = new UserCentrics(this.targetNode, urlOfScript, this._pingresult);
+                    new UserCentrics(this.targetNode, urlOfScript, this._pingresult);
                     return;
                 } else if (urlOfScript.includes('consentmanager.mgr.consensu.org')) {
                     this.disconnectObserver();
-                    this.cmp = new ConsentManager(this.targetNode, urlOfScript, this._pingresult);
+                    new ConsentManager(this.targetNode, urlOfScript, this._pingresult);
                     return;
                 } else if (urlOfScript.includes('cookielaw.org') || urlOfScript.includes('cookiepro.com') || urlOfScript.includes('onetrust.mgr.consensu.org') || urlOfScript.includes('optanon')) {
                     this.disconnectObserver();
-                    this.cmp = new OneTrust(this.targetNode, urlOfScript, "0.0.0");
+                    new OneTrust(this.targetNode, urlOfScript, "0.0.0");
                     return;
                 }
                 /*

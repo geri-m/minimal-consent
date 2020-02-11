@@ -21,6 +21,9 @@ export default class CMP {
         this._observer.observe(this._node, config);
         this._state = 0;
         this._callCounter = 0;
+
+        // in case there is no DOM change on the site at this place, the Handler should run at least once.
+        this.mainCmpHandler(null);
     }
 
     get node() {
@@ -40,6 +43,7 @@ export default class CMP {
     }
 
     mainCmpHandler(mutations) {
+        Utils.log("mainCmpHandler");
         this._callCounter++;
         // if after x changes to the DOM there as not popup, we stop listening to the changes.
         if (this._callCounter < maximalLimitOfDomChangeTillStop) {
@@ -50,10 +54,6 @@ export default class CMP {
             this._callCounter = 0;
             Utils.log("No CMP Found after 100 DOM Updates");
         }
-    }
-
-    get urlPattern() {
-        return this._urlPattern;
     }
 
     handleCmp(mutations) {
