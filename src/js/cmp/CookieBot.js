@@ -13,9 +13,6 @@ export default class CookieBot extends CMP {
     handleCmp() {
         Utils.log("handleCookiebot");
 
-        const bannerSelector = "div#CybotCookiebotDialog";
-        let bannerCookiebot = super.queryNodeSelector(bannerSelector);
-
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = super.queryNodeSelectorAll(cookiebotCheckboxesSelector);
 
@@ -25,26 +22,31 @@ export default class CookieBot extends CMP {
         const denyAllSelector = "a#CybotCookiebotDialogBodyButtonDecline";
         let denyAll = super.queryNodeSelector(denyAllSelector);
 
-        if (Utils.objectClickable(bannerCookiebot) && super.state === 0) {
+
+        // Case 1:
+        // if there is the option to deny already on the first page - do so.
+        if (Utils.objectClickable(denyAll) && super.state === 0) {
+            Utils.log("Click Deny All now");
+            // looks like this does not work.
+            denyAll.click();
+            Utils.log('Consent on denied.');
+            super.reset();
+        } else if (Utils.objectClickable(allowAllButton) && super.state === 0) {
             Utils.log("CookieBot Banner found");
             cookiebotCheckBoxes.forEach(function (checkbox) {
                 checkbox.setAttribute("checked", "false");
                 Utils.log("Checkbox unset");
             });
-            super.state = 1;
-        } else if (Utils.objectClickable(allowAllButton) && super.state === 1) {
+            super.state = 2;
+        } else if (Utils.objectClickable(allowAllButton) && super.state === 2) {
             Utils.log("Click Save now");
 
             // TODO: Make button for Integration to Click.
             allowAllButton.click();
-            super.reset("CookieBot", "0.0.0");
+            super.reset();
         }
         // this is a special Case for V2. The Banner was found and we only click on the Deny Button.
-        else if (Utils.objectClickable(denyAll) && super.state === 1) {
-            Utils.log("Click Deny All now");
-            denyAll.click();
-            super.reset("CookieBot", "0.0.0");
-        }
+
     }
 
 }

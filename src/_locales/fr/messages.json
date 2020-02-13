@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Minimal Consent"
+  },
+  "appShort": {
+    "message": "Minimal Consent répond pour vous aux différentes bannières."
+  },
+  "appDesc": {
+    "message": "Minimal Consent s’assure que seuls les cookies essentiels au fonctionnement du site internet consulté sont acceptés, et par conséquent bloque tout autre cookie ainsi que les bannières envahissantes."
+  }
+}

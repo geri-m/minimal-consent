@@ -31,6 +31,10 @@ export default class DetectorProprietary {
         this.selectCmpObserver.disconnect();
     }
 
+    get initializedCmp() {
+        return this.cmp;
+    }
+
     handleCMP(mutations) {
         let allScriptTags = document.querySelectorAll("script");
         let scriptCounter;
@@ -47,11 +51,11 @@ export default class DetectorProprietary {
                     return;
                 } else if (urlOfScript.includes('cookiepro.com') || urlOfScript.includes('optanon') || urlOfScript.includes('cookielaw.org')) {
                     this.disconnectObserver();
-                    new OneTrust(this.targetNode, urlOfScript, "0.0.0");
+                    this.cmp = new OneTrust(this.targetNode, urlOfScript, "0.0.0");
                     return;
                 } else if (urlOfScript.includes('cookiebot.com') || urlOfScript.includes("cookiebot.mgr.consensu.org")) {
                     this.disconnectObserver();
-                    new CookieBot(this.targetNode, urlOfScript, this._pingresult);
+                    this.cmp = new CookieBot(this.targetNode, urlOfScript, this._pingresult);
                     return;
                 } else {
                     for (let key in buttons) {

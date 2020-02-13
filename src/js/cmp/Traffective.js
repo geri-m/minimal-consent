@@ -28,7 +28,7 @@ export default class Traffective extends CMP {
         } else if (Utils.objectClickable(saveButton) && super.state === 1) {
             Utils.log('Button found ...');
             saveButton.click();
-            super.reset("Traffective.js", "0.0.0");
+            super.reset();
         }
     }
 }

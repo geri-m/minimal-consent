@@ -200,7 +200,7 @@ to consensu.org.
 
 ## Sample Pages
 
-- [programiz](https://www.programiz.com/python-programming/tutorial)
+- [programiz](https://www.programiz.com/)
 - [Doodle](https://www.doodle.com)
 
 # [SoloCMP](https://www.solocpm.com)

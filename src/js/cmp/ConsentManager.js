@@ -17,7 +17,7 @@ export default class ConsentManager extends CMP {
         let buttonDeny = super.queryNodeSelector(deny);
         if (Utils.objectClickable(buttonDeny) && super.state === 0) {
             buttonDeny.click();
-            super.reset("Consent Manager", "0.0.0");
+            super.reset();
         }
 
         // TODO: Requires a second Step for the ugly guis.

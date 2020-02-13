@@ -17,15 +17,10 @@ export default class Utils {
     }
 
     static objectClickable(myObject) {
-        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';
+        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined' && myObject.offsetParent;
     }
 
-    static createCmpFromScriptUrl(scriptUrl) {
-        arrayOfPatterns.each(function (entry) {
-            if (entry.url.contains(scriptUrl)) {
-                return new CMP();
-            }
-        });
+    static objectVisible(myObject) {
+        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined'
     }
-
 }

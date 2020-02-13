@@ -35,7 +35,7 @@ export default class QuantCast extends CMP {
         // save settings
         else if (Utils.objectClickable(saveButton) && super.state === 2) {
             saveButton.click();
-            super.reset("Quantcast", "4957");
+            super.reset();
         }
     }
 }

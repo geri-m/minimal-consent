@@ -27,7 +27,7 @@ export default class Evidon extends CMP {
         } else if (Utils.objectClickable(button) && super.state === 2) {
             super.state = 3;
             button.click();
-            super.reset("Evidon", "4957");
+            super.reset();
         }
     }
 }

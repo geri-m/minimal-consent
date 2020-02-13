@@ -12,12 +12,13 @@ export default class UserCentrics extends CMP {
     handleCmp() {
         Utils.log('handleUserCentrics');
 
+        // we are looking for a banner and if this banner is visible, we then inject the javascript.
         const ucBannerContent = 'div.uc-banner-content';
         let banner = super.queryNodeSelector(ucBannerContent);
 
         // typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined'
         // case like on hse24.de
-        if (Utils.objectClickable(banner) && super.state === 0) {
+        if (Utils.objectVisible(banner) && super.state === 0) {
             Utils.log('Deny All button found');
             let script = super.node.createElement('script');
             script.type = 'text/javascript';

@@ -13,17 +13,17 @@ export default class OneTrust extends CMP {
     handleCmp() {
         Utils.log('handleOneTrust');
 
-        const optanonDetailsSelectorV1 = "#onetrust-pc-btn-handler";
+        const optanonDetailsSelectorV1 = "button#onetrust-pc-btn-handler";
         let optananDetailsV1 = super.queryNodeSelector(optanonDetailsSelectorV1);
 
         const optanonSaveSettingsSelectorV1 = "button.save-preference-btn-handler";
         let optanonSaveSettingsV1 = super.queryNodeSelector(optanonSaveSettingsSelectorV1);
 
-        const optanonCheckBoxesSelectorV1 = "checkbox.switch-checkbox";
+        const optanonCheckBoxesSelectorV1 = "input[type*='checkbox'].switch-checkbox";
         let optanonCheckboxesV1 = super.queryNodeSelectorAll(optanonCheckBoxesSelectorV1);
 
         const optanonDetailsV2 = "button.optanon-toggle-display";
-        let optanonDetailsButton = super.queryNodeSelector(optanonDetailsV2);
+        let optanonDetailsButtonV2 = super.queryNodeSelector(optanonDetailsV2);
 
         // this button is crappy to find, as there is no ID or class.
         const optanonSaveSettingsSelectorV2 = "button[onclick*='Save']"; //button.optanon-save-settings-button
@@ -35,24 +35,28 @@ export default class OneTrust extends CMP {
         const optanonCheckboxesSelectorV2 = "input[type*='checkbox']";
         let optanonCheckBoxesV2 = super.queryNodeSelectorAll(optanonCheckboxesSelectorV2);
 
+
         // Variant 1
         if (Utils.objectClickable(optananDetailsV1) && super.state === 0) {
+            Utils.log("V1");
             optananDetailsV1.click();
+            Utils.log("Details clicked");
             super.state = 1;
-        } else if (Utils.objectClickable(optanonSaveSettingsV1) && super.state === 1) {
-
+        } else if (Utils.objectClickable(optanonSaveSettingsV1) && optanonCheckboxesV1.length && super.state === 1) {
+            Utils.log(optanonCheckboxesV1.length);
             optanonCheckboxesV1.forEach(function (checkbox) {
                 checkbox.setAttribute("checked", "false");
                 Utils.log("Checkbox unset");
             });
-
             optanonSaveSettingsV1.click();
-            super.reset("OneTrust (V1)", "0.0.0");
+            Utils.log("Settings click");
+            super.reset();
         }
 
         // Variant 2
-        else if (Utils.objectClickable(optanonDetailsButton) && super.state === 0) {
-            optanonDetailsButton.click();
+        else if (Utils.objectClickable(optanonDetailsButtonV2) && super.state === 0) {
+            Utils.log("V2");
+            optanonDetailsButtonV2.click();
             Utils.log("Details clicked");
             super.state = 2;
         } else if (Utils.objectClickable(optanonSaveSettingsV2) && super.state === 2) {
@@ -66,7 +70,7 @@ export default class OneTrust extends CMP {
                 })
             });
             optanonSaveSettingsV2.click();
-            super.reset("OneTrust (V2)", "0.0.0");
+            super.reset();
         }
     }
 

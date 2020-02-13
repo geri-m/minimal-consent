@@ -34,7 +34,7 @@ export default class Truste extends CMP {
             });
         } else if (Utils.objectClickable(minimalConsentButton) && super.state === 1) {
             minimalConsentButton.click();
-            super.reset("Truste/Trustact (V1)", "0.0.0");
+            super.reset();
         }
 
         // 2nd variant with Div overlay
@@ -58,7 +58,7 @@ export default class Truste extends CMP {
                     // this is a special case, in case the "decline" is failing when sending data to the backend (Marriot Case)
                     if (Utils.objectClickable(buttomTrusteV2)) {
                         buttomTrusteV2.click();
-                        super.reset("Truste/Trustact (V2)", "0.0.0");
+                        super.reset();
                     }
                 }
             });

@@ -27,7 +27,8 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
             return;
 
         // only if there TCF 1.1 or TFC 2.0 compliant CMP found, launch the appropriate detector.
-        if (event.data.type && (event.data.type === messageFrom)) {
+        // if the proprietary initialization already worked out, don't initialize the CMP again.
+        if (event.data.type && (event.data.type === messageFrom) && typeof detectorProp.initializedCmp === 'undefined') {
             // chancel looking for a proprietary CMP.
             detectorProp.disconnectObserver();
 

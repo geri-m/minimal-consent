@@ -43,7 +43,6 @@ export default class CMP {
     }
 
     mainCmpHandler(mutations) {
-        Utils.log("mainCmpHandler");
         this._callCounter++;
         // if after x changes to the DOM there as not popup, we stop listening to the changes.
         if (this._callCounter < maximalLimitOfDomChangeTillStop) {
