@@ -6,8 +6,8 @@ import CMP from "./CMP";
 
 export default class OneTrust extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(28, node, "OneTrust LLC", scriptUrl, CMP.cmpType.WAIT_FOR_TIME_FRAME, true);
+    constructor(node, scriptUrl, backendCall) {
+        super(28, node, "OneTrust LLC", scriptUrl, CMP.cmpType.WAIT_FOR_TIME_FRAME, true, backendCall);
     }
 
     handleCmp() {

@@ -6,8 +6,8 @@ import CMP from "./CMP";
 
 export default class TrustArc extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(41, node, "TrustArc Inc", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true);
+    constructor(node, scriptUrl, backendCall) {
+        super(41, node, "TrustArc Inc", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true, backendCall);
     }
 
     handleCmp() {

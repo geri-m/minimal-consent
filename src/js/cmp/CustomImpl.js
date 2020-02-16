@@ -5,8 +5,8 @@ import CMP from "./CMP";
 
 export default class CustomImpl extends CMP {
 
-    constructor(node, buttonToClick, scriptUrl) {
-        super(0, node, "Custom Implementation", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true);
+    constructor(node, buttonToClick, scriptUrl, backendCall) {
+        super(0, node, "Custom Implementation", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true, backendCall);
         this._button = buttonToClick;
     }
 

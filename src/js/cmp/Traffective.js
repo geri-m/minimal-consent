@@ -6,8 +6,8 @@ import CMP from "./CMP";
 
 export default class Traffective extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(21, node, "Traffective GmbH", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true);
+    constructor(node, scriptUrl, backendCall) {
+        super(21, node, "Traffective GmbH", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
     }
 
     handleCmp() {

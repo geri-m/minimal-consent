@@ -6,8 +6,8 @@ import CMP from "./CMP";
 
 export default class Evidon extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(18, node, "Evidon, Inc.", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true);
+    constructor(node, scriptUrl, backendCall) {
+        super(18, node, "Evidon, Inc.", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true, backendCall);
     }
 
     handleCmp() {

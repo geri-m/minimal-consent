@@ -6,8 +6,8 @@ import CMP from "./CMP";
 
 export default class ConsentManager extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(31, node, "ConsentManager.net", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true);
+    constructor(node, scriptUrl, backendCall) {
+        super(31, node, "ConsentManager.net", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
     }
 
     handleCmp() {

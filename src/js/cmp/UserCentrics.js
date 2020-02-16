@@ -5,8 +5,8 @@ import CMP from "./CMP";
 
 export default class UserCentrics extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(5, node, "Usercentrics GmbH", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true);
+    constructor(node, scriptUrl, backendCall) {
+        super(5, node, "Usercentrics GmbH", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
     }
 
     handleCmp() {

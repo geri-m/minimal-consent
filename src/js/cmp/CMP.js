@@ -24,17 +24,13 @@ export default class CMP {
      * @param scriptUrl URL from with the CMP was loaded
      * @param type Enumation on Type of CMP to determin when we need to trigger the backedn call.
      */
-    constructor(cmpId, node, name, scriptUrl, type, implemented) {
-        this._cmpId = cmpId;
-        this._type = type;
+    constructor(cmpId, node, name, scriptUrl, type, implemented, backendCall) {
         this._node = node;
         this._name = name;
-        this._scriptUrl = scriptUrl;
         this._state = 0;
         this._callCounter = 0;
-        this._pingResult = false;
-        this._reset = false;
-        this._implemented = implemented;
+        this._backendCall = backendCall;
+        this._backendCall.cmpData(cmpId, name, scriptUrl, type, implemented);
     }
 
     connect() {
@@ -47,6 +43,7 @@ export default class CMP {
         // in case there is no DOM change on the site at this place, the Handler should run at least once.
         this.mainCmpHandler(null);
     }
+
 
 
     /**
@@ -79,25 +76,6 @@ export default class CMP {
 
     get minimalConsentLink() {
         return minimalConsentLink;
-    }
-
-    /**
-     * Setter for the Ping Result, if we find a CMP on the Page
-     *
-     * @param pingResult
-     */
-
-    set pingResult(pingResult) {
-        this._pingResult = JSON.parse(pingResult);
-        // check if there is a timeout and cancel if necessary.
-        clearTimeout(this._timeoutForBackendCall);
-
-        // if the CMP was already clicked, do the backend call
-        if (this._reset) {
-            this.triggerBackendCall();
-        } else {
-            // ping result was set, so we wait for the reset to kick in.
-        }
     }
 
     /**
@@ -138,52 +116,9 @@ export default class CMP {
         // If everything is fine, remove the listener.
         this._observer.disconnect();
         this._state = -1;
+        this._backendCall.successfulBlock();
         Utils.log('Consent for ' + this._name + ' denied.');
-        // Sending to Background Script
-        switch (this._type) {
-            case enumeration.WAIT_FOR_ASYNC_CALLBACK:
-                // if we wait for the callback, the backend call is done in the 'setPingResult';
-                // we already have click away the CMP so, wait for the pingresult and go.
-                if (this._pingResult) {
-                    this.triggerBackendCall();
-                } else {
-                    this._reset = true;
-                }
-                break;
-            case enumeration.WAIT_FOR_TIME_FRAME:
-                this._reset = true;
-                this._timeoutForBackendCall = setTimeout(this.triggerBackendCall.bind(this), 5000);
-                break;
-            case enumeration.DO_NOT_WAIT:
-                this.triggerBackendCall();
-                break;
-            default:
-                throw new Error("Unknown CMP Type");
-        }
-    }
 
-    /**
-     * Actual Method to trigger the backend call. Can be triggered from various functions
-     */
-
-    triggerBackendCall() {
-        Utils.log("Trigger Callback now" + this._name);
-        // in this case, there is no pingResult, so we replace the variable by an Object
-        if (this._pingResult === false)
-            this._pingResult = {};
-
-        Utils.log(this._pingResult);
-
-        // we add this manually
-        this._pingResult.cmpId = this._cmpId;
-
-        chrome.runtime.sendMessage({
-            cmp: this._name,
-            cmpScripUrl: this._scriptUrl,
-            pingResult: this._pingResult,
-            implemented: this._implemented,
-            from: contentScript
-        });
     }
 
     /**

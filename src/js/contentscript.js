@@ -1,6 +1,5 @@
 "use strict";
 import Detector from "./Detector";
-import Utils from "./Utils";
 
 // only execute the content script
 // - if there is doc type
@@ -30,23 +29,30 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
         // only if there TCF 1.1 or TFC 2.0 compliant CMP found, launch the appropriate detector.
         // if the proprietary initialization already worked out, don't initialize the CMP again.
         if (event.data.type && event.data.type === messageFrom) {
-            // setting the Ping Result for the CMP;
-            if (typeof detector.initializedCmp !== 'undefined') {
-                detector.initializedCmp.pingResult = event.data.cmp;
-                Utils.log("Content script received message: " + JSON.stringify(event.data.cmp));
-            } else {
-                // this is fun now, on this page there is a CMP, but we don't have the URL in the matcher yet
-                // this information is super helpful. It can also happen, when this callback is quicker than
-                // the loop thru the scripts - to there will be no CMP in extension yet.
-                Utils.log("We have a CMP Javascript Object, but no Script URL yet");
-                chrome.runtime.sendMessage({
-                    cmp: "na",
-                    cmpScripUrl: "na",
-                    pingResult: JSON.parse(event.data.cmp),
-                    implemented: false,
-                    from: "contentscript"
-                });
-            }
+
+            // given the Ping Result to the Detector Object.
+            detector.pingResult = event.data.cmp;
+
+            /*
+                        // setting the Ping Result for the CMP;
+                        if (typeof detector.initializedCmp !== 'undefined') {
+                            detector.initializedCmp.pingResult = event.data.cmp;
+                            Utils.log("Content script received message: " + JSON.stringify(event.data.cmp));
+                        } else {
+                            // this is fun now, on this page there is a CMP, but we don't have the URL in the matcher yet
+                            // this information is super helpful. It can also happen, when this callback is quicker than
+                            // the loop thru the scripts - to there will be no CMP in extension yet.
+                            Utils.log("We have a CMP Javascript Object, but no Script URL yet");
+                            chrome.runtime.sendMessage({
+                                cmp: "na",
+                                cmpScripUrl: "na",
+                                pingResult: JSON.parse(event.data.cmp),
+                                implemented: false,
+                                from: "contentscript"
+                            });
+                        }
+
+             */
         }
     });
 }
