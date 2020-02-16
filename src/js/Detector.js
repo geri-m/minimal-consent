@@ -29,7 +29,6 @@ export default class Detector {
     }
 
     set pingResult(pingResult) {
-        this._pingResult = pingResult;
         this._backendCall.pingResult = pingResult;
     }
 
@@ -474,7 +473,8 @@ export default class Detector {
                         for (let key in buttons) {
                             let button = this._targetNode.querySelector(key);
                             if (Utils.objectClickable(button)) {
-                                this._cmp = new CustomImpl(this._targetNode, key);
+                                Utils.log("Backend: " + this._backendCall);
+                                this._cmp = new CustomImpl(this._targetNode, key, this._backendCall);
                                 break allScripts;
                             }
                         }
