@@ -11,13 +11,13 @@ chrome.runtime.onMessage.addListener(messageHandler);
 function messageHandler(request, sender, sendResponse) {
     Utils.log("messageHandler: " + JSON.stringify(request));
     // we make sure all relevant fields are set and then trigger the call.
-    if (request.from === "contentscript" && request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined') {
+    if (request.from === "contentscript" && request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
         // for Security Reasons, we pass each Element separably over to the insert Method.
-        logBackend(request.cmp, request.cmpScripUrl, sender.tab.url, request.pingResult);
+        logBackend(request.cmp, request.cmpScripUrl, sender.tab.url, request.pingResult, request.implemented);
     }
 }
 
-function logBackend(cmp, cmpScripUrl, url, pingResult) {
+function logBackend(cmp, cmpScripUrl, url, pingResult, implemented) {
     // key for the storage to have the blocking history there.
     const historyKeyOfStorage = "history";
     let xhr = new XMLHttpRequest();
@@ -31,7 +31,7 @@ function logBackend(cmp, cmpScripUrl, url, pingResult) {
         "    \"cmp\": \"" + cmp + "\"," +
         "    \"cmpScriptUrl\": \"" + cmpScripUrl + "\"," +
         "    \"pingResult\" : " + JSON.stringify(pingResult) + "," +
-        "    \"processed\" : \"true\"" +
+        "    \"implemented\" : " + implemented +
         "}";
 
     // Sanity Check, so we only send correct data to the backend.

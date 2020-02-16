@@ -170,12 +170,11 @@ export default class CMP {
         if (this._pingResult === false)
             this._pingResult = {};
 
-        // now set the 'implemented' property of the object, we send ot the backend.
-        this._pingResult.implemented = this._implemented;
         chrome.runtime.sendMessage({
             cmp: this._name,
             cmpScripUrl: this._scriptUrl,
             pingResult: this._pingResult,
+            implemented: this._implemented,
             from: contentScript
         });
     }

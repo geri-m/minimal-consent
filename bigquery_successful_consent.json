@@ -1,0 +1,89 @@
+[
+  {
+    "name": "date",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "useragent",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "url",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "cmp",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "cmp_script_url",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "pingresult",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "gdprAppliesGlobally",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "gdprApplies",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "cmpLoaded",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "cmpStatus",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "displayStatus",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "apiVersion",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "cmpVersion",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "cmpId",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "gvlVersion",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "tcfPolicyVersion",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+      }
+    ],
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "implemented",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  }
+]
