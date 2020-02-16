@@ -26,25 +26,21 @@ function logBackend(cmp, cmpScripUrl, url, pingResult) {
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json");
 
-    // if the pingResult was not set to a string, create a dummy Entry.
-    if (pingResult === false) {
-        pingResult = "{\"implemented\": false}";
-    }
-
     let requestJson = "{\n" +
         "    \"url\" : \"" + url + "\"," +
         "    \"cmp\": \"" + cmp + "\"," +
         "    \"cmpScriptUrl\": \"" + cmpScripUrl + "\"," +
-        "    \"pingResult\" : " + pingResult + "," +
+        "    \"pingResult\" : " + JSON.stringify(pingResult) + "," +
         "    \"processed\" : \"true\"" +
         "}";
 
     // Sanity Check, so we only send correct data to the backend.
+    Utils.log("requestJson:" + requestJson);
     JSON.parse(requestJson);
     chrome.browserAction.setIcon({path: "./images/icon-48x48-ok.png"});
     setTimeout(turnImageBack, 3000);
     xhr.send(requestJson);
-    Utils.log("Backendcall done");
+    Utils.log("Backendcall done" + requestJson);
 
     let row = {};
     row.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');

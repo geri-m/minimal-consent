@@ -7,7 +7,7 @@ import CMP from "./CMP";
 export default class QuantCast extends CMP {
 
     constructor(node, scriptUrl) {
-        super(node, "QuantCast", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK);
+        super(node, "QuantCast", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true);
     }
 
     handleCmp() {

@@ -24,7 +24,7 @@ export default class CMP {
      * @param scriptUrl URL from with the CMP was loaded
      * @param type Enumation on Type of CMP to determin when we need to trigger the backedn call.
      */
-    constructor(node, name, scriptUrl, type) {
+    constructor(node, name, scriptUrl, type, implemented) {
         this._type = type;
         this._node = node;
         this._name = name;
@@ -33,6 +33,7 @@ export default class CMP {
         this._callCounter = 0;
         this._pingResult = false;
         this._reset = false;
+        this._implemented = implemented;
     }
 
     connect() {
@@ -86,17 +87,15 @@ export default class CMP {
      */
 
     set pingResult(pingResult) {
-        this._pingResult = pingResult;
+        this._pingResult = JSON.parse(pingResult);
         // check if there is a timeout and cancel if necessary.
         clearTimeout(this._timeoutForBackendCall);
 
         // if the CMP was already clicked, do the backend call
         if (this._reset) {
-            Utils.log("pingResult - reset is already done");
             this.triggerBackendCall();
         } else {
             // ping result was set, so we wait for the reset to kick in.
-            Utils.log("pingResult - reset is pending, but pingresult is set");
         }
         Utils.log("PingResult:" + pingResult);
     }
@@ -146,11 +145,8 @@ export default class CMP {
                 // if we wait for the callback, the backend call is done in the 'setPingResult';
                 // we already have click away the CMP so, wait for the pingresult and go.
                 if (this._pingResult) {
-                    Utils.log("reset - Wait for Callback, but pingResult is set");
                     this.triggerBackendCall();
-
                 } else {
-                    Utils.log("reset - Reset done, wait for Callback.");
                     this._reset = true;
                 }
                 break;
@@ -166,10 +162,16 @@ export default class CMP {
     }
 
     /**
-     * Actual Method to trgger the backend call. Can be triggered from various functions
+     * Actual Method to trigger the backend call. Can be triggered from various functions
      */
 
     triggerBackendCall() {
+        // in this case, there is no pingResult, so we replace the variable by an Object
+        if (this._pingResult === false)
+            this._pingResult = {};
+
+        // now set the 'implemented' property of the object, we send ot the backend.
+        this._pingResult.implemented = this._implemented;
         chrome.runtime.sendMessage({
             cmp: this._name,
             cmpScripUrl: this._scriptUrl,

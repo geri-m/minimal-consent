@@ -7,7 +7,7 @@ import CMP from "./CMP";
 export default class Truste extends CMP {
 
     constructor(node, scriptUrl) {
-        super(node, "Truste", scriptUrl, CMP.cmpType.DO_NOT_WAIT);
+        super(node, "Truste", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true);
     }
 
     handleCmp() {
