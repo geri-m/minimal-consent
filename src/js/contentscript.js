@@ -1,6 +1,5 @@
 "use strict";
-import DetectorProprietary from "./DetectorProprietary";
-import DetectorTCF from "./DetectorTCF";
+import Detector from "./Detector";
 import Utils from "./Utils";
 
 // only execute the content script
@@ -20,7 +19,7 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
     // Select the node that will be observed for mutations
     const targetNode = document.getRootNode();
 
-    const detectorProp = new DetectorProprietary(targetNode);
+    const detectorProp = new Detector(targetNode);
     window.addEventListener("message", function (event) {
         // We only accept messages from ourselves
         if (event.source !== window)
@@ -28,12 +27,9 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
 
         // only if there TCF 1.1 or TFC 2.0 compliant CMP found, launch the appropriate detector.
         // if the proprietary initialization already worked out, don't initialize the CMP again.
-        if (event.data.type && (event.data.type === messageFrom) && typeof detectorProp.initializedCmp === 'undefined') {
-            // chancel looking for a proprietary CMP.
-            detectorProp.disconnectObserver();
-
-            // now look for a TCF compliant CMP.
-            const detectorTcf = new DetectorTCF(targetNode, JSON.stringify(event.data.cmp));
+        if (event.data.type && (event.data.type === messageFrom)) {
+            // setting the Ping Result for the CMP;
+            detectorProp.initializedCmp.pingResult = event.data.cmp;
             Utils.log("Content script received message: " + JSON.stringify(event.data.cmp));
         }
     });
