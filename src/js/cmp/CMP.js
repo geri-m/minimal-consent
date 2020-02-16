@@ -29,19 +29,23 @@ export default class CMP {
         this._node = node;
         this._name = name;
         this._scriptUrl = scriptUrl;
+        this._state = 0;
+        this._callCounter = 0;
+        this._pingResult = false;
+        this._reset = false;
+    }
+
+    connect() {
         let _self = this;
         this._observer = new MutationObserver(function (mutations) {
             _self.mainCmpHandler(mutations);
         });
         this._observer.observe(this._node, config);
-        this._state = 0;
-        this._callCounter = 0;
 
         // in case there is no DOM change on the site at this place, the Handler should run at least once.
         this.mainCmpHandler(null);
-        this._pingResult = false;
-        this._reset = false;
     }
+
 
     /**
      * Fetching the CMP Type Enumation.
@@ -104,6 +108,7 @@ export default class CMP {
      */
 
     mainCmpHandler(mutations) {
+        Utils.log("Handling " + this._name);
         this._callCounter++;
         // if after x changes to the DOM there as not popup, we stop listening to the changes.
         if (this._callCounter < maximalLimitOfDomChangeTillStop) {
@@ -112,7 +117,7 @@ export default class CMP {
             this._observer.disconnect();
             this._state = -1;
             this._callCounter = 0;
-            Utils.log("No CMP Found after 100 DOM Updates");
+            Utils.log("Looks like, CMP was already given consent.");
         }
     }
 

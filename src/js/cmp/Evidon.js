@@ -12,7 +12,6 @@ export default class Evidon extends CMP {
 
 
     handleCmp() {
-        Utils.log('handleEvidonx');
         const evidonDenyAll = "button#_evidon-decline-button";
 
         let button = super.queryNodeSelector(evidonDenyAll);

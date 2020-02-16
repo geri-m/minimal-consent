@@ -10,8 +10,6 @@ export default class UserCentrics extends CMP {
     }
 
     handleCmp() {
-        Utils.log('handleUserCentrics');
-
         // we are looking for a banner and if this banner is visible, we then inject the javascript.
         const ucBannerContent = 'div.uc-banner-content';
         let banner = super.queryNodeSelector(ucBannerContent);

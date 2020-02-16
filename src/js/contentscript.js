@@ -19,7 +19,8 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
     // Select the node that will be observed for mutations
     const targetNode = document.getRootNode();
 
-    const detectorProp = new Detector(targetNode);
+    const detector = new Detector(targetNode);
+    detector.connectObserver();
     window.addEventListener("message", function (event) {
         // We only accept messages from ourselves
         if (event.source !== window)
@@ -29,7 +30,7 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
         // if the proprietary initialization already worked out, don't initialize the CMP again.
         if (event.data.type && (event.data.type === messageFrom)) {
             // setting the Ping Result for the CMP;
-            detectorProp.initializedCmp.pingResult = event.data.cmp;
+            detector.initializedCmp.pingResult = event.data.cmp;
             Utils.log("Content script received message: " + JSON.stringify(event.data.cmp));
         }
     });

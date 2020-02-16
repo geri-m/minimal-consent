@@ -11,7 +11,6 @@ export default class ConsentManager extends CMP {
     }
 
     handleCmp() {
-        Utils.log('handleConsentManager');
         const deny = '#cmpbntnotxt';
         let buttonDeny = super.queryNodeSelector(deny);
         if (Utils.objectClickable(buttonDeny) && super.state === 0) {

@@ -11,8 +11,6 @@ export default class CookieBot extends CMP {
     }
 
     handleCmp() {
-        Utils.log("handleCookiebot");
-
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = super.queryNodeSelectorAll(cookiebotCheckboxesSelector);
 

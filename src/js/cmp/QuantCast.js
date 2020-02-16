@@ -11,8 +11,6 @@ export default class QuantCast extends CMP {
     }
 
     handleCmp() {
-        Utils.log('handleQuantcast');
-
         const purpose = "a#qc-cmp-purpose-button";
         let purposeButton = super.queryNodeSelector(purpose);
 

@@ -11,7 +11,6 @@ export default class CustomImpl extends CMP {
     }
 
     handleCmp() {
-        Utils.log('Custom Implementation ');
         let button = super.queryNodeSelector(this._button);
         let minimalConsent = super.queryNodeSelector(super.minimalConsentLink);
 

@@ -11,7 +11,6 @@ export default class Traffective extends CMP {
     }
 
     handleCmp() {
-        Utils.log('handleTraffective');
         const gdprDiv = 'div.gdpr_popup_popup';
         let popup = super.queryNodeSelector(gdprDiv);
 

@@ -11,7 +11,6 @@ export default class Truste extends CMP {
     }
 
     handleCmp() {
-        Utils.log('handleTruste');
         // 1st Variant with iFrame
         const trusteBoxOverlay = "div.truste_box_overlay";
         let divTruste = super.queryNodeSelector(trusteBoxOverlay);
