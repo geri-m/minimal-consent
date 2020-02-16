@@ -1,7 +1,7 @@
 "use strict";
 import Utils from "./Utils";
 
-import Truste from "./cmp/Truste";
+import TrustArc from "./cmp/Truste";
 import Evidon from "./cmp/Evidon"
 import CustomImpl from "./cmp/CustomImpl";
 import OneTrust from "./cmp/OneTrust";
@@ -60,7 +60,7 @@ export default class Detector {
                 let urlOfScript = allScriptTags[scriptCounter].getAttribute("src");
                 if (urlOfScript && typeof urlOfScript !== 'undefined') {
                     if (urlOfScript.includes('truste.com') || urlOfScript.includes('trustarc.com') || urlOfScript.includes('trustarc.mgr.consensu.org')) {
-                        this._cmp = new Truste(this.targetNode, urlOfScript);
+                        this._cmp = new TrustArc(this.targetNode, urlOfScript);
                         break;
                     } else if (urlOfScript.includes('evidon.com') || urlOfScript.includes("evidon.mgr.consensu.org")) {
                         this._cmp = new Evidon(this.targetNode, urlOfScript);

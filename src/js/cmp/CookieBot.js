@@ -7,7 +7,7 @@ import CMP from "./CMP";
 export default class CookieBot extends CMP {
 
     constructor(node, scriptUrl) {
-        super(node, "CookieBot", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true);
+        super(134, node, "CookieBot", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true);
     }
 
     handleCmp() {

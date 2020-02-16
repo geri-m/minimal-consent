@@ -24,7 +24,8 @@ export default class CMP {
      * @param scriptUrl URL from with the CMP was loaded
      * @param type Enumation on Type of CMP to determin when we need to trigger the backedn call.
      */
-    constructor(node, name, scriptUrl, type, implemented) {
+    constructor(cmpId, node, name, scriptUrl, type, implemented) {
+        this._cmpId = cmpId;
         this._type = type;
         this._node = node;
         this._name = name;
@@ -169,6 +170,9 @@ export default class CMP {
         // in this case, there is no pingResult, so we replace the variable by an Object
         if (this._pingResult === false)
             this._pingResult = {};
+
+        // we add this manually
+        this._pingResult.cmpId = this._cmpId;
 
         chrome.runtime.sendMessage({
             cmp: this._name,
