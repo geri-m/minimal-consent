@@ -11,7 +11,8 @@ chrome.runtime.onMessage.addListener(messageHandler);
 function messageHandler(request, sender, sendResponse) {
     Utils.log("messageHandler: " + JSON.stringify(request));
     // we make sure all relevant fields are set and then trigger the call.
-    if (request.from === "contentscript" && request.cmp && request.cmpScripUrl && request.pingResult) {
+    if (request.from === "contentscript" && request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined') {
+        // for Security Reasons, we pass each Element separably over to the insert Method.
         logBackend(request.cmp, request.cmpScripUrl, sender.tab.url, request.pingResult);
     }
 }
@@ -24,12 +25,22 @@ function logBackend(cmp, cmpScripUrl, url, pingResult) {
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json");
+
+    // if the pingResult was not set to a string, create a dummy Entry.
+    if (pingResult === false) {
+        pingResult = "{\"implemented\": false}";
+    }
+
     let requestJson = "{\n" +
+        "    \"url\" : \"" + url + "\"," +
         "    \"cmp\": \"" + cmp + "\"," +
-        "    \"cmpScripUrl\": \"" + cmpScripUrl + "\"," +
-        "    \"url\" : \"" + url + "\"" +
-        "    \"pingResult\" : " + pingResult +
+        "    \"cmpScriptUrl\": \"" + cmpScripUrl + "\"," +
+        "    \"pingResult\" : " + pingResult + "," +
+        "    \"processed\" : \"true\"" +
         "}";
+
+    // Sanity Check, so we only send correct data to the backend.
+    JSON.parse(requestJson);
     chrome.browserAction.setIcon({path: "./images/icon-48x48-ok.png"});
     setTimeout(turnImageBack, 3000);
     xhr.send(requestJson);

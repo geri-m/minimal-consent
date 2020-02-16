@@ -10,7 +10,6 @@ export default class ConsentManager extends CMP {
         super(node, "ConsentManager", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK);
     }
 
-
     handleCmp() {
         Utils.log('handleConsentManager');
         const deny = '#cmpbntnotxt';

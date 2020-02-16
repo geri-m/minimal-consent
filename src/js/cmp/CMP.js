@@ -15,6 +15,15 @@ const enumeration = {
 
 export default class CMP {
 
+
+    /**
+     * Constructor for an Abstract CMP
+     *
+     * @param node Document Root Node
+     * @param name Name for the CMP in Text
+     * @param scriptUrl URL from with the CMP was loaded
+     * @param type Enumation on Type of CMP to determin when we need to trigger the backedn call.
+     */
     constructor(node, name, scriptUrl, type) {
         this._type = type;
         this._node = node;
@@ -30,12 +39,25 @@ export default class CMP {
 
         // in case there is no DOM change on the site at this place, the Handler should run at least once.
         this.mainCmpHandler(null);
-        this._pingResult = "no pingresult";
+        this._pingResult = false;
+        this._reset = false;
     }
+
+    /**
+     * Fetching the CMP Type Enumation.
+     *
+     * @returns {{DO_NOT_WAIT: string, WAIT_FOR_ASYNC_CALLBACK: string, WAIT_FOR_TIME_FRAME: string}}
+     */
 
     static get cmpType() {
         return enumeration;
     }
+
+    /**
+     * Getting the Root Node of the Document where a CMP is runnning
+     *
+     * @returns {*}
+     */
 
     get node() {
         return this._node;
@@ -53,13 +75,33 @@ export default class CMP {
         return minimalConsentLink;
     }
 
+    /**
+     * Setter for the Ping Result, if we find a CMP on the Page
+     *
+     * @param pingResult
+     */
+
     set pingResult(pingResult) {
         this._pingResult = pingResult;
         // check if there is a timeout and cancel if necessary.
         clearTimeout(this._timeoutForBackendCall);
-        this.triggerBackendCall();
-        Utils.log(pingResult);
+
+        // if the CMP was already clicked, do the backend call
+        if (this._reset) {
+            Utils.log("pingResult - reset is already done");
+            this.triggerBackendCall();
+        } else {
+            // ping result was set, so we wait for the reset to kick in.
+            Utils.log("pingResult - reset is pending, but pingresult is set");
+        }
+        Utils.log("PingResult:" + pingResult);
     }
+
+    /**
+     * Handle which is called, when a modification is detected.
+     *
+     * @param mutations
+     */
 
     mainCmpHandler(mutations) {
         this._callCounter++;
@@ -74,9 +116,19 @@ export default class CMP {
         }
     }
 
+    /**
+     * Abstract Method which need to be overwritten by the extending classes.
+     *
+     * @param mutations
+     */
+
     handleCmp(mutations) {
         throw new Error("Calling 'handleCmp' Superclass handler");
     }
+
+    /**
+     * Reset the state of the CMP if the Consent was successfully given. Might trigger a backend call.
+     */
 
     reset() {
         // If everything is fine, remove the listener.
@@ -87,6 +139,15 @@ export default class CMP {
         switch (this._type) {
             case enumeration.WAIT_FOR_ASYNC_CALLBACK:
                 // if we wait for the callback, the backend call is done in the 'setPingResult';
+                // we already have click away the CMP so, wait for the pingresult and go.
+                if (this._pingResult) {
+                    Utils.log("reset - Wait for Callback, but pingResult is set");
+                    this.triggerBackendCall();
+
+                } else {
+                    Utils.log("reset - Reset done, wait for Callback.");
+                    this._reset = true;
+                }
                 break;
             case enumeration.WAIT_FOR_TIME_FRAME:
                 this._timeoutForBackendCall = setTimeout(this.triggerBackendCall, 5000);
@@ -99,6 +160,10 @@ export default class CMP {
         }
     }
 
+    /**
+     * Actual Method to trgger the backend call. Can be triggered from various functions
+     */
+
     triggerBackendCall() {
         chrome.runtime.sendMessage({
             cmp: this._name,
@@ -108,10 +173,21 @@ export default class CMP {
         });
     }
 
+    /**
+     * Find a single Node via a CSS Selector
+     * @param selector CSS Selector to search for
+     * @returns {Element | any}
+     */
+
     queryNodeSelector(selector) {
         return this._node.querySelector(selector);
     }
 
+    /**
+     * Finds multiple Nodes via a CSS Selector.
+     * @param selector CSS Selector to search for
+     * @returns {NodeListOf<HTMLElementTagNameMap[*]> | NodeListOf<Element> | NodeListOf<SVGElementTagNameMap[*]>}
+     */
     queryNodeSelectorAll(selector) {
         return this._node.querySelectorAll(selector)
     }

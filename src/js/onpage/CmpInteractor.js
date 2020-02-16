@@ -1,3 +1,9 @@
+/**
+ * This the full code for searching the __cmp or __tcfapi object on the document.
+ * If such objects have been found, notify the chrome extension via postMessage.
+ */
+
+
 window.addEventListener('load', checkForCmp, false);
 
 let dataframeForPingReturn = {type: "FROM_MINIMAL_CONSENT"};
