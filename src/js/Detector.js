@@ -62,6 +62,7 @@ export default class Detector {
                 if (urlOfScript && typeof urlOfScript !== 'undefined') {
                     // if the script defined, make it lowercase.
                     urlOfScript = urlOfScript.toLowerCase();
+                    Utils.log(urlOfScript);
                     if (urlOfScript.includes('truste.com') || urlOfScript.includes('trustarc.com') || urlOfScript.includes('trustarc.mgr.consensu.org')) {
                         this._cmp = new TrustArc(this.targetNode, urlOfScript);
                         break;
@@ -88,16 +89,16 @@ export default class Detector {
                         break;
                     }
                     /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
-                    else if (urlOfScript.includes('chandago.com') || urlOfScript.includes('appconsent.mgr.consensu.org')) {
+                    else if (urlOfScript.includes('chandago.com') || urlOfScript.includes('appconsent.mgr.consensu.org') || urlOfScript.includes('appconsent.io')) {
                         this._cmp = new NotYetImplementedCmp(2, this.targetNode, 'Chandago', urlOfScript);
                         break;
-                    } else if (urlOfScript.includes('faktor.io') || urlOfScript.includes('faktor.mgr.consensu.org')) {
+                    } else if (urlOfScript.includes('faktor.io') || urlOfScript.includes('faktor.mgr.consensu.org') || urlOfScript.includes('liveramp.com')) {
                         this._cmp = new NotYetImplementedCmp(3, this.targetNode, 'Faktor BV', urlOfScript);
                         break;
                     } else if (urlOfScript.includes('sourcepoint.com') || urlOfScript.includes('sourcepoint.mgr.consensu.org')) {
                         this._cmp = new NotYetImplementedCmp(6, this.targetNode, 'Sourcepoint Technologies, Inc.', urlOfScript);
                         break;
-                    } else if (urlOfScript.includes('didomi.ioen') || urlOfScript.includes('didomi.mgr.consensu.org')) {
+                    } else if (urlOfScript.includes('didomi.io') || urlOfScript.includes('didomi.mgr.consensu.org')) {
                         this._cmp = new NotYetImplementedCmp(7, this.targetNode, 'Didomi', urlOfScript);
                         break;
                     } else if (urlOfScript.includes('baycloud.com') || urlOfScript.includes('consenthub.mgr.consensu.org')) {

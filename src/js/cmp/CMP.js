@@ -98,7 +98,6 @@ export default class CMP {
         } else {
             // ping result was set, so we wait for the reset to kick in.
         }
-        Utils.log("PingResult:" + pingResult);
     }
 
     /**
@@ -152,7 +151,8 @@ export default class CMP {
                 }
                 break;
             case enumeration.WAIT_FOR_TIME_FRAME:
-                this._timeoutForBackendCall = setTimeout(this.triggerBackendCall, 5000);
+                this._reset = true;
+                this._timeoutForBackendCall = setTimeout(this.triggerBackendCall.bind(this), 5000);
                 break;
             case enumeration.DO_NOT_WAIT:
                 this.triggerBackendCall();
@@ -167,9 +167,12 @@ export default class CMP {
      */
 
     triggerBackendCall() {
+        Utils.log("Trigger Callback now" + this._name);
         // in this case, there is no pingResult, so we replace the variable by an Object
         if (this._pingResult === false)
             this._pingResult = {};
+
+        Utils.log(this._pingResult);
 
         // we add this manually
         this._pingResult.cmpId = this._cmpId;

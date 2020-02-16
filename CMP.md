@@ -24,6 +24,11 @@ https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Fr
 https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/CMP%20JS%20API%20v1.1%20Final.md#consent-management-provider-javascript-api-v11-transparency--consent-framework)
 
 
+Quick Check für JavaScript Integration
+```
+this.__cmp("ping", 2, function(pingResult, success){alert(JSON.stringify(pingResult));});
+```
+
 # [traffective](https://traffective.com/cmp/)
 
 ## Variant with Div Overlay with several buttons
