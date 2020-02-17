@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "message": "Minimal Consent"
+  },
+  "appShort": {
+    "message": "Una estensione browser che te libera degli avvisi sui cookie."
+  },
+  "appDesc": {
+    "message": "Minimal Consent si prende cura degli avvisi sui cookie: Minimal Consent automaticamente rifuite tutti i cookie che non servono a fare funzzionare de la pagina web."
+  },
+  "longText": {
+    "message": "Dall’inizio del 2018 la normativa dell’UE GDPR forza tutte le pagine web di chiedere il permesso dagli utenti per usare i cookie. La cosa molta possitiva: adesso gli utenti hanno il controllo di questo successe con le sue dati personali. I conduttori degli apparizioni online non possono più collezionare dati personali senza il sapere delle persone.\n\nPerò gli avvisi sui cookie sono irritanti perché bloccono l’esperienza quando navigare su internet.\n\nMinimal Consent aiutati: Responde tutti gli avvisi sui cookie automaticamente. Permette soltanto i cookie che sono necessari per fare funzzionare lo sito. Tutti i cookie che servono esclusivamente per fare il monitoragio sul comportamento degli utenti Minimal Consent rifuite.\n\nMinimal Consent già funzziona su molte pagine web e ingradisce in modo continuativo. Se trovi una pagina web dove l’avviso sui cookie ancora apparisce semplicemente scrivi una e-mail sul team Minimal Consent."
+  }
+}
