@@ -7,5 +7,8 @@
   },
   "appDesc": {
     "message": "Minimal Consent automatically ensures that only functional cookies are dropped and thereby blocks annoying cookie banners."
+  },
+  "longText": {
+    "message": "Since beginning of 2018 GDPR came into play on all websites offered to users living within the European Union. Finally users have full control and transparency on how website providers gather and use their data. Unfortunately users now find huge and annoying cookie banners on all websites. Often a lot of clicks and reading is necessary to deny gathering and usage of their personal data.\nMinimal consent is here to help. Minimal Consent answers the cookie banner for users. Only the essential cookies will be accepted. All other cookies such as Tracking and marketing cookies will be denied. Thus minimal consent takes care of users’ data privacy by allowing a seamless browsing experience. All is working that fast so users won’t even see the cookie banner anymore. \nMinimal Consent is already working on a lot of websites and will be constantly enhanced. Missing websites can be sent to the development team of Minimal Consent quickly and easily in order to enhance Minimal Consent accordingly."
   }
 }

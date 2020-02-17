@@ -7,5 +7,8 @@
   },
   "appDesc": {
     "message": "Minimal Consent kümmert sich darum, dass nur funktionale Cookies abgelegt werden und klickt Cookie Banner für dich weg."
+  },
+  "longText": {
+    "message": "Seit Frühjahr 2018 ist die Datenschutzgrundverordnung auf allen Webseiten, die Bürger der EU besuchen, präsent. Endlich haben Endnutzer die Kontrolle darüber, wie Betreiber von Internetseiten ihre Daten nutzen dürfen. Leider geht das einher mit großflächigen und oft störenden Cookiebannern. Meist sind mehrere Klicks notwendig, der Datensammlung und -verarbeitung zu widersprechen. Dies stört das Surferlebnis. Minimal Consent schafft hier Abhilfe: Minimal Consent beantwortet die Cookiebanner für den Nutzer automatisch. Es werden nur die notwendigen Cookies akzeptiert, alle weiteren Tracking- und Marketingcookies werden abgelehnt. Somit sorgt Minimal Consent dafür, dass die Daten beim Nutzer bleiben und schenkt ihnen somit ein ungestörtes Surferlebnis. Minimal Consent funtioniert schon auf einer Vielzahl von Webseiten und wird ständig auf weitere ausgeweitet. Fehlende Webseiten können schnell und einfach an das Entwicklerteam von Minimal Consent geschickt werden."
   }
 }
