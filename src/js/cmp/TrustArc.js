@@ -4,14 +4,13 @@ import Utils from "../Utils";
 import CMP from "./CMP";
 
 
-export default class Truste extends CMP {
+export default class TrustArc extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(node, "Truste", scriptUrl);
+    constructor(node, scriptUrl, backendCall) {
+        super(41, node, "TrustArc Inc", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true, backendCall);
     }
 
     handleCmp() {
-        Utils.log('handleTruste');
         // 1st Variant with iFrame
         const trusteBoxOverlay = "div.truste_box_overlay";
         let divTruste = super.queryNodeSelector(trusteBoxOverlay);

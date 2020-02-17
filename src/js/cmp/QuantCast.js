@@ -6,13 +6,11 @@ import CMP from "./CMP";
 
 export default class QuantCast extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(node, "QuantCast", scriptUrl);
+    constructor(node, scriptUrl, backendCall) {
+        super(10, node, "Quantcast International Limited", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
     }
 
     handleCmp() {
-        Utils.log('handleQuantcast');
-
         const purpose = "a#qc-cmp-purpose-button";
         let purposeButton = super.queryNodeSelector(purpose);
 

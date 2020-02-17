@@ -5,17 +5,12 @@ import CMP from "./CMP";
 
 export default class CustomImpl extends CMP {
 
-    constructor(node, buttonToClick, scriptUrl) {
-        super(node, [], "Custom Implementation", scriptUrl);
+    constructor(node, buttonToClick, backendCall) {
+        super(0, node, "Custom Implementation", "na", CMP.cmpType.DO_NOT_WAIT, true, backendCall);
         this._button = buttonToClick;
     }
 
-    static urlPattern() {
-        return urlPattern;
-    }
-
     handleCmp() {
-        Utils.log('Custom Implementation ');
         let button = super.queryNodeSelector(this._button);
         let minimalConsent = super.queryNodeSelector(super.minimalConsentLink);
 

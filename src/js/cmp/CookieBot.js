@@ -6,13 +6,11 @@ import CMP from "./CMP";
 
 export default class CookieBot extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(node, "CookieBot", scriptUrl);
+    constructor(node, scriptUrl, backendCall) {
+        super(134, node, "CookieBot", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true, backendCall);
     }
 
     handleCmp() {
-        Utils.log("handleCookiebot");
-
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = super.queryNodeSelectorAll(cookiebotCheckboxesSelector);
 

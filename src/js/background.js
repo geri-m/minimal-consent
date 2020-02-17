@@ -6,16 +6,18 @@ const dateFormat = require('dateformat'); // from library
 /**
  * This Listener is required to receive message from the Content-Script. Out of th Listener we trigger the backend Call.
  */
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        // we make sure all relevant fields are set and then trigger the call.
-        if (request.from === "contentscript" && request.cmp && request.cmp_version) {
-            logBackend(request.cmp, request.cmp_version, sender.tab.url);
-        }
-    });
+chrome.runtime.onMessage.addListener(messageHandler);
 
+function messageHandler(request, sender, sendResponse) {
+    Utils.log("messageHandler: " + JSON.stringify(request));
+    // we make sure all relevant fields are set and then trigger the call.
+    if (request.from === "contentscript" && request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
+        // for Security Reasons, we pass each Element separably over to the insert Method.
+        logBackend(request.cmp, request.cmpScripUrl, sender.tab.url, request.pingResult, request.implemented);
+    }
+}
 
-function logBackend(cmp, cmpVersion, url) {
+function logBackend(cmp, cmpScripUrl, url, pingResult, implemented) {
     // key for the storage to have the blocking history there.
     const historyKeyOfStorage = "history";
     let xhr = new XMLHttpRequest();
@@ -23,15 +25,22 @@ function logBackend(cmp, cmpVersion, url) {
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json");
+
     let requestJson = "{\n" +
+        "    \"url\" : \"" + url + "\"," +
         "    \"cmp\": \"" + cmp + "\"," +
-        "    \"cmp-version\": \"" + cmpVersion + "\"," +
-        "    \"url\" : \"" + url + "\"" +
+        "    \"cmpScriptUrl\": \"" + cmpScripUrl + "\"," +
+        "    \"pingResult\" : " + JSON.stringify(pingResult) + "," +
+        "    \"implemented\" : " + implemented +
         "}";
+
+    // Sanity Check, so we only send correct data to the backend.
+    Utils.log("requestJson:" + requestJson);
+    JSON.parse(requestJson);
     chrome.browserAction.setIcon({path: "./images/icon-48x48-ok.png"});
     setTimeout(turnImageBack, 3000);
     xhr.send(requestJson);
-
+    Utils.log("Backendcall done" + requestJson);
 
     let row = {};
     row.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');

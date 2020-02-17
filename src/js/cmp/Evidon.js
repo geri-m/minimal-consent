@@ -6,13 +6,11 @@ import CMP from "./CMP";
 
 export default class Evidon extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(node, "Evidon", scriptUrl);
+    constructor(node, scriptUrl, backendCall) {
+        super(18, node, "Evidon, Inc.", scriptUrl, CMP.cmpType.DO_NOT_WAIT, true, backendCall);
     }
 
-
     handleCmp() {
-        Utils.log('handleEvidonx');
         const evidonDenyAll = "button#_evidon-decline-button";
 
         let button = super.queryNodeSelector(evidonDenyAll);

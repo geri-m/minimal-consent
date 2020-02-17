@@ -5,13 +5,11 @@ import CMP from "./CMP";
 
 export default class UserCentrics extends CMP {
 
-    constructor(node, scriptUrl, pingresult) {
-        super(node, "UserCentrics", scriptUrl, pingresult);
+    constructor(node, scriptUrl, backendCall) {
+        super(5, node, "Usercentrics GmbH", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
     }
 
     handleCmp() {
-        Utils.log('handleUserCentrics');
-
         // we are looking for a banner and if this banner is visible, we then inject the javascript.
         const ucBannerContent = 'div.uc-banner-content';
         let banner = super.queryNodeSelector(ucBannerContent);

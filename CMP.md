@@ -24,6 +24,11 @@ https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Fr
 https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/CMP%20JS%20API%20v1.1%20Final.md#consent-management-provider-javascript-api-v11-transparency--consent-framework)
 
 
+Quick Check für JavaScript Integration
+```
+this.__cmp("ping", 2, function(pingResult, success){alert(JSON.stringify(pingResult));});
+```
+
 # [traffective](https://traffective.com/cmp/)
 
 ## Variant with Div Overlay with several buttons
@@ -61,13 +66,13 @@ So what we do, is inject a button which contains a javascript and then press thi
 - [usercentrics](https://www.usercentrics.de/)
 - [Andreas Stocker](https://www.andreasstocker.at/)
 
-# [Trustarc](https://www.trustarc.com) aka Truste
+# [Trustarc](https://www.trustarc.com) aka TrustArc
 
 ## Variant 1 iFrame 
 
 ### Version v1.7 (Release up from 220)
 
-Truste integrates a JavaScript on the Page as well as an iFrame. The [iFrame](https://consent-pref.trustarc.com/?type=forbes&site=forbes.com&action=notice&country=de&locale=de&behavior=expressed&layout=default_eu&from=https://consent.trustarc.com/) holds the UI for the interaction with the 
+TrustArc integrates a JavaScript on the Page as well as an iFrame. The [iFrame](https://consent-pref.trustarc.com/?type=forbes&site=forbes.com&action=notice&country=de&locale=de&behavior=expressed&layout=default_eu&from=https://consent.trustarc.com/) holds the UI for the interaction with the 
 customer. The WebSite (JavaScript [notice.js](https://consent.trustarc.com/asset/notice.js/v/v1.7-220)) uses Message passing
 via ```iframe.postMessage()``` to send and ```window.addEventListener()``` to receive information from the iFrame. 
 
@@ -88,7 +93,7 @@ this.truste.eu.prefclosebutton();
 ## Sample Pages
 
 - [Forbes](https://www.forbes.com)
-
+- [Docker](https://www.docker.com)
 ### Other functions in the notice.js
 
 #### Versions

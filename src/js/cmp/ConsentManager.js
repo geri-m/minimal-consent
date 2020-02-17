@@ -6,13 +6,11 @@ import CMP from "./CMP";
 
 export default class ConsentManager extends CMP {
 
-    constructor(node, scriptUrl) {
-        super(node, "ConsentManager", scriptUrl);
+    constructor(node, scriptUrl, backendCall) {
+        super(31, node, "ConsentManager.net", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
     }
 
-
     handleCmp() {
-        Utils.log('handleConsentManager');
         const deny = '#cmpbntnotxt';
         let buttonDeny = super.queryNodeSelector(deny);
         if (Utils.objectClickable(buttonDeny) && super.state === 0) {
