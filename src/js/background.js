@@ -13,42 +13,35 @@ function messageHandler(request, sender, sendResponse) {
     // we make sure all relevant fields are set and then trigger the call.
     if (request.from === "contentscript" && request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
         // for Security Reasons, we pass each Element separably over to the insert Method.
-        logBackend(request.cmp, request.cmpScripUrl, sender.tab.url, request.pingResult, request.implemented);
+        let requestJson = {};
+        requestJson.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
+        requestJson.url = sender.tab.url;
+        requestJson.cmp = request.cmp;
+        requestJson.cmpScriptUrl = request.cmpScripUrl;
+        requestJson.pingResult = request.pingResult;
+        requestJson.implemented = request.implemented;
+
+
+        logBackend(requestJson);
+        storeRequest(requestJson);
+        switchIcon(requestJson.implemented);
     }
 }
 
-function logBackend(cmp, cmpScripUrl, url, pingResult, implemented) {
-    // key for the storage to have the blocking history there.
-    const historyKeyOfStorage = "history";
+function logBackend(requestJson) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", 'https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/successfulConsent', true);
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json");
-
-    let requestJson = "{\n" +
-        "    \"url\" : \"" + url + "\"," +
-        "    \"cmp\": \"" + cmp + "\"," +
-        "    \"cmpScriptUrl\": \"" + cmpScripUrl + "\"," +
-        "    \"pingResult\" : " + JSON.stringify(pingResult) + "," +
-        "    \"implemented\" : " + implemented +
-        "}";
-
     // Sanity Check, so we only send correct data to the backend.
-    Utils.log("requestJson:" + requestJson);
-    JSON.parse(requestJson);
-    chrome.browserAction.setIcon({path: "./images/icon-48x48-ok.png"});
-    setTimeout(turnImageBack, 3000);
-    xhr.send(requestJson);
-    Utils.log("Backendcall done" + requestJson);
+    xhr.send(JSON.stringify(requestJson));
+    Utils.log("Backendcall done:" + JSON.stringify(requestJson));
+}
 
-    let row = {};
-    row.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
-    row.url = url;
-    row.cmp = cmp;
-
-    Utils.log(JSON.stringify(row));
-
+function storeRequest(requestJson) {
+    // key for the storage to have the blocking history there.
+    const historyKeyOfStorage = "history";
     chrome.storage.sync.get(historyKeyOfStorage, function (result) {
         Utils.log("Result ist: " + JSON.stringify(result));
 
@@ -60,20 +53,29 @@ function logBackend(cmp, cmpScripUrl, url, pingResult, implemented) {
         }
 
         // Adding the new Row;
-        result.history.push(row);
-
-        //let jsonfile = {};
-        //jsonfile[historyKeyOfStorage] = result;
+        result.history.push(requestJson);
         chrome.storage.sync.set(result, function () {
-            Utils.log('Saved');
+            Utils.log('Saved new history object to Chrome Storage.');
         });
-
     });
-
-
 }
 
-function turnImageBack() {
+
+function switchIcon(implemented) {
+    // implemented CMPs are shown in Green
+    if (implemented) {
+        chrome.browserAction.setIcon({path: "./images/icon-48x48-ok.png"});
+    }
+    // implemented CMPs are shown in red
+    else {
+        chrome.browserAction.setIcon({path: "./images/icon-48x48-dev.png"});
+    }
+
+    setTimeout(turnIconBack, 3000);
+}
+
+
+function turnIconBack() {
     chrome.browserAction.setIcon({path: "./images/icon-48x48-trans.png"});
 }
 
