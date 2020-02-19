@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "message": "Consentimento Mínimo (Minimal Consent)"
+  },
+  "appShort": {
+    "message": "Uma extensão que torna obsoletos os banners de cookie."
+  },
+  "appDesc": {
+    "message": "A Consentimento Mínimo (Minimal Consent) garante automaticamente que somente os cookis funcionam sejam entregues e bloqueia os banners chatos de cookie."
+  },
+  "longText": {
+    "message": "Desde o começo de 2018 a GDPR passou a valor em todos os sites oferecidos a usuários que vivem na União Europeia. Finalmente os usuários têm total controle e transparência de como os provedores de sites coletam e usam seus dados. Mas agora, infelizmente, os usuários encontram enormes banners sobre esses cookies e em todos os sites. Geralmente são necessários muitos cliques e muita leitura para poder negar a coleta e uso dos seus dados pessoais.\nA Consentimento Mínimo veio para ajudar. Ela responde os banners pelos usuários. Somente os cookies essenciais serão aceitos. Todos os outros cookies como os de Tracking (acompanhamento) e de marketing serão negados. Logo, a Consentimento Mínimo cuida da privacidade de dados dos usuários e permite uma experiência de navegação fluida. Tudo funciona tão rápido que os usuários nem verão o banner mais. \nA Consentimento Mínimo (Minimal Consent) já funciona em muitos sites e será continuamente melhorada. Sites que estejam faltando podem ser enviados para o time de desenvolvimento da Consentimento Mínimo de forma rápida e fácil para melhorar a extensão."
+  }
+}
