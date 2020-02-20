@@ -1,7 +1,6 @@
 "use strict";
 
 const dateFormat = require('dateformat'); // from library
-const arrayOfPatterns = {};
 
 export default class Utils {
     static log(message) {

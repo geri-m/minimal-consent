@@ -2,7 +2,6 @@
 
 import Utils from "../Utils";
 
-const contentScript = "contentscript";
 const config = {attributes: true, childList: true, subtree: true};
 const minimalConsentLink = "a.minimal-consent";
 const maximalLimitOfDomChangeTillStop = 100;
