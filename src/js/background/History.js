@@ -9,27 +9,6 @@ export default class History {
     constructor() {
     }
 
-    /*
-        save(requestJson) {
-            return new Promise(function(resolve, reject) {
-            chrome.storage.sync.get(historyKeyOfStorage, function (result) {
-                Utils.log("Data in Storage: " + JSON.stringify(result));
-
-                if (result && result.history && result.history.length) {
-                    // in this case there is already some history.
-                } else {
-                    // no history yet, create empty object.
-                    result.history = [];
-                }
-
-
-                chrome.storage.sync.set(result, function () {
-                    Utils.log('Saved new history object to Chrome Storage.');
-                });
-            });
-        });
-        }
-    */
     load() {
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.get(historyKeyOfStorage, function (result) {
