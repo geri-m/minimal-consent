@@ -8,6 +8,7 @@ window.addEventListener('load', function load(event) {
         cmp: "getHistory",
         from: "popupScript"
     }, function (response) {
-        bkg.console.log("Response: " + JSON.stringify(response));
+        bkg.console.log("Response: " + JSON.stringify(response) + ", Length: " + response.hist.history.length);
+        document.getElementById("cmpCount").textContent = response.hist.history.length;
     });
 });
