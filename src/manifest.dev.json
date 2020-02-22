@@ -43,6 +43,10 @@
     },
     "default_title": "[BETA] Minimal Consent",
     "default_popup": "./popup/popup.html"
+  },
+  "options_ui": {
+    "page": "./options/options.html",
+    "open_in_tab": true
   }
 }
 

@@ -1,8 +1,6 @@
 window.addEventListener('load', function load(event) {
-
     let bkg = chrome.extension.getBackgroundPage();
-
-    bkg.console.log("load");
+    bkg.console.log("PopupJS Loaded");
 
     chrome.runtime.sendMessage({
         cmp: "getHistory",
@@ -11,7 +9,7 @@ window.addEventListener('load', function load(event) {
         bkg.console.log("Response: " + JSON.stringify(response) + ", Length: " + response.count);
         document.getElementById("cmpCount").textContent = response.count;
         let details = document.getElementById("details");
-        bkg.console.log("Last found: " + response.lastFound);
+        bkg.console.log("Last found: " + JSON.stringify(response.lastFound));
         if (typeof response.lastFound !== 'undefined') {
             if (response.lastFound.implemented === true) {
                 details.innerHTML = "Consent for '" + response.lastFound.url + "' for denied at " + response.lastFound.date;
@@ -27,4 +25,17 @@ window.addEventListener('load', function load(event) {
             details.innerHTML = "You can submit this URL and we will add this as a feature request, if there was a consent banner.";
         }
     });
+
+
+    document.querySelector('#go-to-options').addEventListener('click', function () {
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        } else {
+            window.open(chrome.runtime.getURL('./options/options.html'));
+        }
+    });
+
 });
+
+
+
