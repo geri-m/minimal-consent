@@ -3,7 +3,6 @@ window.addEventListener('load', function load(event) {
     bkg.console.log("PopupJS Loaded");
 
     chrome.runtime.sendMessage({
-        cmp: "getHistory",
         from: "popupScript"
     }, function (response) {
         bkg.console.log("Response: " + JSON.stringify(response) + ", Length: " + response.count);

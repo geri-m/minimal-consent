@@ -24,6 +24,9 @@ function messageHandler(request, sender, sendResponse) {
         case "popupScript":
             handlePopupScript(request, sender, sendResponse);
             break;
+        case "optionsScript":
+            handleOptionsScript(request, sender, sendResponse);
+            break;
         default:
             break;
     }
@@ -68,9 +71,7 @@ async function handlePopupScript(request, sender, sendResponse) {
     let count = hist.history.filter((obj) => obj.implemented === true).length;
 
     for (let i = 0; i < hist.history.length; i++) {
-        Utils.log("Element in History:" + hist.history[i].url);
         if (hist.history[i].url.includes(host)) {
-            Utils.log("found");
             lastFound = hist.history[i];
             break;
         }
@@ -80,8 +81,12 @@ async function handlePopupScript(request, sender, sendResponse) {
     responseJson.from = backgroundScript;
     responseJson.count = count;
     responseJson.lastFound = lastFound;
-    Utils.log("Send History to Popup: " + JSON.stringify(responseJson));
     sendResponse(responseJson);
+}
+
+async function handleOptionsScript(request, sender, sendResponse) {
+    let hist = await history.load();
+    sendResponse(hist);
 }
 
 function getUrl() {
@@ -92,7 +97,6 @@ function getUrl() {
         });
     });
 }
-
 
 function logBackend(requestJson) {
     request.send(requestJson);
