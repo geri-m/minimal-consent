@@ -9,7 +9,6 @@ const dateFormat = require('dateformat'); // from library
 let request = new Request();
 let history = new History();
 let icon = new Icon();
-
 const backgroundScript = "backgroundscript";
 
 /**
@@ -18,10 +17,6 @@ const backgroundScript = "backgroundscript";
 chrome.runtime.onMessage.addListener(messageHandler);
 
 function messageHandler(request, sender, sendResponse) {
-    Utils.log("sender: " + JSON.stringify(sender));
-    Utils.log("messageHandler: " + JSON.stringify(request));
-    // we make sure all relevant fields are set and then trigger the call.
-
     switch (request.from) {
         case "contentscript":
             handleContentScript(request, sender, sendResponse);
@@ -45,7 +40,6 @@ function handleContentScript(request, sender, sendResponse) {
         requestJson.cmpScriptUrl = request.cmpScripUrl;
         requestJson.pingResult = request.pingResult;
         requestJson.implemented = request.implemented;
-
         logBackend(requestJson);
         storeRequest(requestJson);
         switchIcon(requestJson.implemented);
@@ -53,13 +47,50 @@ function handleContentScript(request, sender, sendResponse) {
 }
 
 async function handlePopupScript(request, sender, sendResponse) {
+    let tabLink = await getUrl();
+    Utils.log("Current URL: " + tabLink);
+
     let hist = await history.load();
+    let parser = document.createElement('a');
+    parser.href = String(tabLink);
+    let host = parser.hostname;
+
+    let lastFound = {};
+
+    // sort array by date.
+    hist.history.sort(function (a, b) {
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.date) - new Date(a.date);
+    });
+
+    // counting all elements we blocked.
+    let count = hist.history.filter((obj) => obj.implemented === true).length;
+
+    for (let i = 0; i < hist.history.length; i++) {
+        Utils.log("Element in History:" + hist.history[i].url);
+        if (hist.history[i].url.includes(host)) {
+            Utils.log("found");
+            lastFound = hist.history[i];
+            break;
+        }
+    }
 
     let responseJson = {};
     responseJson.from = backgroundScript;
-    responseJson.hist = hist;
+    responseJson.count = count;
+    responseJson.lastFound = lastFound;
     Utils.log("Send History to Popup: " + JSON.stringify(responseJson));
     sendResponse(responseJson);
+}
+
+function getUrl() {
+    return new Promise(function (resolve, reject) {
+        chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+            let url = tabs[0].url;
+            resolve(url);
+        });
+    });
 }
 
 
