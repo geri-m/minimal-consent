@@ -10,14 +10,24 @@
         width: 400px;
         height: 150px;
     }
+
+    .row {
+        padding: 3px;
+    }
+
 </style>
 <script src="popup.js" type="text/javascript"></script>
 <body>
 <div id="container">
-    <p>We already handled <span id="cmpCount">0</span> consent Consent Popups for you.</p>
-    <p id="details"></p>
-    <p>For more information please check our <a href="https://www.minimal-consent.com" target="_blank">website</a>.</p>
-    <a href="#" id="go-to-options">History</a>
+    <div class="row" id="status">
+        <p id="details">Some Details</p>
+    </div>
+    <div class="row">
+        <p>Popups Blocked: <span id="cmpCount">0</span>&nbsp;(<a href="#" id="go-to-options">History</a>)</p>
+    </div>
+    <div class="row">
+        <p><a href="https://www.minimal-consent.com" target="_blank">https://www.minimal-consent.com</a></p>
+    </div>
 </div>
 </body>
 </html>

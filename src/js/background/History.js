@@ -28,21 +28,36 @@ export default class History {
     }
 
     // https://www.freecodecamp.org/news/javascript-from-callbacks-to-async-await-1cc090ddad99/
-    async save(objectToStore) {
+    async save(historyItemToStore) {
         // get the data from the storage
         let history = await this.load();
-        // Adding the new Row;
-        history.history.push(objectToStore);
-
         Utils.log("Data loaded");
 
-        return new Promise(function (resolve, reject) {
-            chrome.storage.sync.set(history, function () {
-                Utils.log('Saved new history object to Chrome Storage.');
-                // store worked, resolve now.
-                resolve();
+        // check if there is an entry with this URL
+        if (history.history.filter((historyItem) => historyItem.url.includes(historyItemToStore.url)).length <= 0) {
+            // Adding the new Row;
+            history.history.push(historyItemToStore);
+            Utils.log("History Item Stored for Host: " + historyItemToStore.url);
+
+            // sort array by date.
+            history.history.sort(function (a, b) {
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(b.date) - new Date(a.date);
             });
-        });
+            Utils.log("New history sorted");
+
+            return new Promise(function (resolve, reject) {
+                chrome.storage.sync.set(history, function () {
+                    Utils.log('Saved new history object to Chrome Storage.');
+                    // store worked, resolve now.
+                    resolve();
+                });
+            });
+        } else {
+            Utils.log("There was already an Entry for: " + historyItemToStore.url + ". No need to update Data in Storage.");
+        }
+
     }
 
 }

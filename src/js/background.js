@@ -32,55 +32,63 @@ function messageHandler(request, sender, sendResponse) {
     }
 }
 
-function handleContentScript(request, sender, sendResponse) {
+async function handleContentScript(request, sender, sendResponse) {
     Utils.log("handleContentScript");
-    if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
-        // for Security Reasons, we pass each Element separably over to the insert Method.
-        let requestJson = {};
-        requestJson.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
-        requestJson.url = sender.tab.url;
-        requestJson.cmp = request.cmp;
-        requestJson.cmpScriptUrl = request.cmpScripUrl;
-        requestJson.pingResult = request.pingResult;
-        requestJson.implemented = request.implemented;
-        logBackend(requestJson);
-        storeRequest(requestJson);
-        switchIcon(requestJson.implemented);
+    let tabLink = await getUrl();
+    let host = getHostFromUrl(tabLink);
+
+    // only HTTP Pages will be supported
+    if (!tabLink.includes("http://") || !tabLink.includes("https://")) {
+        if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
+            // for Security Reasons, we pass each Element separably over to the insert Method.
+            let requestJson = {};
+            requestJson.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
+            requestJson.url = host;
+            requestJson.cmp = request.cmp;
+            requestJson.cmpScriptUrl = request.cmpScripUrl;
+            requestJson.pingResult = request.pingResult;
+            requestJson.implemented = request.implemented;
+            logBackend(requestJson);
+            storeRequest(requestJson);
+            switchIcon(requestJson.implemented);
+        }
+    } else {
+        Utils.log("handleContentScript: Current Page is not HTTP/HTTPS");
     }
 }
 
 async function handlePopupScript(request, sender, sendResponse) {
     let tabLink = await getUrl();
-    Utils.log("Current URL: " + tabLink);
+    Utils.log("handlePopupScript: Current URL: " + tabLink);
 
     let hist = await history.load();
-    let parser = document.createElement('a');
-    parser.href = String(tabLink);
-    let host = parser.hostname;
+    let host = getHostFromUrl(tabLink);
 
     let lastFound = {};
 
-    // sort array by date.
-    hist.history.sort(function (a, b) {
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b.date) - new Date(a.date);
-    });
+    // only HTTP Pages will be supported
+    if (!tabLink.includes("http://") || !tabLink.includes("https://")) {
+
+
+        for (let i = 0; i < hist.history.length; i++) {
+            if (hist.history[i].url.includes(host)) {
+                lastFound = hist.history[i];
+                break;
+            }
+        }
+    } else {
+        Utils.log("handlePopupScript: Current Page is not HTTP/HTTPS");
+    }
 
     // counting all elements we blocked.
-    let count = hist.history.filter((obj) => obj.implemented === true).length;
-
-    for (let i = 0; i < hist.history.length; i++) {
-        if (hist.history[i].url.includes(host)) {
-            lastFound = hist.history[i];
-            break;
-        }
-    }
+    let count = hist.history.filter((historyItem) => historyItem.implemented === true).length;
 
     let responseJson = {};
     responseJson.from = backgroundScript;
     responseJson.count = count;
     responseJson.lastFound = lastFound;
+    responseJson.currentUrl = tabLink;
+    responseJson.currentHost = host;
     sendResponse(responseJson);
 }
 
@@ -110,4 +118,9 @@ function switchIcon(implemented) {
     icon.switchIcon(implemented);
 }
 
+function getHostFromUrl(link) {
+    let parser = document.createElement('a');
+    parser.href = String(link);
+    return parser.hostname;
+}
 
