@@ -10,7 +10,6 @@ const dateFormat = require('dateformat'); // from library
 let request = new Request();
 let history = new History();
 let icon = new Icon();
-const backgroundScript = "backgroundscript";
 
 /**
  * This Listener is required to receive message from the Content-Script. Out of th Listener we trigger the backend Call.
@@ -61,26 +60,19 @@ async function handlePopupScript(request, sender, sendResponse) {
     let url = await getUrl();
     Utils.log("handlePopupScript: Current URL: " + url);
 
-    let hist = await history.load();
     let lastFound = {};
 
     // only HTTP Pages will be supported
     if (url.isHttp) {
-        for (let i = 0; i < hist.history.length; i++) {
-            if (hist.history[i].url.includes(url.host)) {
-                lastFound = hist.history[i];
-                break;
-            }
-        }
+        lastFound = await history.getLastFound(url.host);
     } else {
         Utils.log("handlePopupScript: Current Page is not HTTP/HTTPS");
     }
 
     // counting all elements we blocked.
-    let count = hist.history.filter((historyItem) => historyItem.implemented === true).length;
+    let count = await history.getAmountOfUrlsBlocked();
 
     let responseJson = {};
-    responseJson.from = backgroundScript;
     responseJson.count = count;
     responseJson.lastFound = lastFound;
     responseJson.currentUrl = url;
@@ -88,8 +80,12 @@ async function handlePopupScript(request, sender, sendResponse) {
 }
 
 async function handleOptionsScript(request, sender, sendResponse) {
-    let hist = await history.load();
-    sendResponse(hist);
+    if (request.cmd === "getHistory") {
+        let hist = await history.load();
+        sendResponse(hist);
+    } else if (request.cmd === "clearHistory") {
+        await history.clearStorage();
+    }
 }
 
 function getUrl() {

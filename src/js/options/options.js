@@ -3,7 +3,8 @@ window.addEventListener('load', function load(event) {
     bkg.console.log("OptionsJS Loaded");
 
     chrome.runtime.sendMessage({
-        from: "optionsScript"
+        from: "optionsScript",
+        cmd: "getHistory"
     }, function (response) {
         bkg.console.log("Response: " + JSON.stringify(response) + ", Length: " + response.count);
         if (response && response.history && response.history.length) {
@@ -19,12 +20,25 @@ window.addEventListener('load', function load(event) {
         }
     });
 
+    document.querySelector('#clear-history').addEventListener('click', function () {
+        chrome.runtime.sendMessage({
+            from: "optionsScript",
+            cmd: "clearHistory"
+        }, function (response) {
+            bkg.console.log("Clear History");
+        });
+        window.close();
+    });
+
+    document.querySelector('#close-window').addEventListener('click', function () {
+        // check if the browsers supports Option Pages.
+        bkg.console.log("Closing Window");
+        window.close();
+    });
 });
 
 
 function myFunction(item, index) {
-
-
     let table = document.getElementById("history");
     let row = document.createElement('tr');
 
@@ -35,11 +49,15 @@ function myFunction(item, index) {
     date.innerHTML = item.date;
 
     let cmp = document.createElement('td');
-    cmp.innerHTML = item.cmp;
+
+    if (item.cmp === "na") {
+        cmp.innerHTML = "unkown";
+    } else {
+        cmp.innerHTML = item.cmp;
+    }
 
     let implemented = document.createElement('td');
     implemented.innerHTML = item.implemented;
-
 
     let tcfVersion = "not defined";
     if (typeof item.pingResult.gdprAppliesGlobally !== 'undefined' && typeof item.pingResult.cmpLoaded !== 'undefined') {
@@ -52,13 +70,11 @@ function myFunction(item, index) {
 
     let tcf = document.createElement('td');
     tcf.innerHTML = tcfVersion;
-
     row.appendChild(date);
     row.appendChild(url);
     row.appendChild(cmp);
     row.appendChild(tcf);
     row.appendChild(implemented);
-
     table.appendChild(row);
 }
 

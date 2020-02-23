@@ -57,7 +57,38 @@ export default class History {
         } else {
             Utils.log("There was already an Entry for: " + historyItemToStore.url + ". No need to update Data in Storage.");
         }
-
     }
 
+    async getLastFound(host) {
+        // get the data from the storage
+        let history = await this.load();
+        Utils.log("Data loaded");
+
+        for (let i = 0; i < history.history.length; i++) {
+            if (history.history[i].url.includes(host)) {
+                return history.history[i];
+            }
+        }
+
+        return {};
+    }
+
+    async getAmountOfUrlsBlocked() {
+        // get the data from the storage
+        let history = await this.load();
+        Utils.log("Data loaded");
+        return history.history.filter((historyItem) => historyItem.implemented === true).length;
+    }
+
+    clearStorage() {
+        let history = {};
+        history.history = {};
+        return new Promise(function (resolve, reject) {
+            chrome.storage.sync.set(history, function () {
+                Utils.log('Storage Cleared');
+                // store worked, resolve now.
+                resolve();
+            });
+        });
+    }
 }
