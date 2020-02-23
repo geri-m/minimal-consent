@@ -6,13 +6,9 @@
         background-color: #eeeeee;
     }
 
-    #container {
-        width: 400px;
-        height: 150px;
-    }
-
     .row {
-        padding: 3px;
+        padding: 5px;
+        white-space: nowrap;
     }
 
 </style>
@@ -20,13 +16,13 @@
 <body>
 <div id="container">
     <div class="row" id="status">
-        <p id="details">Some Details</p>
+        <span id="details">Minimal Consent</span>
     </div>
     <div class="row">
-        <p>Popups Blocked: <span id="cmpCount">0</span>&nbsp;(<a href="#" id="go-to-options">History</a>)</p>
+        <span>Popups Blocked: <span id="cmpCount">0</span>&nbsp;(<a href="#" id="go-to-options">History</a>)</span>
     </div>
     <div class="row">
-        <p><a href="https://www.minimal-consent.com" target="_blank">https://www.minimal-consent.com</a></p>
+        <span><a href="https://www.minimal-consent.com" target="_blank">https://www.minimal-consent.com</a></span>
     </div>
 </div>
 </body>

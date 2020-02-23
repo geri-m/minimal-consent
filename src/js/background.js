@@ -4,6 +4,7 @@ import Utils from "./Utils";
 import Request from "./background/Request";
 import History from "./background/History";
 import Icon from "./background/Icon"
+import URL from "./entities/URL";
 
 const dateFormat = require('dateformat'); // from library
 let request = new Request();
@@ -34,16 +35,15 @@ function messageHandler(request, sender, sendResponse) {
 
 async function handleContentScript(request, sender, sendResponse) {
     Utils.log("handleContentScript");
-    let tabLink = await getUrl();
-    let host = getHostFromUrl(tabLink);
+    let link = await getUrl();
 
     // only HTTP Pages will be supported
-    if (!tabLink.includes("http://") || !tabLink.includes("https://")) {
+    if (link.isHttp) {
         if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
             // for Security Reasons, we pass each Element separably over to the insert Method.
             let requestJson = {};
             requestJson.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
-            requestJson.url = host;
+            requestJson.url = link.host;
             requestJson.cmp = request.cmp;
             requestJson.cmpScriptUrl = request.cmpScripUrl;
             requestJson.pingResult = request.pingResult;
@@ -58,20 +58,16 @@ async function handleContentScript(request, sender, sendResponse) {
 }
 
 async function handlePopupScript(request, sender, sendResponse) {
-    let tabLink = await getUrl();
-    Utils.log("handlePopupScript: Current URL: " + tabLink);
+    let url = await getUrl();
+    Utils.log("handlePopupScript: Current URL: " + url);
 
     let hist = await history.load();
-    let host = getHostFromUrl(tabLink);
-
     let lastFound = {};
 
     // only HTTP Pages will be supported
-    if (!tabLink.includes("http://") || !tabLink.includes("https://")) {
-
-
+    if (url.isHttp) {
         for (let i = 0; i < hist.history.length; i++) {
-            if (hist.history[i].url.includes(host)) {
+            if (hist.history[i].url.includes(url.host)) {
                 lastFound = hist.history[i];
                 break;
             }
@@ -87,8 +83,7 @@ async function handlePopupScript(request, sender, sendResponse) {
     responseJson.from = backgroundScript;
     responseJson.count = count;
     responseJson.lastFound = lastFound;
-    responseJson.currentUrl = tabLink;
-    responseJson.currentHost = host;
+    responseJson.currentUrl = url;
     sendResponse(responseJson);
 }
 
@@ -100,7 +95,7 @@ async function handleOptionsScript(request, sender, sendResponse) {
 function getUrl() {
     return new Promise(function (resolve, reject) {
         chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-            let url = tabs[0].url;
+            let url = new URL(tabs[0].url);
             resolve(url);
         });
     });
@@ -117,10 +112,3 @@ async function storeRequest(requestJson) {
 function switchIcon(implemented) {
     icon.switchIcon(implemented);
 }
-
-function getHostFromUrl(link) {
-    let parser = document.createElement('a');
-    parser.href = String(link);
-    return parser.hostname;
-}
-
