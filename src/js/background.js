@@ -36,8 +36,15 @@ async function handleContentScript(request, sender, sendResponse) {
     Utils.log("handleContentScript");
     let link = await getUrl();
 
+    // check, if we have already something in the local storage.
+    let lastFound = await history.getLastFound(link.host);
+
+    // if there is already something, don't process further.
+    if (Object.entries(lastFound).length !== 0) {
+        Utils.log("The Page is already in the History. Don't consider further");
+    }
     // only HTTP Pages will be supported
-    if (link.isHttp) {
+    else if (link.isHttp) {
         if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
             // for Security Reasons, we pass each Element separably over to the insert Method.
             let requestJson = {};
@@ -91,8 +98,13 @@ async function handleOptionsScript(request, sender, sendResponse) {
 function getUrl() {
     return new Promise(function (resolve, reject) {
         chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-            let url = new URL(tabs[0].url);
-            resolve(url);
+            if (tabs.length > 0) {
+                let url = new URL(tabs[0].url);
+                resolve(url);
+            } else {
+                Utils.log("Tabs length is 0");
+                reject();
+            }
         });
     });
 }
