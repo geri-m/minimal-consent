@@ -7,7 +7,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "./background.bundle.js"
+      "./background.js"
     ]
   },
   "icons": {
@@ -28,7 +28,7 @@
         "<all_urls>"
       ],
       "js": [
-        "./contentscript.bundle.js"
+        "./contentscript.js"
       ],
       "run_at": "document_end",
       "all_frames": true

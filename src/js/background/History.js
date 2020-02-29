@@ -63,14 +63,17 @@ export default class History {
         // get the data from the storage
         let history = await this.load();
         Utils.log("Data loaded");
-
+        let result = {};
         for (let i = 0; i < history.history.length; i++) {
+            Utils.log("Counter: " + i + ", URL: " + history.history[i].url.includes(host));
             if (history.history[i].url.includes(host)) {
-                return history.history[i];
+                Utils.log(JSON.stringify(history.history[i]));
+                result = history.history[i];
             }
         }
 
-        return {};
+        Utils.log("Count: " + Object.entries(result).length);
+        return result;
     }
 
     async getAmountOfUrlsBlocked() {

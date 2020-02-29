@@ -14,6 +14,7 @@ let icon = new Icon();
 /**
  * This Listener is required to receive message from the Content-Script. Out of th Listener we trigger the backend Call.
  */
+
 chrome.runtime.onMessage.addListener(messageHandler);
 
 function messageHandler(request, sender, sendResponse) {
@@ -31,6 +32,7 @@ function messageHandler(request, sender, sendResponse) {
             break;
     }
 }
+
 
 async function handleContentScript(request, sender, sendResponse) {
     Utils.log("handleContentScript");
@@ -120,3 +122,30 @@ async function storeRequest(requestJson) {
 function switchIcon(implemented) {
     icon.switchIcon(implemented);
 }
+
+
+/*** Init CRITICAL Event ***/
+chrome.runtime.onInstalled.addListener(function (details) {
+
+    let pages = [
+        "/test/test-page/integration.html",
+        "/options/options.html"
+    ];
+
+    // Only when the extension is installed for the first time
+    if (details.reason === "install") {
+        pages.forEach((url) => {
+            chrome.tabs.create({
+                active: false,
+                url: chrome.extension.getURL(url),
+            });
+        });
+    } else if (details.reason === "update") {
+        pages.forEach((url) => {
+            chrome.tabs.create({
+                active: false,
+                url: chrome.extension.getURL(url),
+            });
+        });
+    }
+});

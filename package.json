@@ -12,16 +12,13 @@
     "start": "rm -rf ./dist/; webpack --watch --config webpack.start.js",
     "build-dev": "rm -rf ./dist/; webpack --config webpack.dev.js; cd ./dist/; zip -r ../minimal-consent-dev.zip .; cd ..",
     "build": "rm -rf ./dist/; webpack --config webpack.prod.js; cd ./dist/; zip -r ../minimal-consent-prod.zip .; cd ..",
-    "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt",
-    "test": "nyc mocha --require @babel/register --recursive --reporter list",
-    "format": "prettier --write \"{src,client,typings,specs}/**/*.ts\""
+    "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "@babel/register": "^7.0.0",
-    "chai": "^4.2.0",
     "copy-webpack-plugin": "5.0.5",
     "css-loader": "3.2.0",
     "eslint": "^6.6.0",
@@ -30,21 +27,21 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-jasmine": "^2.10.1",
     "file-loader": "4.3.0",
     "fs": "0.0.1-security",
     "fs-extra": "8.1.0",
     "html-loader": "0.5.5",
-    "mocha": "^6.2.2",
-    "nyc": "^14.1.1",
-    "sinon-chrome": "^3.0.1",
     "style-loader": "1.0.0",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
     "webpack-extension-reloader": "^1.1.4",
     "webpack-merge": "^4.2.2",
-    "webpack-obfuscator": "^0.21.0",
     "terser-webpack-plugin": "^2.3.2",
-    "selenium-webdriver": "3.6.0"
+    "jasmine": "^3.5.0",
+    "jasmine-core": "^3.5.0",
+    "webextension-polyfill": "^0.6.0",
+    "webpack-obfuscator": "^0.25.2"
   },
   "eslintConfig": {
     "env": {
@@ -62,11 +59,19 @@
       "eol-last": 0,
       "quotes": [
         2,
-        "single"
+        "double"
       ]
     }
   },
   "dependencies": {
     "dateformat": "^3.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geri-m/minimal-consent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/geri-m/minimal-consent/issues"
+  },
+  "homepage": "https://www.minimal-consent.com"
 }

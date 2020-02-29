@@ -6,7 +6,7 @@ window.addEventListener('load', function load(event) {
         from: "optionsScript",
         cmd: "getHistory"
     }, function (response) {
-        bkg.console.log("Response: " + JSON.stringify(response) + ", Length: " + response.count);
+        bkg.console.log("Response: " + JSON.stringify(response));
         if (response && response.history && response.history.length) {
 
             // sort array by date.
