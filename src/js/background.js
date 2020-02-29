@@ -18,11 +18,16 @@ let icon = new Icon();
 chrome.runtime.onMessage.addListener(messageHandler);
 
 function messageHandler(request, sender, sendResponse) {
+    Utils.log("Request: " + JSON.stringify(request));
+    Utils.log("sender: " + JSON.stringify(sender));
+    Utils.log("sendResponse: " + JSON.stringify(sendResponse));
+
     switch (request.from) {
         case "contentscript":
             handleContentScript(request, sender, sendResponse);
             break;
         case "popupScript":
+            Utils.log("sendResponse: " + JSON.stringify(sendResponse));
             handlePopupScript(request, sender, sendResponse);
             break;
         case "optionsScript":
@@ -67,7 +72,7 @@ async function handleContentScript(request, sender, sendResponse) {
 
 async function handlePopupScript(request, sender, sendResponse) {
     let url = await getUrl();
-    Utils.log("handlePopupScript: Current URL: " + url);
+    Utils.log("handlePopupScript: Current URL: " + JSON.stringify(url));
 
     let lastFound = {};
 
@@ -85,6 +90,14 @@ async function handlePopupScript(request, sender, sendResponse) {
     responseJson.count = count;
     responseJson.lastFound = lastFound;
     responseJson.currentUrl = url;
+
+
+    /*
+    {"count":1,"lastFound":{"cmp":"TrustArc Inc","cmpScriptUrl":"//consent.truste.com/notice?domain=forbes.com&c=teconsent","date":"2020-02-29 18:51:35","implemented":true,"pingResult":{"cmpId":41},"url":"www.forbes.com"},"currentUrl":{"_host":"www.forbes.com","_isHttp":true}}
+     */
+
+    Utils.log("Response to send: " + JSON.stringify(responseJson));
+    Utils.log("Fcuntion: " + JSON.stringify(sendResponse));
     sendResponse(responseJson);
 }
 

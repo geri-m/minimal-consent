@@ -25,7 +25,7 @@ module.exports = merge(parentWebPack, {
                 from: './node_modules/jasmine-core/lib/jasmine-core/*.*',
                 to: './test/jasmine-core/',
                 flatten: true,
-            },
+            },/*
             {
                 from: './node_modules/webextension-polyfill/dist/browser-polyfill.js',
                 to: './lib/',
@@ -33,11 +33,14 @@ module.exports = merge(parentWebPack, {
                 transform: function (content, path) {
                     return content.toString().replace('//# sourceMappingURL=browser-polyfill.js.map', '')
                 }
-            },
+            },*/
+
+            // "webextension-polyfill": "^0.6.0",
+
             {from: './src/manifest.dev.json', to: './manifest.json'},
             {from: './src/images/', to: './images/'},
-            {from: './src/js/popup/popup.html', to: './popup/'},
-            {from: './src/js/options/options.html', to: './options/'},
+            {from: './src/js/popup/', to: './popup/'},
+            {from: './src/js/options/', to: './options/'},
             {from: './src/test/', to: './test/'},
             {from: './src/_locales/', to: './_locales/'}])
     ],

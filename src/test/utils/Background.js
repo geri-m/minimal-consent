@@ -2,8 +2,9 @@
 
 let Background;
 
-let waitInit = (async () => {
-    Background = await browser.runtime.getBackgroundPage();
+let waitInit = ( /* async */ () => {
+    // Background = await chrome.runtime.getBackgroundPage();
+    Background = chrome.extension.getBackgroundPage();
     window.Background = Background
 })();
 
