@@ -13,7 +13,7 @@ export default class ResponseForPopup {
         }
 
         if (this.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
-            this._lastFound = HistoryEntry.class(lastFound);
+            this._lastFound = HistoryEntry.classFromJson(lastFound);
         } else {
             this._lastFound = {};
         }
@@ -42,7 +42,7 @@ export default class ResponseForPopup {
             if (Object.entries(this._lastFound).length > 0) {
                 if (this._lastFound.cmp !== "na") {
                     // found, known, implemented - case 1
-                    if (this._lastFound.isImplemented) {
+                    if (this._lastFound.implemented) {
                         return 1;
                     }
                     // found, known, but not implemented - case 2

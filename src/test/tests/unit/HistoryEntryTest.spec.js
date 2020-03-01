@@ -26,16 +26,16 @@ describe('History Tests', () => {
             expect(he.cmp).toEqual("UserCentrics");
             expect(he.cmpScriptUrl).toEqual("https://www.usercentrics.com/js/latest/bundle.js");
             expect(he.pingResult).toEqual(pr);
-            expect(he.isImplemented).toBeTrue();
+            expect(he.implemented).toBeTrue();
             expect(Object.entries(he).length).toEqual(6);
 
-            let he2 = HistoryEntry.class(he);
+            let he2 = HistoryEntry.classFromJson(he);
             expect(he2.date).toEqual("2020-02-20 10:00:00");
             expect(he2.url).toEqual("https://www.heise.de/");
             expect(he2.cmp).toEqual("UserCentrics");
             expect(he2.cmpScriptUrl).toEqual("https://www.usercentrics.com/js/latest/bundle.js");
             expect(he2.pingResult).toEqual(pr);
-            expect(he2.isImplemented).toBeTrue();
+            expect(he2.implemented).toBeTrue();
             expect(Object.entries(he2).length).toEqual(6);
         });
 

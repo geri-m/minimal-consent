@@ -1,7 +1,7 @@
 "use strict";
 
 import Utils from "../Utils";
-import PingResult from "../entities/PingResult";
+import HistoryEntry from "../entities/HistoryEntry";
 
 const historyKeyOfStorage = "history";
 
@@ -23,15 +23,16 @@ export default class History {
             chrome.storage.sync.get(historyKeyOfStorage, function (result) {
                 Utils.log("Data in Storage: " + JSON.stringify(result));
 
+                let resultArray = [];
+
                 if (result && result.history && result.history.length) {
                     // in this case there is already some history.
-                } else {
-                    // no history yet, create empty object.
-                    result.history = [];
+                    for (let i = 0; i < result.history.length; i++) {
+                        resultArray.push(HistoryEntry.classFromDisk(result.history[i]));
+                    }
                 }
-
                 // if we are good, resolve (equal to an return, but async)
-                resolve(result);
+                resolve(resultArray);
             });
         })
     }
@@ -39,22 +40,25 @@ export default class History {
     // https://www.freecodecamp.org/news/javascript-from-callbacks-to-async-await-1cc090ddad99/
     async save(historyItemToStore) {
         // get the data from the storage
-        let history = await this.load();
+        let resultArray = await this.load();
         Utils.log("Data loaded");
 
         // check if there is an entry with this URL
-        if (history.history.filter((historyItem) => historyItem.url.includes(historyItemToStore.url)).length <= 0) {
+        if (resultArray.filter((historyItem) => historyItem.url.includes(historyItemToStore.url)).length <= 0) {
             // Adding the new Row;
-            history.history.push(historyItemToStore);
+            resultArray.push(historyItemToStore);
             Utils.log("History Item Stored for Host: " + historyItemToStore.url);
 
             // sort array by date.
-            history.history.sort(function (a, b) {
+            resultArray.sort(function (a, b) {
                 // Turn your strings into dates, and then subtract them
                 // to get a value that is either negative, positive, or zero.
                 return new Date(b.date) - new Date(a.date);
             });
             Utils.log("New history sorted");
+
+            let history = {};
+            history.history = resultArray;
 
             return new Promise(function (resolve, reject) {
                 chrome.storage.sync.set(history, function () {
@@ -70,14 +74,14 @@ export default class History {
 
     async getLastFound(host) {
         // get the data from the storage
-        let history = await this.load();
+        let resultArray = await this.load();
         Utils.log("Data loaded");
         let result = {};
-        for (let i = 0; i < history.history.length; i++) {
-            Utils.log("Counter: " + i + ", URL: " + history.history[i].url.includes(host));
-            if (history.history[i].url.includes(host)) {
-                Utils.log(JSON.stringify(history.history[i]));
-                result = history.history[i];
+        for (let i = 0; i < resultArray.length; i++) {
+            Utils.log("Counter: " + i + ", URL: " + resultArray[i].url.includes(host));
+            if (resultArray[i].url.includes(host)) {
+                Utils.log(JSON.stringify(resultArray[i]));
+                result = resultArray[i];
             }
         }
 
@@ -87,9 +91,9 @@ export default class History {
 
     async getAmountOfUrlsBlocked() {
         // get the data from the storage
-        let history = await this.load();
+        let resultArray = await this.load();
         Utils.log("Data loaded");
-        return history.history.filter((historyItem) => historyItem.implemented === true).length;
+        return resultArray.filter((historyItem) => historyItem.implemented === true).length;
     }
 
     clearStorage() {
@@ -114,14 +118,14 @@ export default class History {
                     let modification = false;
                     for (let i = 0; i < result.history.length; i++) {
                         // Okay, there is Ping Result in this Record.
-                        if (typeof result.history[i].pingResult !== 'undefined' && result.history[i].pingResult !== null) {
-                            Utils.log("Migration of Record: #" + i + ": " + JSON.stringify(result.history[i].pingResult));
-                            let pr = PingResult.classForMigration(result.history[i].pingResult);
+                        if (typeof result.history[i] !== 'undefined' && result.history[i] !== null) {
+                            Utils.log("Migration of Record: #" + i + ": " + JSON.stringify(result.history[i]));
+                            let he = HistoryEntry.classFromJson(result.history[i]);
                             // okay, we have at lest one Element with the old Syntax:
-                            if (Object.entries(pr).length > 0) {
+                            if (Object.entries(he).length > 0) {
                                 // put the Update back into the storage.
-                                result.history[i].pingResult = pr;
-                                Utils.log("Record: " + i + " was updated, :" + JSON.stringify(result.history[i].pingResult));
+                                result.history[i] = he;
+                                Utils.log("Record: " + i + " was updated, :" + JSON.stringify(result.history[i]));
                                 modification = true;
                             } // else if (Ping Result is okay)
                         } // there is no Ping Result
@@ -138,13 +142,12 @@ export default class History {
                         });
                         Utils.log("New history sorted");
 
-                        return new Promise(function (resolve, reject) {
-                            chrome.storage.sync.set(result, function () {
-                                Utils.log('Saved new history object to Chrome Storage.');
-                                // store worked, resolve now.
-                                resolve();
-                            });
+                        chrome.storage.sync.set(result, function () {
+                            Utils.log('Saved new history object to Chrome Storage.');
+                            // store worked, resolve now.
+                            resolve(result);
                         });
+
                     } else {
                         Utils.log("There was no modification, so there was no problem");
                     }
@@ -153,6 +156,16 @@ export default class History {
                 resolve(result);
             });
         })
+    }
+
+    async safeToStorage(object) {
+        return new Promise(function (resolve, reject) {
+            chrome.storage.sync.set(object, function () {
+                Utils.log('Saved new history object to Chrome Storage.');
+                // store worked, resolve now.
+                resolve();
+            });
+        });
     }
 
 

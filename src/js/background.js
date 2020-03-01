@@ -58,7 +58,7 @@ async function handleContentScript(request, sender, sendResponse) {
     // only HTTP Pages will be supported
     else if (link.isHttp) {
         if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
-            let pr = PingResult.class(request.pingResult);
+            let pr = PingResult.classFromJson(request.pingResult);
 
             Utils.log("Ping Result: " + JSON.stringify(pr));
             // for Security Reasons, we pass each Element separably over to the insert Method.

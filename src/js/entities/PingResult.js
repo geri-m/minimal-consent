@@ -84,7 +84,7 @@ export default class PingResult {
         return this._tcfPolicyVersion;
     }
 
-    static class(pingResult) {
+    static classFromJson(pingResult) {
         return new PingResult(pingResult.gdprAppliesGlobally,
             pingResult.gdprApplies,
             pingResult.cmpLoaded,
@@ -97,7 +97,7 @@ export default class PingResult {
             pingResult.tcfPolicyVersion);
     }
 
-    static classForMigration(pingResult) {
+    static classFromDisk(pingResult) {
         return new PingResult(pingResult._gdprAppliesGlobally,
             pingResult._gdprApplies,
             pingResult._cmpLoaded,

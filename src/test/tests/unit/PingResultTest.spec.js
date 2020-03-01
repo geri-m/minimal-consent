@@ -18,14 +18,14 @@ describe('PingResult Tests', () => {
         it('TCF 1.1 Example', async function () {
             let pr = new PingResult(false, undefined, false);
             expect(JSON.stringify(pr)).toEqual("{\"gdprAppliesGlobally\":false,\"cmpLoaded\":false}");
-            let pr2 = PingResult.class(pr);
+            let pr2 = PingResult.classFromJson(pr);
             expect(pr).toEqual(pr2);
             expect(Object.entries(pr2).length).toEqual(2);
         });
 
         it('Full Example', async function () {
             let pr = new PingResult(false, true, false, "cmpStatus", "displayStatus", "apiVersion", 1, 2, 3, 4);
-            let pr2 = PingResult.class(pr);
+            let pr2 = PingResult.classFromJson(pr);
             expect(pr).toEqual(pr2);
 
             expect(pr2.gdprAppliesGlobally).toEqual(false);
@@ -44,7 +44,7 @@ describe('PingResult Tests', () => {
         it('Null Example', async function () {
             let pr = new PingResult();
             expect(JSON.stringify(pr)).toEqual("{}");
-            let pr2 = PingResult.class(pr);
+            let pr2 = PingResult.classFromJson(pr);
             expect(pr).toEqual(pr2);
             expect(Object.entries(pr2).length).toEqual(0);
         });
@@ -52,7 +52,7 @@ describe('PingResult Tests', () => {
 
         it('From JSON', async function () {
             let json = '{"gdprAppliesGlobally":false,"gdprApplies":true,"cmpLoaded":false,"cmpStatus":"cmpStatus","displayStatus":"displayStatus","apiVersion":"apiVersion","cmpVersion":1,"cmpId":2,"gvlVersion":3,"tcfPolicyVersion":4}';
-            let pr2 = PingResult.class(JSON.parse(json));
+            let pr2 = PingResult.classFromJson(JSON.parse(json));
             expect(pr2.gdprAppliesGlobally).toEqual(false);
             expect(pr2.gdprApplies).toEqual(true);
             expect(pr2.cmpLoaded).toEqual(false);
@@ -71,7 +71,7 @@ describe('PingResult Tests', () => {
             let json = {};
             json.gdprAppliesGlobally = true;
             json.cmpLoaded = false;
-            let pr2 = PingResult.class(json);
+            let pr2 = PingResult.classFromJson(json);
             expect(pr2.gdprAppliesGlobally).toEqual(true);
             expect(pr2.gdprApplies).toBeUndefined();
             expect(pr2.cmpLoaded).toEqual(false);
