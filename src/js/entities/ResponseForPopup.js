@@ -23,7 +23,7 @@ export default class ResponseForPopup {
     }
 
     get case() {
-        if (this._url.isHttp) {
+        if (typeof this._url !== 'undefined' && this._url.isHttp) {
             if (typeof this._lastFound !== 'undefined' && Object.entries(this._lastFound).length !== 0) {
                 if (this._lastFound.cmp !== "na") {
                     // found, known, implemented - case 1
@@ -51,9 +51,16 @@ export default class ResponseForPopup {
         }
     }
 
-
     static class(obj) {
-        return new ResponseForPopup(obj._url._url, obj._lastFound, obj._count);
+        return new ResponseForPopup(obj.url.url, obj.lastFound, obj.count);
+    }
+
+    toJSON() {
+        return {
+            url: this._url,
+            lastFound: this._lastFound,
+            count: this._count
+        }
     }
 
 }

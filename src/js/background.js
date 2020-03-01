@@ -7,6 +7,7 @@ import Icon from "./background/Icon"
 import URL from "./entities/URL";
 
 import ResponseForPopup from "./entities/ResponseForPopup";
+import PingResult from "./entities/PingResult";
 
 const dateFormat = require('dateformat'); // from library
 let request = new Request();
@@ -57,13 +58,16 @@ async function handleContentScript(request, sender, sendResponse) {
     // only HTTP Pages will be supported
     else if (link.isHttp) {
         if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
+            let pr = PingResult.class(request.pingResult);
+
+            Utils.log("Ping Result: " + JSON.stringify(pr));
             // for Security Reasons, we pass each Element separably over to the insert Method.
             let requestJson = {};
             requestJson.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
             requestJson.url = link.host;
             requestJson.cmp = request.cmp;
             requestJson.cmpScriptUrl = request.cmpScripUrl;
-            requestJson.pingResult = request.pingResult;
+            requestJson.pingResult = pr;
             requestJson.implemented = request.implemented;
             logBackend(requestJson);
             storeRequest(requestJson);
@@ -131,12 +135,13 @@ function switchIcon(implemented) {
     icon.switchIcon(implemented);
 }
 
-/*** Init CRITICAL Event ***/
+/* Open Test and Option Pages on Startup */
 chrome.runtime.onInstalled.addListener(function (details) {
 
     let pages = [
         "/test/test-page/integration.html",
-        "/options/options.html"
+        "/options/options.html",
+        "/_generated_background_page.html"
     ];
 
     // Only when the extension is installed for the first time

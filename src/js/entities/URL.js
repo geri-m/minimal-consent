@@ -3,12 +3,7 @@
 export default class URL {
 
     constructor(url) {
-        let link = String(url);
-        let parser = document.createElement('a');
-        parser.href = link;
-        this._host = parser.hostname;
-        this._isHttp = (link.includes("http://") || link.includes("https://"));
-        this._url = link;
+        this._url = String(url);
     }
 
     get url() {
@@ -16,15 +11,23 @@ export default class URL {
     }
 
     get host() {
-        return this._host;
+        let parser = document.createElement('a');
+        parser.href = this._url;
+        return parser.hostname;
     }
 
     get isHttp() {
-        return this._isHttp;
+        return (this._url.includes("http://") || this._url.includes("https://"));
     }
 
     static class(obj) {
-        return new URL(obj._url);
+        return new URL(obj.url);
+    }
+
+    toJSON() {
+        return {
+            url: this._url
+        }
     }
 }
 
