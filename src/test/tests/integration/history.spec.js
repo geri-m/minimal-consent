@@ -3,20 +3,21 @@
 import History from "../../../js/background/History";
 import HistoryEntry from "../../../js/entities/HistoryEntry";
 import Utils from "../../../js/Utils";
+import PingResult from "../../../js/entities/PingResult";
 
 describe('Storage', () => {
 
-    beforeAll(/*TestManager.initIntegrationBeforeAll()*/async function () {
+    beforeAll(async function () {
     });
 
-    afterAll(/*TestManager.initIntegrationAfterAll()*/async function () {
+    afterAll(async function () {
     });
 
     beforeEach(async function () {
     });
 
     describe('History Object,', () => {
-        /*
+
         it('Add one records and do lastFound', async function () {
             let hist = new History();
             await hist.clearStorage();
@@ -32,7 +33,7 @@ describe('Storage', () => {
             found = await hist.getLastFound("www.heise.at");
             expect(Object.entries(found).length).toBe(0);
         });
-*/
+
 
         it('Test Migration of History', async function () {
             let hist = new History();
@@ -68,7 +69,7 @@ describe('Storage', () => {
             entry3.pingResult.cmpId = 5;
             entry3.pingResult.cmpLoaded = false;
             entry3.pingResult.gdprAppliesGlobally = false;
-            entry3.url = "www.orf.at";
+            entry3.url = "www.usercentrics.com";
 
             result.history.push(entry1);
             result.history.push(entry2);
@@ -79,10 +80,14 @@ describe('Storage', () => {
             await hist.doMigration();
 
             let forbes = await hist.getLastFound("www.forbes.com");
+            console.log("Forbes");
+            console.log(forbes);
             let forbesObject = HistoryEntry.classFromDisk(forbes);
             expect(forbesObject.pingResult.cmpId).toBe(41);
 
-            let uc = await hist.getLastFound("usercentrics.com");
+            let uc = await hist.getLastFound("www.usercentrics.com");
+            console.log("UC");
+            console.log(uc);
             let ucObject = HistoryEntry.classFromDisk(uc);
             expect(ucObject.pingResult.cmpId).toBe(5);
 
