@@ -8,38 +8,38 @@ export default class HistoryEntry {
         if (this.checkIfDefinedAndNotNull(date)) {
             this._date = String(date);
         } else {
-            throw "Date in History Entry must not be null";
+            throw new Error("Date in History Entry must not be null");
         }
 
         if (this.checkIfDefinedAndNotNull(url)) {
             this._url = String(url);
         } else {
-            throw "URL in History Entry must not be null";
+            throw new Error("URL in History Entry must not be null");
         }
 
         if (this.checkIfDefinedAndNotNull(cmp)) {
             this._cmp = String(cmp);
         } else {
-            throw "CMP in History Entry must not be null";
+            throw new Error("CMP in History Entry must not be null");
         }
 
         if (this.checkIfDefinedAndNotNull(cmpScriptUrl)) {
             this._cmpScriptUrl = String(cmpScriptUrl);
         } else {
-            throw "CMP Script in History Entry must not be null";
+            throw new Error("CMP Script in History Entry must not be null");
         }
 
 
         if (this.checkIfDefinedAndNotNull(pingResult)) {
             this._pingResult = PingResult.class(pingResult);
         } else {
-            throw "Ping Result in History Entry must not be null";
+            throw new Error("Ping Result in History Entry must not be null");
         }
 
         if (this.checkIfDefinedAndNotNull(implemented)) {
             this._implemented = Boolean(implemented);
         } else {
-            throw "Implemented in History Entry must not be null";
+            throw new Error("Implemented in History Entry must not be null");
         }
     }
 
