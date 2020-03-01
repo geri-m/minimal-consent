@@ -21,10 +21,6 @@ let icon = new Icon();
 chrome.runtime.onMessage.addListener(messageHandler);
 
 function messageHandler(request, sender, sendResponse) {
-    Utils.log("Request: " + JSON.stringify(request));
-    Utils.log("sender: " + JSON.stringify(sender));
-    Utils.log("sendResponse: " + JSON.stringify(sendResponse));
-
     switch (request.from) {
         case "contentscript":
             handleContentScript(request, sender, sendResponse);
@@ -94,7 +90,7 @@ async function handlePopupScript(request, sender, sendResponse) {
 
     // counting all elements we blocked.
     let count = await history.getAmountOfUrlsBlocked();
-    let response = new ResponseForPopup(url.url, lastFound, count);
+    let response = new ResponseForPopup(url, lastFound, count);
 
     Utils.log("Response to Popup: " + JSON.stringify(response));
     sendResponse(response);
@@ -161,7 +157,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         });
     }
 
-    history.doMigration();
+    // history.doMigration();
 
 });
 

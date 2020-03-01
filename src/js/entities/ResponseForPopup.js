@@ -67,7 +67,7 @@ export default class ResponseForPopup {
     }
 
     static class(obj) {
-        return new ResponseForPopup(obj.url.url, obj.lastFound, obj.count);
+        return new ResponseForPopup(obj.url, obj.lastFound, obj.count);
     }
 
     toJSON() {
