@@ -2,11 +2,17 @@
 
 export default class URL {
 
-    constructor(link) {
+    constructor(url) {
+        let link = String(url);
         let parser = document.createElement('a');
-        parser.href = String(link);
+        parser.href = link;
         this._host = parser.hostname;
         this._isHttp = (link.includes("http://") || link.includes("https://"));
+        this._url = link;
+    }
+
+    get url() {
+        return this._url;
     }
 
     get host() {
@@ -15,6 +21,10 @@ export default class URL {
 
     get isHttp() {
         return this._isHttp;
+    }
+
+    static class(obj) {
+        return new URL(obj._url);
     }
 }
 

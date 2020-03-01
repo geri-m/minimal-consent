@@ -1,9 +1,10 @@
-let bkg;
+import ReponseForPopup from "../entities/ReponseForPopup";
 
+let bkg;
 
 window.addEventListener('load', onLoad);
 
-function onLoad(){
+function onLoad() {
     bkg = chrome.extension.getBackgroundPage();
     bkg.console.log("PopupJS Loaded");
 
@@ -26,6 +27,10 @@ function closePopup() {
 function handleResponse(response) {
     bkg.console.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
 
+    let popupMessage = ReponseForPopup.class(response);
+    bkg.console.log("parsed: " + JSON.stringify(popupMessage));
+    bkg.console.log("Test: " + popupMessage.url.isHttp);
+
     document.getElementById("cmpCount").textContent = response.count;
     let details = document.getElementById("details");
 
@@ -47,7 +52,7 @@ function handleResponse(response) {
             }
 
         }
-    } else if (!response.currentUrl._isHttp) {
+    } else if (!popupMessage.url.isHttp) {
         bkg.console.log("Only HTTP(s) Pages are supported");
         details.innerHTML = "Only HTTP(s) Pages are supported";
     } else {

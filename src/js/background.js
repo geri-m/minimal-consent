@@ -6,6 +6,8 @@ import History from "./background/History";
 import Icon from "./background/Icon"
 import URL from "./entities/URL";
 
+import ResponseForPopup from "./entities/ReponseForPopup";
+
 const dateFormat = require('dateformat'); // from library
 let request = new Request();
 let history = new History();
@@ -81,26 +83,19 @@ async function handlePopupScript(request, sender, sendResponse) {
     // only HTTP Pages will be supported
     if (url.isHttp) {
         lastFound = await history.getLastFound(url.host);
+        Utils.log("handlePopupScript: lastFound: " + JSON.stringify(lastFound));
     } else {
         Utils.log("handlePopupScript: Current Page is not HTTP/HTTPS");
     }
 
     // counting all elements we blocked.
     let count = await history.getAmountOfUrlsBlocked();
+    Utils.log("handlePopupScript: count: " + JSON.stringify(count));
+    Utils.log("handlePopupScript: Current URL: " + JSON.stringify(url));
+    let response = new ResponseForPopup(url.url, lastFound, count);
 
-    let responseJson = {};
-    responseJson.count = count;
-    responseJson.lastFound = lastFound;
-    responseJson.currentUrl = url;
-
-
-    /*
-    {"count":1,"lastFound":{"cmp":"TrustArc Inc","cmpScriptUrl":"//consent.truste.com/notice?domain=forbes.com&c=teconsent","date":"2020-02-29 18:51:35","implemented":true,"pingResult":{"cmpId":41},"url":"www.forbes.com"},"currentUrl":{"_host":"www.forbes.com","_isHttp":true}}
-     */
-
-    Utils.log("Response to send: " + JSON.stringify(responseJson));
-    Utils.log("Fcuntion: " + JSON.stringify(sendResponse));
-    sendResponse(responseJson);
+    Utils.log("Response to send: " + JSON.stringify(response));
+    sendResponse(response);
 }
 
 async function handleOptionsScript(request, sender, sendResponse) {
