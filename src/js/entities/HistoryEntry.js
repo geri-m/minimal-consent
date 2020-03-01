@@ -1,9 +1,94 @@
 "use strict";
 
+import PingResult from "./PingResult";
+
 export default class HistoryEntry {
 
-    constructor(historyEntry) {
+    constructor(date, url, cmp, cmpScriptUrl, pingResult, implemented) {
+        if (this.checkIfDefinedAndNotNull(date)) {
+            this._date = String(date);
+        } else {
+            throw "Date in History Entry must not be null";
+        }
 
+        if (this.checkIfDefinedAndNotNull(url)) {
+            this._url = String(url);
+        } else {
+            throw "URL in History Entry must not be null";
+        }
+
+        if (this.checkIfDefinedAndNotNull(cmp)) {
+            this._cmp = String(cmp);
+        } else {
+            throw "CMP in History Entry must not be null";
+        }
+
+        if (this.checkIfDefinedAndNotNull(cmpScriptUrl)) {
+            this._cmpScriptUrl = String(cmpScriptUrl);
+        } else {
+            throw "CMP Script in History Entry must not be null";
+        }
+
+
+        if (this.checkIfDefinedAndNotNull(pingResult)) {
+            this._pingResult = PingResult.class(pingResult);
+        } else {
+            throw "Ping Result in History Entry must not be null";
+        }
+
+        if (this.checkIfDefinedAndNotNull(implemented)) {
+            this._implemented = Boolean(implemented);
+        } else {
+            throw "Implemented in History Entry must not be null";
+        }
+    }
+
+    get date() {
+        return this._date;
+    }
+
+    get url() {
+        return this._url;
+    }
+
+    get cmp() {
+        return this._cmp;
+    }
+
+    get cmpScriptUrl() {
+        return this._cmpScriptUrl;
+    }
+
+    get pingResult() {
+        return this._pingResult;
+    }
+
+    get isImplemented() {
+        return this._implemented;
+    }
+
+    static class(historyEntry) {
+        return new HistoryEntry(historyEntry.date,
+            historyEntry.url,
+            historyEntry.cmp,
+            historyEntry.cmpScriptUrl,
+            historyEntry.pingResult,
+            historyEntry.isImplemented);
+    }
+
+    toJSON() {
+        return {
+            date: this._date,
+            url: this._url,
+            cmp: this._cmp,
+            cmpScriptUrl: this._cmpScriptUrl,
+            pingResult: this._pingResult,
+            implemented: this._implemented
+        };
+    }
+
+    checkIfDefinedAndNotNull(field) {
+        return typeof field !== 'undefined' && field !== null;
     }
 
 }

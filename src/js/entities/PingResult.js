@@ -3,8 +3,6 @@
 export default class PingResult {
 
     constructor(gdprAppliesGlobally, gdprApplies, cmpLoaded, cmpStatus, displayStatus, apiVersion, cmpVersion, cmpId, gvlVersion, tcfPolicyVersion) {
-        console.log("cmpLoaded:" + cmpLoaded);
-
         if (this.checkIfDefinedAndNotNull(gdprAppliesGlobally)) {
             this._gdprAppliesGlobally = Boolean(gdprAppliesGlobally);
         }
@@ -87,7 +85,6 @@ export default class PingResult {
     }
 
     static class(pingResult) {
-        console.log("class: " + JSON.stringify(pingResult));
         return new PingResult(pingResult.gdprAppliesGlobally,
             pingResult.gdprApplies,
             pingResult.cmpLoaded,

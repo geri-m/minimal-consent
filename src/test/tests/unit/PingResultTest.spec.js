@@ -2,7 +2,7 @@
 
 import PingResult from "../../../js/entities/PingResult";
 
-describe('PingResult', () => {
+describe('PingResult Tests', () => {
 
     beforeAll(async function () {
     });
@@ -13,7 +13,7 @@ describe('PingResult', () => {
     beforeEach(async function () {
     });
 
-    describe('Simple PingResult Object,', () => {
+    describe('Simple PingResult Object Tests', () => {
 
         it('TCF 1.1 Example', async function () {
             let pr = new PingResult(false, undefined, false);
@@ -25,7 +25,6 @@ describe('PingResult', () => {
 
         it('Full Example', async function () {
             let pr = new PingResult(false, true, false, "cmpStatus", "displayStatus", "apiVersion", 1, 2, 3, 4);
-            console.log(JSON.stringify(pr));
             let pr2 = PingResult.class(pr);
             expect(pr).toEqual(pr2);
 
