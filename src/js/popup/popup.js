@@ -47,28 +47,28 @@ function handleResponse(response) {
 
     switch (popupMessage.case) {
         case 1:
-            bkg.console.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.url).replace("%DATE", popupMessage.lastFound.date));
-            details.innerHTML = messageCase1.replace("%URL", popupMessage.url.url).replace("%DATE", popupMessage.lastFound.date);
+            bkg.console.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date));
+            details.innerHTML = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
             break;
 
         case 2:
             bkg.console.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
-            details.innerHTML = messageCas2.replace("%URL", popupMessage.url.url);
+            details.innerHTML = messageCas2.replace("%URL", popupMessage.url.host);
             break;
 
         case 3:
             bkg.console.log("Case 3: Unknown CMP Detected");
-            details.innerHTML = messageCase3.replace("%URL", popupMessage.url.url);
+            details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
             document.querySelector('#submit-this-url').addEventListener('click', function () {
-                sendUrlToBackendForImplementation(popupMessage.url.url);
+                sendUrlToBackendForImplementation(popupMessage.url.host);
             });
             break;
 
         case 4:
             bkg.console.log("Case 4: No CMP detected");
-            details.innerHTML = messageCase4.replace("%URL", popupMessage.url.url);
+            details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
             document.querySelector('#submit-this-url').addEventListener('click', function () {
-                sendUrlToBackendForImplementation(popupMessage.url.url);
+                sendUrlToBackendForImplementation(popupMessage.url.host);
             });
             break;
 
