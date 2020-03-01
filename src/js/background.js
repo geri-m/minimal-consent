@@ -6,7 +6,7 @@ import History from "./background/History";
 import Icon from "./background/Icon"
 import URL from "./entities/URL";
 
-import ResponseForPopup from "./entities/ReponseForPopup";
+import ResponseForPopup from "./entities/ResponseForPopup";
 
 const dateFormat = require('dateformat'); // from library
 let request = new Request();
@@ -90,11 +90,9 @@ async function handlePopupScript(request, sender, sendResponse) {
 
     // counting all elements we blocked.
     let count = await history.getAmountOfUrlsBlocked();
-    Utils.log("handlePopupScript: count: " + JSON.stringify(count));
-    Utils.log("handlePopupScript: Current URL: " + JSON.stringify(url));
     let response = new ResponseForPopup(url.url, lastFound, count);
 
-    Utils.log("Response to send: " + JSON.stringify(response));
+    Utils.log("Response to Popup: " + JSON.stringify(response));
     sendResponse(response);
 }
 
