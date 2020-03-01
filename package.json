@@ -40,7 +40,6 @@
     "terser-webpack-plugin": "^2.3.2",
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
-
     "webpack-obfuscator": "^0.25.2"
   },
   "eslintConfig": {

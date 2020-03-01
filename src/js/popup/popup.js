@@ -11,14 +11,16 @@ function onLoad(){
         from: "popupScript"
     }, handleResponse);
 
-    document.querySelector('#go-to-options').addEventListener('click', function () {
-        // check if the browsers supports Option Pages.
-        if (chrome.runtime.openOptionsPage) {
-            chrome.runtime.openOptionsPage();
-        } else {
-            window.open(chrome.runtime.getURL('/options/options.html') );
-        }
-    });
+    document.querySelector('#go-to-options').addEventListener('click', closePopup);
+}
+
+function closePopup() {
+    // check if the browsers supports Option Pages.
+    if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+    } else {
+        window.open(chrome.runtime.getURL('/options/options.html'));
+    }
 }
 
 function handleResponse(response) {

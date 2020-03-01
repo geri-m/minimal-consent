@@ -36,6 +36,8 @@ function messageHandler(request, sender, sendResponse) {
         default:
             break;
     }
+
+    return true;
 }
 
 
@@ -135,7 +137,6 @@ async function storeRequest(requestJson) {
 function switchIcon(implemented) {
     icon.switchIcon(implemented);
 }
-
 
 /*** Init CRITICAL Event ***/
 chrome.runtime.onInstalled.addListener(function (details) {
