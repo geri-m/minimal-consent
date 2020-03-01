@@ -65,5 +65,12 @@ describe('URL Tests', () => {
             expect(Object.entries(url4).length).toEqual(1);
         });
 
+
+        it('Missing Parameter', async function () {
+            expect(function () {
+                let url = new URL();
+            }).toThrow(new Error("URL String in Url must not be null"));
+        });
+
     });
 });

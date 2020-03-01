@@ -3,7 +3,11 @@
 export default class URL {
 
     constructor(url) {
-        this._url = String(url);
+        if (this.checkIfDefinedAndNotNull(url)) {
+            this._url = String(url);
+        } else {
+            throw new Error("URL String in Url must not be null");
+        }
     }
 
     get url() {
@@ -28,6 +32,10 @@ export default class URL {
         return {
             url: this._url
         }
+    }
+
+    checkIfDefinedAndNotNull(field) {
+        return typeof field !== 'undefined' && field !== null;
     }
 }
 

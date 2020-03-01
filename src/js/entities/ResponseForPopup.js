@@ -1,13 +1,28 @@
 "use strict";
 
 import URL from "./URL";
+import HistoryEntry from "./HistoryEntry";
 
 export default class ResponseForPopup {
 
     constructor(url, lastFound, count) {
-        this._url = new URL(url);
-        this._lastFound = lastFound;
-        this._count = count;
+        if (this.checkIfDefinedAndNotNull(url)) {
+            this._url = URL.class(url);
+        } else {
+            throw new Error("URL String in ResponseForPopup must not be null");
+        }
+
+        if (this.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
+            this._lastFound = HistoryEntry.class(lastFound);
+        } else {
+            this._lastFound = {};
+        }
+
+        if (this.checkIfDefinedAndNotNull(count)) {
+            this._count = Number(count);
+        } else {
+            this._count = 0;
+        }
     }
 
     get url() {
@@ -23,11 +38,11 @@ export default class ResponseForPopup {
     }
 
     get case() {
-        if (typeof this._url !== 'undefined' && this._url.isHttp) {
-            if (typeof this._lastFound !== 'undefined' && Object.entries(this._lastFound).length !== 0) {
+        if (this._url.isHttp) {
+            if (Object.entries(this._lastFound).length > 0) {
                 if (this._lastFound.cmp !== "na") {
                     // found, known, implemented - case 1
-                    if (this._lastFound.implemented) {
+                    if (this._lastFound.isImplemented) {
                         return 1;
                     }
                     // found, known, but not implemented - case 2
@@ -61,6 +76,10 @@ export default class ResponseForPopup {
             lastFound: this._lastFound,
             count: this._count
         }
+    }
+
+    checkIfDefinedAndNotNull(field) {
+        return typeof field !== 'undefined' && field !== null;
     }
 
 }
