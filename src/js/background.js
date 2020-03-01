@@ -141,7 +141,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     let pages = [
         "/test/test-page/integration.html",
         "/options/options.html",
-        "/_generated_background_page.html"
+        "/test/test-page/unit.html",
     ];
 
     // Only when the extension is installed for the first time

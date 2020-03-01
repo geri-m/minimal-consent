@@ -3,32 +3,47 @@
 export default class PingResult {
 
     constructor(gdprAppliesGlobally, gdprApplies, cmpLoaded, cmpStatus, displayStatus, apiVersion, cmpVersion, cmpId, gvlVersion, tcfPolicyVersion) {
-        this._gdprAppliesGlobally = Boolean(gdprAppliesGlobally);
-        this._gdprApplies = Boolean(gdprApplies);
-        this._cmpLoaded = Boolean(cmpLoaded);
+        console.log("cmpLoaded:" + cmpLoaded);
 
-        if (typeof cmpStatus !== 'undefined') {
+        if (this.checkIfDefinedAndNotNull(gdprAppliesGlobally)) {
+            this._gdprAppliesGlobally = Boolean(gdprAppliesGlobally);
+        }
+
+        if (this.checkIfDefinedAndNotNull(gdprApplies)) {
+            this._gdprApplies = Boolean(gdprApplies);
+        }
+
+        if (this.checkIfDefinedAndNotNull(cmpLoaded)) {
+            this._cmpLoaded = Boolean(cmpLoaded);
+        }
+
+        if (this.checkIfDefinedAndNotNull(cmpStatus)) {
             this._cmpStatus = String(cmpStatus);
-        } else {
-            this._cmpStatus = null
         }
 
-        if (typeof displayStatus !== 'undefined') {
+        if (this.checkIfDefinedAndNotNull(displayStatus)) {
             this._displayStatus = String(displayStatus);
-        } else {
-            this._displayStatus = null
         }
 
-        if (typeof apiVersion !== 'undefined') {
+        if (this.checkIfDefinedAndNotNull(apiVersion)) {
             this._apiVersion = String(apiVersion);
-        } else {
-            this._apiVersion = null
         }
 
-        this._cmpVersion = Number(cmpVersion);
-        this._cmpId = Number(cmpId);
-        this._gvlVersion = Number(gvlVersion);
-        this._tcfPolicyVersion = Number(tcfPolicyVersion);
+        if (this.checkIfDefinedAndNotNull(cmpVersion)) {
+            this._cmpVersion = Number(cmpVersion);
+        }
+
+        if (this.checkIfDefinedAndNotNull(cmpId)) {
+            this._cmpId = Number(cmpId);
+        }
+
+        if (this.checkIfDefinedAndNotNull(gvlVersion)) {
+            this._gvlVersion = Number(gvlVersion);
+        }
+
+        if (this.checkIfDefinedAndNotNull(tcfPolicyVersion)) {
+            this._tcfPolicyVersion = Number(tcfPolicyVersion);
+        }
     }
 
     get gdprAppliesGlobally() {
@@ -72,6 +87,7 @@ export default class PingResult {
     }
 
     static class(pingResult) {
+        console.log("class: " + JSON.stringify(pingResult));
         return new PingResult(pingResult.gdprAppliesGlobally,
             pingResult.gdprApplies,
             pingResult.cmpLoaded,
@@ -85,18 +101,54 @@ export default class PingResult {
     }
 
     toJSON() {
-        return {
-            gdprAppliesGlobally: this._gdprAppliesGlobally,
-            gdprApplies: this._gdprApplies,
-            cmpLoaded: this._cmpLoaded,
-            cmpStatus: this._cmpStatus,
-            displayStatus: this._displayStatus,
-            apiVersion: this._apiVersion,
-            cmpVersion: this._cmpVersion,
-            cmpId: this._cmpId,
-            gvlVersion: this._gvlVersion,
-            tcfPolicyVersion: this._tcfPolicyVersion
-        };
+        let result = {};
+
+        if (this.checkIfDefinedAndNotNull(this._gdprAppliesGlobally)) {
+            result.gdprAppliesGlobally = this._gdprAppliesGlobally;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._gdprApplies)) {
+            result.gdprApplies = this._gdprApplies;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._cmpLoaded)) {
+            result.cmpLoaded = this._cmpLoaded;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._cmpStatus)) {
+            result.cmpStatus = this._cmpStatus;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._displayStatus)) {
+            result.displayStatus = this._displayStatus;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._apiVersion)) {
+            result.apiVersion = this._apiVersion;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._cmpVersion)) {
+            result.cmpVersion = this._cmpVersion;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._cmpId)) {
+            result.cmpId = this._cmpId;
+        }
+
+
+        if (this.checkIfDefinedAndNotNull(this._gvlVersion)) {
+            result.gvlVersion = this._gvlVersion;
+        }
+
+        if (this.checkIfDefinedAndNotNull(this._tcfPolicyVersion)) {
+            result.tcfPolicyVersion = this._tcfPolicyVersion;
+        }
+
+        return result;
+    }
+
+    checkIfDefinedAndNotNull(field) {
+        return typeof field !== 'undefined' && field !== null;
     }
 }
 
