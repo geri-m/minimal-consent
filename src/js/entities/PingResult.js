@@ -97,6 +97,20 @@ export default class PingResult {
             pingResult.tcfPolicyVersion);
     }
 
+    static classForMigration(pingResult) {
+        return new PingResult(pingResult._gdprAppliesGlobally,
+            pingResult._gdprApplies,
+            pingResult._cmpLoaded,
+            pingResult._cmpStatus,
+            pingResult._displayStatus,
+            pingResult._apiVersion,
+            pingResult._cmpVersion,
+            pingResult._cmpId,
+            pingResult._gvlVersion,
+            pingResult._tcfPolicyVersion);
+    }
+
+
     toJSON() {
         let result = {};
 
