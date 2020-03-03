@@ -41,6 +41,8 @@ export default class HistoryEntry {
         } else {
             throw new Error("Implemented in History Entry must not be null");
         }
+
+        HistoryEntry.CMP_UNKNOWN = "unknown";
     }
 
     get date() {
@@ -53,7 +55,7 @@ export default class HistoryEntry {
 
     get cmp() {
         if (this._cmp === "na") {
-            return "unkown";
+            return HistoryEntry.CMP_UNKNOWN;
         } else {
             return this._cmp;
         }

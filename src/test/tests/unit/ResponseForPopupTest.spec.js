@@ -49,7 +49,7 @@ describe('ResponseForPopup Tests', () => {
             let rfp = new ResponseForPopup(url, he, 10);
             expect(rfp.count).toEqual(10);
             expect(rfp.url).toEqual(url);
-            expect(rfp.lastFound).toEqual(he);
+            expect(rfp.lastFound.cmp).toEqual(HistoryEntry.CMP_UNKNOWN);
             expect(rfp.case).toEqual(3);
         });
 
@@ -84,6 +84,5 @@ describe('ResponseForPopup Tests', () => {
             let rfp = new ResponseForPopup(new URL("www.orf.at"));
             expect(Object.entries(rfp.lastFound).length).toEqual(0);
         });
-
     });
 });

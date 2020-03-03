@@ -165,10 +165,10 @@ export default class PingResult {
 
     get tcfVersion() {
         let tcfVersion = "";
-        if (typeof this.gdprAppliesGlobally !== 'undefined' && typeof this.cmpLoaded !== 'undefined') {
-            tcfVersion = "TCP 1.1";
-        } else if (typeof this.gdprApplies !== 'undefined' && typeof this.cmpLoaded !== 'undefined') {
-            tcfVersion = "TCP 2.0";
+        if (typeof this.gdprAppliesGlobally !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprApplies === 'undefined') {
+            tcfVersion = "TCF 1.1";
+        } else if (typeof this.gdprApplies !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprAppliesGlobally === 'undefined') {
+            tcfVersion = "TCF 2.0";
         } else {
             tcfVersion = "not defined";
         }

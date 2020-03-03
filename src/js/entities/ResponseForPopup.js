@@ -40,7 +40,7 @@ export default class ResponseForPopup {
     get case() {
         if (this._url.isHttp) {
             if (Object.entries(this._lastFound).length > 0) {
-                if (this._lastFound.cmp !== "na") {
+                if (this._lastFound.cmp !== HistoryEntry.CMP_UNKNOWN) {
                     // found, known, implemented - case 1
                     if (this._lastFound.implemented) {
                         return 1;
