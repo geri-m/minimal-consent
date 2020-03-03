@@ -8,6 +8,7 @@ import URL from "./entities/URL";
 
 import ResponseForPopup from "./entities/ResponseForPopup";
 import PingResult from "./entities/PingResult";
+import HistoryEntry from "./entities/HistoryEntry";
 
 const dateFormat = require('dateformat'); // from library
 let request = new Request();
@@ -58,16 +59,11 @@ async function handleContentScript(request, sender, sendResponse) {
 
             Utils.log("Ping Result: " + JSON.stringify(pr));
             // for Security Reasons, we pass each Element separably over to the insert Method.
-            let requestJson = {};
-            requestJson.date = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
-            requestJson.url = link.host;
-            requestJson.cmp = request.cmp;
-            requestJson.cmpScriptUrl = request.cmpScripUrl;
-            requestJson.pingResult = pr;
-            requestJson.implemented = request.implemented;
-            logBackend(requestJson);
-            storeRequest(requestJson);
-            switchIcon(requestJson.implemented);
+            let now = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
+            let he = new HistoryEntry(now, link.host, request.cmp, request.cmpScripUrl, pr, request.implemented);
+            logBackend(he);
+            storeRequest(he);
+            switchIcon(he.implemented);
         }
     } else {
         Utils.log("handleContentScript: Current Page is not HTTP/HTTPS");

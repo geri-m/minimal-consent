@@ -30,7 +30,7 @@ describe('History', () => {
     it('Add one records and do lastFound', async function () {
         let hist = new History();
         let pr = new PingResult(false, true, false, "cmpStatus", "displayStatus", "apiVersion", 1, 2, 3, 4);
-        let he = new HistoryEntry("2020-02-20 10:00:00", "https://www.orf.at/", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", pr, true);
+        let he = new HistoryEntry("2020-02-20 10:00:00", "www.orf.at", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", pr, true);
 
         await hist.save(he);
 
@@ -42,6 +42,31 @@ describe('History', () => {
 
         let blockCount = await hist.getAmountOfUrlsBlocked();
         expect(blockCount).toBe(1);
+    });
+
+    it('Multiple History Entries in one Storage', async function () {
+        let hist = new History();
+        let pr = new PingResult(false, true, false, "cmpStatus", "displayStatus", "apiVersion", 1, 2, 3, 4);
+        let he1 = new HistoryEntry("2020-02-20 10:00:00", "www.orf.at", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", pr, true);
+        await hist.save(he1);
+
+        let he2 = new HistoryEntry("2020-02-20 10:00:00", "www.forbes.com", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", pr, false);
+        await hist.save(he2);
+
+        let he3 = new HistoryEntry("2020-02-20 10:00:00", "www.heise.de", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", pr, true);
+        await hist.save(he3);
+
+        let found = await hist.getLastFound("www.orf.at");
+        expect(Object.entries(found).length).toBe(6);
+
+        found = await hist.getLastFound("www.heise.de");
+        expect(Object.entries(found).length).toBe(6);
+
+        found = await hist.getLastFound("www.forbes.de");
+        expect(Object.entries(found).length).toBe(0);
+
+        let blockCount = await hist.getAmountOfUrlsBlocked();
+        expect(blockCount).toBe(2);
     });
 
 
@@ -84,6 +109,8 @@ describe('History', () => {
         result.history.push(entry2);
         result.history.push(entry3);
 
+        // we use a separated store function, as 'save()' in the history object, used load() which creates an
+        // array of HistoryEntries.
         await storeObject(result);
 
         await hist.doMigration();

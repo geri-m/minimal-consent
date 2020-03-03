@@ -18,17 +18,17 @@ window.addEventListener('load', function load(event) {
 });
 
 function handleResponse(response) {
-    bkg.console.log("Response: " + JSON.stringify(response));
-    if (response && response.history && response.history.length) {
+    bkg.console.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
+    if (typeof response !== "undefined" && response.length) {
 
         // sort array by date.
-        response.history.sort(function (a, b) {
+        response.sort(function (a, b) {
             // Turn your strings into dates, and then subtract them
             // to get a value that is either negative, positive, or zero.
             return new Date(b.date) - new Date(a.date);
         });
 
-        response.history.forEach(createRow);
+        response.forEach(createRow);
     }
 }
 
@@ -48,8 +48,9 @@ function closeWindow() {
     window.close();
 }
 
-function createRow(object, index) {
-    let item = HistoryEntry.classFromDisk(object);
+function createRow(historyEntry, index) {
+    bkg.console.log("Item: " + JSON.stringify(historyEntry));
+    let item = HistoryEntry.classFromJson(historyEntry);
 
     let url = document.createElement('td');
     url.innerHTML = item.url;
