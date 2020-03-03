@@ -114,14 +114,17 @@ export default class History {
                             Utils.log("Migration of Record: #" + i + ": " + JSON.stringify(result.history[i]));
                             let he = {};
                             try {
-                                HistoryEntry.classFromJson(result.history[i]);
+                                // parsing as JSON.
+                                he = HistoryEntry.classFromJson(result.history[i]);
                                 // okay, we have at lest one Element with the old Syntax:
                                 if (Object.entries(he).length > 0) {
                                     // put the Update back into the storage.
                                     result.history[i] = he;
                                     Utils.log("Record: " + i + " was updated, :" + JSON.stringify(result.history[i]));
                                     modification = true;
-                                } // else if (Ping Result is okay)
+                                } else {
+                                    Utils.log("Parsing of 'old' JSON Structure failed");
+                                }
                             } catch (e) {
                                 Utils.log("error parsing History Object from storage. (likely, we already did this)")
                             }
@@ -131,7 +134,7 @@ export default class History {
 
                     // save back.
                     if (modification) {
-                        Utils.log("No saving again");
+                        Utils.log("Now saving again");
                         // sort array by date.
                         result.history.sort(function (a, b) {
                             // Turn your strings into dates, and then subtract them

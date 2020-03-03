@@ -153,7 +153,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         });
     }
 
-    // history.doMigration();
+    history.doMigration();
 
 });
 
