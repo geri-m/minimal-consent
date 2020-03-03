@@ -2,6 +2,7 @@
 
 import Utils from "./Utils";
 import CMP from "./cmp/CMP";
+import PingResult from "./entities/PingResult";
 
 const contentScript = "contentscript";
 
@@ -27,7 +28,7 @@ export default class BackendCall {
 
     set pingResult(pingResult) {
         Utils.log("Pingback in BackendCall set: " + pingResult);
-        this._pingResult = JSON.parse(pingResult);
+        this._pingResult = PingResult.classFromJson(pingResult);
         this._isPingResultReceived = true;
 
         // if the CMP was already clicked, do the backend call
@@ -105,8 +106,14 @@ export default class BackendCall {
 
     triggerCall() {
         Utils.log("Call now Triggered");
-        // Adding the CMPID to the Ping Result.
-        this._pingResult.cmpId = this._cmpId;
+
+        // If the CMP-ID is not set in the Ping Result, put it there.
+        if (typeof this._pingResult.cmpId === "undefined") {
+            this._pingResult.cmpId = this._cmpId;
+        }
+
+        // we are sending separat components in 'sendMessage()' as in the BackendCall, we don't know the URL.
+        // this class is part of the content-Script and has no access to the URL.
 
         chrome.runtime.sendMessage({
             cmp: this._cmp,

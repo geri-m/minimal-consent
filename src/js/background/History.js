@@ -112,14 +112,20 @@ export default class History {
                         // Okay, there is Ping Result in this Record.
                         if (typeof result.history[i] !== 'undefined' && result.history[i] !== null) {
                             Utils.log("Migration of Record: #" + i + ": " + JSON.stringify(result.history[i]));
-                            let he = HistoryEntry.classFromJson(result.history[i]);
-                            // okay, we have at lest one Element with the old Syntax:
-                            if (Object.entries(he).length > 0) {
-                                // put the Update back into the storage.
-                                result.history[i] = he;
-                                Utils.log("Record: " + i + " was updated, :" + JSON.stringify(result.history[i]));
-                                modification = true;
-                            } // else if (Ping Result is okay)
+                            let he = {};
+                            try {
+                                HistoryEntry.classFromJson(result.history[i]);
+                                // okay, we have at lest one Element with the old Syntax:
+                                if (Object.entries(he).length > 0) {
+                                    // put the Update back into the storage.
+                                    result.history[i] = he;
+                                    Utils.log("Record: " + i + " was updated, :" + JSON.stringify(result.history[i]));
+                                    modification = true;
+                                } // else if (Ping Result is okay)
+                            } catch (e) {
+                                Utils.log("error parsing History Object from storage. (likely, we already did this)")
+                            }
+
                         } // there is no Ping Result
                     } // fort
 

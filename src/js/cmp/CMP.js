@@ -21,7 +21,7 @@ export default class CMP {
      * @param node Document Root Node
      * @param name Name for the CMP in Text
      * @param scriptUrl URL from with the CMP was loaded
-     * @param type Enumation on Type of CMP to determin when we need to trigger the backedn call.
+     * @param type Enumeration on Type of CMP to determine when we need to trigger the backend call.
      */
     constructor(cmpId, node, name, scriptUrl, type, implemented, backendCall) {
         this._node = node;
@@ -44,9 +44,8 @@ export default class CMP {
     }
 
 
-
     /**
-     * Fetching the CMP Type Enumation.
+     * Fetching the CMP Type Enumeration.
      *
      * @returns {{DO_NOT_WAIT: string, WAIT_FOR_ASYNC_CALLBACK: string, WAIT_FOR_TIME_FRAME: string}}
      */
