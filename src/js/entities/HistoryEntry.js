@@ -52,7 +52,11 @@ export default class HistoryEntry {
     }
 
     get cmp() {
-        return this._cmp;
+        if (this._cmp === "na") {
+            return "unkown";
+        } else {
+            return this._cmp;
+        }
     }
 
     get cmpScriptUrl() {
@@ -84,6 +88,7 @@ export default class HistoryEntry {
             PingResult.classFromDisk(historyEntry._pingResult),
             historyEntry._implemented);
     }
+
 
     toJSON() {
         return {

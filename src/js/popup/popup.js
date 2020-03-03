@@ -10,7 +10,9 @@ function onLoad() {
 
     chrome.runtime.sendMessage({
         from: "popupScript"
-    }, handleResponse);
+    }, function (response) {
+        handleResponse(response)
+    });
 
     document.querySelector('#go-to-options').addEventListener('click', openOptions);
 }

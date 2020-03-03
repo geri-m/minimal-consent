@@ -10,14 +10,6 @@ export default class History {
     constructor() {
     }
 
-    /*
-    Data in Storage: {"history":[
-    {"cmp":"request.cmp","cmpScriptUrl":"request.cmpScripUrl","date":"yyyy-mm-dd HH:MM:ss","implemented":"request.implemented","pingResult":"request.pingResult","url":"www.orf.at"},
-    {"cmp":"TrustArc Inc","cmpScriptUrl":"//consent.truste.com/notice?domain=forbes.com&c=teconsent","date":"2020-03-01 17:37:57","implemented":true,"pingResult":{"_cmpId":41},"url":"www.forbes.com"}
-    {"cmp":"Usercentrics GmbH","cmpScriptUrl":"https://app.usercentrics.eu/latest/main.js","date":"2020-03-01 17:37:45","implemented":true,"pingResult":{"_cmpId":5,"_cmpLoaded":false,"_gdprAppliesGlobally":false},"url":"usercentrics.com"}]}
-     */
-
-
     load() {
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.get(historyKeyOfStorage, function (result) {
@@ -157,16 +149,4 @@ export default class History {
             });
         })
     }
-
-    async safeToStorage(object) {
-        return new Promise(function (resolve, reject) {
-            chrome.storage.sync.set(object, function () {
-                Utils.log('Saved new history object to Chrome Storage.');
-                // store worked, resolve now.
-                resolve();
-            });
-        });
-    }
-
-
 }
