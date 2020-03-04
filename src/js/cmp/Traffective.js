@@ -20,7 +20,7 @@ export default class Traffective extends CMP {
         const gdprSaveButton = 'div.is-primary-button';
         let saveButton = super.queryNodeSelector(gdprSaveButton);
 
-        if (Utils.objectClickable(popup) && super.state === 0) {
+        if (Utils.objectVisible(popup) && super.state === 0) {
             Utils.log('Checkboxes found: ' + checkboxes.length);
             checkboxes.forEach(checkbox => checkbox.setAttribute("checked", "false"), Utils.log("Checkbox unset"));
             super.state = 1;
