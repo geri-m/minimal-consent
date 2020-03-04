@@ -112,7 +112,7 @@ export default class BackendCall {
             this._pingResult.cmpId = this._cmpId;
         }
 
-        // we are sending separat components in 'sendMessage()' as in the BackendCall, we don't know the URL.
+        // we are sending seperat components in 'sendMessage()' as in the BackendCall, we don't know the URL.
         // this class is part of the content-Script and has no access to the URL.
 
         chrome.runtime.sendMessage({

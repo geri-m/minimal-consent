@@ -76,6 +76,10 @@ export default class PingResult {
         return this._cmpId;
     }
 
+    set cmpId(cmdId) {
+        this._cmpId = cmdId;
+    }
+
     get gvlVersion() {
         return this._gvlVersion;
     }

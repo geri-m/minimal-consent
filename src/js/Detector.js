@@ -12,6 +12,7 @@ import Traffective from "./cmp/Traffective";
 import ConsentManager from "./cmp/ConsentManager";
 import NotYetImplementedCmp from "./cmp/NoYetImplementedCmp";
 import BackendCall from "./BackendCall";
+import Chandago from "./cmp/Chandago";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -90,11 +91,12 @@ export default class Detector {
                         this._cmp = new ConsentManager(this._targetNode, urlOfScript, this._backendCall);
                         break;
                     }
-                    /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
                     else if (urlOfScript.includes('chandago.com') || urlOfScript.includes('appconsent.mgr.consensu.org') || urlOfScript.includes('appconsent.io')) {
-                        this._cmp = new NotYetImplementedCmp(2, this._targetNode, 'Chandago', urlOfScript, this._backendCall);
+                        this._cmp = new Chandago(this._targetNode, urlOfScript, this._backendCall);
                         break;
-                    } else if (urlOfScript.includes('faktor.io') || urlOfScript.includes('faktor.mgr.consensu.org') || urlOfScript.includes('liveramp.com')) {
+                    }
+                    /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
+                    else if (urlOfScript.includes('faktor.io') || urlOfScript.includes('faktor.mgr.consensu.org') || urlOfScript.includes('liveramp.com')) {
                         this._cmp = new NotYetImplementedCmp(3, this._targetNode, 'Faktor BV', urlOfScript, this._backendCall);
                         break;
                     } else if (urlOfScript.includes('sourcepoint.com') || urlOfScript.includes('sourcepoint.mgr.consensu.org')) {
