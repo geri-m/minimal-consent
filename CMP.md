@@ -93,7 +93,7 @@ this.truste.eu.prefclosebutton();
 ## Sample Pages
 
 - [Forbes](https://www.forbes.com)
-- [Docker](https://www.docker.com)
+
 ### Other functions in the notice.js
 
 #### Versions
@@ -107,6 +107,10 @@ this.truste.eu.prefclosebutton();
 Look for #truste-consent-required, press and all good. 
 
 Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich. 
+
+### Sample Pages
+
+- [Docker](https://www.docker.com)
 
 ---
 

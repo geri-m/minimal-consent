@@ -1,11 +1,14 @@
 "use strict";
 import Detector from "./Detector";
-
+import Utils from "./Utils";
 // only execute the content script
 // - if there is doc type
 // - if there is body with a defined length
 // - if there are some child nodes in the body
-if (document.doctype && document.body.innerHTML.length > 100 && document.body.childNodes.length > 5) {
+Utils.log("Consent Script Parameter: " + JSON.stringify(document.doctype) + ", Len: " + document.body.innerHTML.length + ", Nodes: " + document.body.childNodes.length);
+
+if (document.doctype && document.body.innerHTML.length > 100 && document.body.childNodes.length > 3) {
+    Utils.log("Triggering Content Script");
     const messageFrom = "FROM_MINIMAL_CONSENT";
 
     // This is the script for checking whether there is a TCF 1.1 or TCF 2.0 compliant CMP.
