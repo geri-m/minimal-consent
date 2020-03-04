@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "mensaje": "Minimal Consent"
+  },
+  "appShort": {
+    "message": "Una extensión para el navegador que hace que los banners de consentimiento de cookies sean cosa del pasado"
+  },
+  "appDesc": {
+    "mensaje": "Minimal Consent automáticamente acepta las cookies que realmente son necesarias, efectivamente bloqueando esos molestos banners de consentimiento de cookies."
+  },
+  "longText": {
+    "mensaje": "Desde principios de 2018 el GDPR afecta a todos los sitios web ofrecidos a residentes de la Unión Europea. Finalmente, los usuarios tienen transparencia y control total sobre cómo los proveedores de sitios web obtienen y usan sus datos. Desafortunadamente, los usuarios ahora encuentran banners de consentimieneto de cookies enormes y molestos en todos los sitios web. A menudo, se necesitan muchos clics y lecturas para negar la recopilación y el uso de sus datos personales. \nMinimal Consent está aquí para ayudar. Minimal Consent responde al banner de cookies para los usuarios. Solo las cookies esenciales se aceptarán. Se negarán todas las otras cookies, como las cookies de tracking y mercadeo. Por lo tanto, Minimal Consent se encarga de mantener la privacidad de los datos de los usuarios al permitir una experiencia de navegación perfecta. Todo funciona tan rápido que los usuarios ni siquiera verán el banner de cookies. \nMinimal Consent ya funciona en muchos sitios web y estamos trabajando en mejoras constantemente. Los sitios web faltantes se pueden enviar al equipo de desarrollo de Minimal Consent de forma rápida y sencilla."
+  }
+}
