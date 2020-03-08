@@ -9,7 +9,8 @@ const options = {
         "./contentscript": path.join(__dirname, './src/js/contentscript.js'),
         "./background": path.join(__dirname, './src/js/background.js'),
         './popup/popup': './src/js/popup/popup.js',
-        './options/options': './src/js/options/options.js'
+        './options/options': './src/js/options/options.js',
+        './typescript': './src/index.ts'
     },
     output: {
         path: path.join(__dirname, 'dist/'),
@@ -33,8 +34,17 @@ const options = {
                 test: /\.html$/,
                 loader: 'html-loader',
                 exclude: /node_modules/
+            },
+            // TypeScript Loader
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             }
         ]
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     }
 };
 

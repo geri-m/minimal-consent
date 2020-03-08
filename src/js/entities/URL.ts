@@ -2,9 +2,11 @@
 
 export default class URL {
 
-    constructor(url) {
+    _url: string;
+
+    constructor(url: string) {
         if (this.checkIfDefinedAndNotNull(url)) {
-            this._url = String(url);
+            this._url = url;
         } else {
             throw new Error("URL String in Url must not be null");
         }
@@ -24,7 +26,7 @@ export default class URL {
         return (this._url.includes("http://") || this._url.includes("https://"));
     }
 
-    static class(obj) {
+    static class(obj: URL) {
         return new URL(obj.url);
     }
 
@@ -34,7 +36,7 @@ export default class URL {
         }
     }
 
-    checkIfDefinedAndNotNull(field) {
+    checkIfDefinedAndNotNull(field: any) {
         return typeof field !== 'undefined' && field !== null;
     }
 }
