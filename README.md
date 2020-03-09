@@ -1,5 +1,15 @@
 # Chrome Extension, Opera + FireFox AddOn for Minimal Consent
 
+
+## Extension Description for Publishing
+
+The extension block a hand full of so call Consent Management Platforms (CMP) asking the user for consent to drop cookies or for tracking purpose. The extension in the current version blocks already 10 CMPs such as Quantcast, OneTrust or UserCentrics.
+
+How to Test
+1) Load Extension
+2) Open a Webpage with a CMP (eg: https://www.doodle.com)
+3) CMP will be managed and the Icon with switch to green for 3 seconds. 
+
 ## Development Setup
 
 This extension requires `webpack` for bundling/minifing/obfuscating and debugging. 
