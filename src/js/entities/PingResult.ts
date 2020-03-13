@@ -1,5 +1,7 @@
 "use strict";
 
+import Utils from "../Utils";
+
 export default class PingResult {
 
     _gdprAppliesGlobally: boolean;
@@ -14,43 +16,43 @@ export default class PingResult {
     _tcfPolicyVersion: number;
 
     constructor(gdprAppliesGlobally: boolean, gdprApplies: boolean, cmpLoaded: boolean, cmpStatus: string, displayStatus: string, apiVersion: string, cmpVersion: number, cmpId: number, gvlVersion: number, tcfPolicyVersion: number) {
-        if (PingResult.checkIfDefinedAndNotNull(gdprAppliesGlobally)) {
+        if (Utils.checkIfDefinedAndNotNull(gdprAppliesGlobally)) {
             this._gdprAppliesGlobally = gdprAppliesGlobally;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(gdprApplies)) {
+        if (Utils.checkIfDefinedAndNotNull(gdprApplies)) {
             this._gdprApplies = gdprApplies;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(cmpLoaded)) {
+        if (Utils.checkIfDefinedAndNotNull(cmpLoaded)) {
             this._cmpLoaded = cmpLoaded;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(cmpStatus)) {
+        if (Utils.checkIfDefinedAndNotNull(cmpStatus)) {
             this._cmpStatus = cmpStatus;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(displayStatus)) {
+        if (Utils.checkIfDefinedAndNotNull(displayStatus)) {
             this._displayStatus = displayStatus;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(apiVersion)) {
+        if (Utils.checkIfDefinedAndNotNull(apiVersion)) {
             this._apiVersion = apiVersion;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(cmpVersion)) {
+        if (Utils.checkIfDefinedAndNotNull(cmpVersion)) {
             this._cmpVersion = cmpVersion;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(cmpId)) {
+        if (Utils.checkIfDefinedAndNotNull(cmpId)) {
             this._cmpId = cmpId;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(gvlVersion)) {
+        if (Utils.checkIfDefinedAndNotNull(gvlVersion)) {
             this._gvlVersion = gvlVersion;
         }
 
-        if (PingResult.checkIfDefinedAndNotNull(tcfPolicyVersion)) {
+        if (Utils.checkIfDefinedAndNotNull(tcfPolicyVersion)) {
             this._tcfPolicyVersion = tcfPolicyVersion;
         }
     }
@@ -139,11 +141,6 @@ export default class PingResult {
             tcfPolicyVersion: this._tcfPolicyVersion
         };
     }
-
-    private static checkIfDefinedAndNotNull(field: any) {
-        return typeof field !== 'undefined' && field !== null;
-    }
-
 
     get tcfVersion() {
         let tcfVersion = "";

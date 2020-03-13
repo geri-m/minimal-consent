@@ -1,6 +1,7 @@
 "use strict";
 
 import PingResult from "./PingResult";
+import Utils from "../Utils";
 
 export default class HistoryEntry {
 
@@ -15,37 +16,37 @@ export default class HistoryEntry {
     private readonly _implemented: boolean;
 
     constructor(date: string, url: string, cmp: string, cmpScriptUrl: string, pingResult: PingResult, implemented: boolean) {
-        if (HistoryEntry.checkIfDefinedAndNotNull(date)) {
+        if (Utils.checkIfDefinedAndNotNull(date)) {
             this._date = date;
         } else {
             throw new Error("Date in History Entry must not be null");
         }
 
-        if (HistoryEntry.checkIfDefinedAndNotNull(url)) {
+        if (Utils.checkIfDefinedAndNotNull(url)) {
             this._url = url;
         } else {
             throw new Error("URL in History Entry must not be null");
         }
 
-        if (HistoryEntry.checkIfDefinedAndNotNull(cmp)) {
+        if (Utils.checkIfDefinedAndNotNull(cmp)) {
             this._cmp = cmp;
         } else {
             throw new Error("CMP in History Entry must not be null");
         }
 
-        if (HistoryEntry.checkIfDefinedAndNotNull(cmpScriptUrl)) {
+        if (Utils.checkIfDefinedAndNotNull(cmpScriptUrl)) {
             this._cmpScriptUrl = cmpScriptUrl;
         } else {
             throw new Error("CMP Script in History Entry must not be null");
         }
 
-        if (HistoryEntry.checkIfDefinedAndNotNull(pingResult)) {
+        if (Utils.checkIfDefinedAndNotNull(pingResult)) {
             this._pingResult = PingResult.classFromJson(pingResult);
         } else {
             throw new Error("Ping Result in History Entry must not be null");
         }
 
-        if (HistoryEntry.checkIfDefinedAndNotNull(implemented)) {
+        if (Utils.checkIfDefinedAndNotNull(implemented)) {
             this._implemented = implemented;
         } else {
             throw new Error("Implemented in History Entry must not be null");
@@ -96,10 +97,6 @@ export default class HistoryEntry {
             historyEntry._cmpScriptUrl,
             PingResult.classFromDisk(historyEntry._pingResult),
             historyEntry._implemented);
-    }
-
-    private static checkIfDefinedAndNotNull(field: any) {
-        return typeof field !== 'undefined' && field !== null;
     }
 
     public toJSON() {

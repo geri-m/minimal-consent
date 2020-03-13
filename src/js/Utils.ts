@@ -3,11 +3,12 @@
 const dateFormat = require('dateformat'); // from library
 
 export default class Utils {
-    static log(message) {
+
+    public static log(message: string) {
         console.log(dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss.l') + " " + message);
     }
 
-    static createMinimalConsentButton(document, javaScript) {
+    public static createMinimalConsentButton(document: any, javaScript: string) {
         let link = document.createElement('a');
         link.text = 'Minimal Consent';
         link.setAttribute("class", "minimal-consent");
@@ -15,11 +16,16 @@ export default class Utils {
         document.body.appendChild(link);
     }
 
-    static objectClickable(myObject) {
+    public static objectClickable(myObject: any) {
         return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined' && myObject.offsetParent;
     }
 
-    static objectVisible(myObject) {
-        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined'
+    public static objectVisible(myObject: any) {
+        return typeof myObject !== 'undefined' && myObject && typeof myObject.parentElement !== 'undefined';
     }
+
+    public static checkIfDefinedAndNotNull(field: any) {
+        return typeof field !== 'undefined' && field !== null;
+    }
+
 }

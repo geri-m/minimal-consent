@@ -2,6 +2,7 @@
 
 import URL from "./URL";
 import HistoryEntry from "./HistoryEntry";
+import Utils from "../Utils";
 
 export default class ResponseForPopup {
 
@@ -11,23 +12,21 @@ export default class ResponseForPopup {
     private readonly _count: number;
 
     constructor(url: URL, lastFound: HistoryEntry, count: number) {
-        if (ResponseForPopup.checkIfDefinedAndNotNull(url)) {
+        if (Utils.checkIfDefinedAndNotNull(url)) {
             this._url = URL.class(url);
         } else {
             throw new Error("URL String in ResponseForPopup must not be null");
         }
 
-        if (ResponseForPopup.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
+        if (Utils.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
             this._lastFound = HistoryEntry.classFromJson(lastFound);
         } else {
-            console.log("Lastfound = undefined");
             this._lastFound = null;
         }
 
-        if (ResponseForPopup.checkIfDefinedAndNotNull(count)) {
+        if (Utils.checkIfDefinedAndNotNull(count)) {
             this._count = count;
         } else {
-            console.log("count = undefined");
             this._count = 0;
         }
     }
@@ -76,10 +75,6 @@ export default class ResponseForPopup {
 
     public static classFromJson(obj: any) {
         return new ResponseForPopup(obj.url, obj.lastFound, obj.count);
-    }
-
-    public static checkIfDefinedAndNotNull(field: any) {
-        return typeof field !== 'undefined' && field !== null;
     }
 
     public toJSON() {

@@ -1,11 +1,13 @@
 "use strict";
 
+import Utils from "../Utils";
+
 export default class URL {
 
     private readonly _url: string;
 
     constructor(url: string) {
-        if (URL.checkIfDefinedAndNotNull(url)) {
+        if (Utils.checkIfDefinedAndNotNull(url)) {
             this._url = url;
         } else {
             throw new Error("URL String in Url must not be null");
@@ -34,10 +36,6 @@ export default class URL {
         return {
             url: this._url
         }
-    }
-
-    private static checkIfDefinedAndNotNull(field: any) {
-        return typeof field !== 'undefined' && field !== null;
     }
 }
 
