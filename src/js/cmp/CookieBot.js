@@ -17,9 +17,12 @@ export default class CookieBot extends CMP {
         const allowSelectedSelector = "a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection";
         let allowAllButton = super.queryNodeSelector(allowSelectedSelector);
 
+
+        const allowSelectedSelector2 = "a#CybotCookiebotDialogBodyLevelButtonAccept";
+        let allowAllButton2 = super.queryNodeSelector(allowSelectedSelector2);
+
         const denyAllSelector = "a#CybotCookiebotDialogBodyButtonDecline";
         let denyAll = super.queryNodeSelector(denyAllSelector);
-
 
         // Case 1:
         // if there is the option to deny already on the first page - do so.
@@ -29,18 +32,26 @@ export default class CookieBot extends CMP {
             denyAll.click();
             Utils.log('Consent on denied.');
             super.reset();
-        } else if (Utils.objectClickable(allowAllButton) && super.state === 0) {
+        }
+        // Test Page: https://www.cookiebot.com/de/
+        else if ((Utils.objectClickable(allowAllButton) || Utils.objectClickable(allowAllButton2)) && super.state === 0) {
             Utils.log("CookieBot Banner found");
             cookiebotCheckBoxes.forEach(function (checkbox) {
                 checkbox.setAttribute("checked", "false");
                 Utils.log("Checkbox unset");
             });
             super.state = 2;
-        } else if (Utils.objectClickable(allowAllButton) && super.state === 2) {
+        }
+        // Test Page: https://www.possiblenow.com/
+        else if (Utils.objectClickable(allowAllButton) && super.state === 2) {
             Utils.log("Click Save now");
-
-            // TODO: Make button for Integration to Click.
             allowAllButton.click();
+            super.reset();
+        }
+        // Test page: https://www.gitlab.com/
+        else if (Utils.objectClickable(allowAllButton2) && super.state === 2) {
+            Utils.log("Click Save2 now");
+            allowAllButton2.click();
             super.reset();
         }
         // this is a special Case for V2. The Banner was found and we only click on the Deny Button.
