@@ -15,6 +15,7 @@ describe('PingResult Tests', () => {
 
     it('Full Example', async function () {
         let pr = new PingResult(false, undefined, false, "cmpStatus", "displayStatus", "apiVersion", 1, 2, 3, 4);
+        expect(JSON.parse(JSON.stringify(pr))).toEqual(JSON.parse("{\"gdprAppliesGlobally\":false,\"cmpLoaded\":false, \"cmpStatus\":\"cmpStatus\", \"displayStatus\":\"displayStatus\", \"apiVersion\":\"apiVersion\", \"cmpVersion\":1, \"cmpId\":2, \"gvlVersion\":3, \"tcfPolicyVersion\":4}"));
         let pr2 = PingResult.classFromJson(pr);
         expect(pr).toEqual(pr2);
 

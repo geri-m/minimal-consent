@@ -11,7 +11,7 @@ export default class BackendCall {
     constructor() {
         this._cmp = "na";
         this._cmpScriptUrl = "na";
-        this._pingResult = {};
+        this._pingResult = { };
         this._implemented = false;
 
         // this is for the states.
