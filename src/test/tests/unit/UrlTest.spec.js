@@ -39,7 +39,6 @@ describe('URL Tests', () => {
 
     it('URL Example #', async function () {
         let url3 = new URL("#");
-        console.log(JSON.stringify(url3));
         expect(url3.isHttp).toBeFalse();
         // expect(url3.host).toEqual("#"); -> This will not work, as in this case, the hostname from the current page (where we get the document form, will be taken
         expect(url3.url).toEqual("#");
@@ -47,7 +46,6 @@ describe('URL Tests', () => {
         expect(Object.entries(url3).length).toEqual(1);
 
         let url4 = URL.class(url3);
-        console.log(JSON.stringify(url4));
         expect(url4.isHttp).toBeFalse();
         // expect(url4.host).toEqual("#"); -> This will not work, as in this case, the hostname from the current page (where we get the document form, will be taken
         expect(url4.url).toEqual("#");

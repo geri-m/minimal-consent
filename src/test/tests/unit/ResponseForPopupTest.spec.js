@@ -44,22 +44,20 @@ describe('ResponseForPopup Tests', () => {
     });
 
     it('Properly Full Example (Case 4)', async function () {
-        let he = {};
         let url = new URL("http://www.somesite.de");
-        let rfp = new ResponseForPopup(url, he, 10);
+        let rfp = new ResponseForPopup(url, undefined, 10);
         expect(rfp.count).toEqual(10);
         expect(rfp.url).toEqual(url);
-        expect(rfp.lastFound).toEqual(he);
+        expect(rfp.lastFound).toBeNull();
         expect(rfp.case).toEqual(4);
     });
 
     it('Properly Full Example (Case 5)', async function () {
-        let he = {};
         let url = new URL("chrome-extension://cgoaendlnmfajjjkhckajkmjinjinlkb/");
-        let rfp = new ResponseForPopup(url, he, 10);
+        let rfp = new ResponseForPopup(url, undefined, 10);
         expect(rfp.count).toEqual(10);
         expect(rfp.url).toEqual(url);
-        expect(rfp.lastFound).toEqual(he);
+        expect(rfp.lastFound).toBeNull();
         expect(rfp.case).toEqual(5);
     });
 
@@ -67,11 +65,21 @@ describe('ResponseForPopup Tests', () => {
         expect(function () {
             new ResponseForPopup();
         }).toThrow(new Error("URL String in ResponseForPopup must not be null"));
-
     });
 
     it('Wrong Parameter', async function () {
         let rfp = new ResponseForPopup(new URL("www.orf.at"));
-        expect(Object.entries(rfp.lastFound).length).toEqual(0);
+        expect(rfp.lastFound).toBeNull();
     });
+
+    it('Undefined Parameter', async function () {
+        let rfp = new ResponseForPopup(new URL("www.orf.at"), undefined, undefined);
+        expect(rfp.lastFound).toBeNull();
+    });
+
+    it('Null Parameter', async function () {
+        let rfp = new ResponseForPopup(new URL("www.orf.at"), null, null);
+        expect(rfp.lastFound).toBeNull();
+    });
+
 });

@@ -5,41 +5,49 @@ import HistoryEntry from "./HistoryEntry";
 
 export default class ResponseForPopup {
 
-    constructor(url, lastFound, count) {
-        if (this.checkIfDefinedAndNotNull(url)) {
+
+    private readonly _url: URL;
+    private readonly _lastFound: HistoryEntry;
+    private readonly _count: number;
+
+    constructor(url: URL, lastFound: HistoryEntry, count: number) {
+        if (ResponseForPopup.checkIfDefinedAndNotNull(url)) {
             this._url = URL.class(url);
         } else {
             throw new Error("URL String in ResponseForPopup must not be null");
         }
 
-        if (this.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
+        if (ResponseForPopup.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
             this._lastFound = HistoryEntry.classFromJson(lastFound);
         } else {
-            this._lastFound = {};
+            console.log("Lastfound = undefined");
+            this._lastFound = null;
         }
 
-        if (this.checkIfDefinedAndNotNull(count)) {
-            this._count = Number(count);
+        if (ResponseForPopup.checkIfDefinedAndNotNull(count)) {
+            this._count = count;
         } else {
+            console.log("count = undefined");
             this._count = 0;
         }
     }
 
-    get url() {
+    public get url() {
         return this._url;
     }
 
-    get lastFound() {
+    public get lastFound() {
         return this._lastFound;
     }
 
-    get count() {
+    public get count() {
         return this._count;
     }
 
-    get case() {
+    public get case() {
         if (this._url.isHttp) {
-            if (Object.entries(this._lastFound).length > 0) {
+            console.log(this._lastFound);
+            if (this._lastFound !== null && Object.entries(this._lastFound).length > 0) {
                 if (this._lastFound.cmp !== HistoryEntry.CMP_UNKNOWN) {
                     // found, known, implemented - case 1
                     if (this._lastFound.implemented) {
@@ -66,21 +74,20 @@ export default class ResponseForPopup {
         }
     }
 
-    static class(obj) {
+    public static classFromJson(obj: any) {
         return new ResponseForPopup(obj.url, obj.lastFound, obj.count);
     }
 
-    toJSON() {
+    public static checkIfDefinedAndNotNull(field: any) {
+        return typeof field !== 'undefined' && field !== null;
+    }
+
+    public toJSON() {
         return {
             url: this._url,
             lastFound: this._lastFound,
             count: this._count
         }
     }
-
-    checkIfDefinedAndNotNull(field) {
-        return typeof field !== 'undefined' && field !== null;
-    }
-
 }
 

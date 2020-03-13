@@ -29,7 +29,7 @@ function openOptions() {
 function handleResponse(response) {
     bkg.console.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
 
-    let popupMessage = ResponseForPopup.class(response);
+    let popupMessage = ResponseForPopup.classFromJson(response);
     bkg.console.log("parsed: " + JSON.stringify(popupMessage));
 
     document.getElementById("cmpCount").textContent = popupMessage.count;
