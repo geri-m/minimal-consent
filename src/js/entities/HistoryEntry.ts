@@ -4,56 +4,63 @@ import PingResult from "./PingResult";
 
 export default class HistoryEntry {
 
-    constructor(date, url, cmp, cmpScriptUrl, pingResult, implemented) {
-        if (this.checkIfDefinedAndNotNull(date)) {
-            this._date = String(date);
+    public static readonly CMP_UNKNOWN = "unknown";
+
+    // Parameters are only set once, hence they can be readonly.
+    private readonly _date: string;
+    private readonly _url: string;
+    private readonly _cmp: string;
+    private readonly _cmpScriptUrl: string;
+    private readonly _pingResult: PingResult;
+    private readonly _implemented: boolean;
+
+    constructor(date: string, url: string, cmp: string, cmpScriptUrl: string, pingResult: PingResult, implemented: boolean) {
+        if (HistoryEntry.checkIfDefinedAndNotNull(date)) {
+            this._date = date;
         } else {
             throw new Error("Date in History Entry must not be null");
         }
 
-        if (this.checkIfDefinedAndNotNull(url)) {
-            this._url = String(url);
+        if (HistoryEntry.checkIfDefinedAndNotNull(url)) {
+            this._url = url;
         } else {
             throw new Error("URL in History Entry must not be null");
         }
 
-        if (this.checkIfDefinedAndNotNull(cmp)) {
-            this._cmp = String(cmp);
+        if (HistoryEntry.checkIfDefinedAndNotNull(cmp)) {
+            this._cmp = cmp;
         } else {
             throw new Error("CMP in History Entry must not be null");
         }
 
-        if (this.checkIfDefinedAndNotNull(cmpScriptUrl)) {
-            this._cmpScriptUrl = String(cmpScriptUrl);
+        if (HistoryEntry.checkIfDefinedAndNotNull(cmpScriptUrl)) {
+            this._cmpScriptUrl = cmpScriptUrl;
         } else {
             throw new Error("CMP Script in History Entry must not be null");
         }
 
-
-        if (this.checkIfDefinedAndNotNull(pingResult)) {
+        if (HistoryEntry.checkIfDefinedAndNotNull(pingResult)) {
             this._pingResult = PingResult.classFromJson(pingResult);
         } else {
             throw new Error("Ping Result in History Entry must not be null");
         }
 
-        if (this.checkIfDefinedAndNotNull(implemented)) {
-            this._implemented = Boolean(implemented);
+        if (HistoryEntry.checkIfDefinedAndNotNull(implemented)) {
+            this._implemented = implemented;
         } else {
             throw new Error("Implemented in History Entry must not be null");
         }
-
-        HistoryEntry.CMP_UNKNOWN = "unknown";
     }
 
-    get date() {
+    public get date() {
         return this._date;
     }
 
-    get url() {
+    public get url() {
         return this._url;
     }
 
-    get cmp() {
+    public get cmp() {
         if (this._cmp === "na") {
             return HistoryEntry.CMP_UNKNOWN;
         } else {
@@ -61,19 +68,19 @@ export default class HistoryEntry {
         }
     }
 
-    get cmpScriptUrl() {
+    public get cmpScriptUrl() {
         return this._cmpScriptUrl;
     }
 
-    get pingResult() {
+    public get pingResult() {
         return this._pingResult;
     }
 
-    get implemented() {
+    public get implemented() {
         return this._implemented;
     }
 
-    static classFromJson(historyEntry) {
+    public static classFromJson(historyEntry: HistoryEntry) {
         return new HistoryEntry(historyEntry.date,
             historyEntry.url,
             historyEntry.cmp,
@@ -82,7 +89,7 @@ export default class HistoryEntry {
             historyEntry.implemented);
     }
 
-    static classFromDisk(historyEntry) {
+    public static classFromDisk(historyEntry: any) {
         return new HistoryEntry(historyEntry._date,
             historyEntry._url,
             historyEntry._cmp,
@@ -91,8 +98,11 @@ export default class HistoryEntry {
             historyEntry._implemented);
     }
 
+    private static checkIfDefinedAndNotNull(field: any) {
+        return typeof field !== 'undefined' && field !== null;
+    }
 
-    toJSON() {
+    public toJSON() {
         return {
             date: this._date,
             url: this._url,
@@ -101,10 +111,6 @@ export default class HistoryEntry {
             pingResult: this._pingResult,
             implemented: this._implemented
         };
-    }
-
-    checkIfDefinedAndNotNull(field) {
-        return typeof field !== 'undefined' && field !== null;
     }
 
 }

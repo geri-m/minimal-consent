@@ -11,6 +11,7 @@ describe('History Tests', () => {
     it('Properly Full Example', async function () {
         let pr = new PingResult(false, true, false, "cmpStatus", "displayStatus", "apiVersion", 1, 2, 3, 4);
         let he = new HistoryEntry("2020-02-20 10:00:00", "https://www.heise.de/", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", pr, true);
+        expect(JSON.parse(JSON.stringify(he))).toEqual(JSON.parse('{"date":"2020-02-20 10:00:00","url":"https://www.heise.de/","cmp":"UserCentrics","cmpScriptUrl":"https://www.usercentrics.com/js/latest/bundle.js","pingResult":{"gdprAppliesGlobally":false,"gdprApplies":true,"cmpLoaded":false,"cmpStatus":"cmpStatus","displayStatus":"displayStatus","apiVersion":"apiVersion","cmpVersion":1,"cmpId":2,"gvlVersion":3,"tcfPolicyVersion":4},"implemented":true}'));
         expect(he.date).toEqual("2020-02-20 10:00:00");
         expect(he.url).toEqual("https://www.heise.de/");
         expect(he.cmp).toEqual("UserCentrics");
