@@ -11,7 +11,7 @@ export default class PingResult {
     private readonly _displayStatus: string;
     private readonly _apiVersion: string;
     private readonly _cmpVersion: number;
-    private readonly _cmpId: number;
+    private _cmpId: number;
     private readonly _gvlVersion: number;
     private readonly _tcfPolicyVersion: number;
 
@@ -61,6 +61,10 @@ export default class PingResult {
         return this._cmpId;
     }
 
+    set cmpId(id: number) {
+        this._cmpId = id;
+    }
+
     get gdprAppliesGlobally(): boolean {
         return this._gdprAppliesGlobally;
     }
@@ -98,7 +102,7 @@ export default class PingResult {
     }
 
     get tcfVersion(): string {
-        let tcfVersion = "";
+        let tcfVersion: string;
         if (typeof this.gdprAppliesGlobally !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprApplies === 'undefined') {
             tcfVersion = "TCF 1.1";
         } else if (typeof this.gdprApplies !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprAppliesGlobally === 'undefined') {

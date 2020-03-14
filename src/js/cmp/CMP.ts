@@ -1,19 +1,16 @@
 "use strict";
 
 import Utils from "../Utils";
+import BackendCall from "../BackendCall"
+import CmpType from "./CmpType";
+import ICmp from "./ICmp";
 
 const config = {attributes: true, childList: true, subtree: true};
 const minimalConsentLink = "a.minimal-consent";
 const maximalLimitOfDomChangeTillStop = 100;
 
-const enumeration = {
-    WAIT_FOR_ASYNC_CALLBACK: "We wait until the JavaScript Object on the Page for the CMP was found",
-    WAIT_FOR_TIME_FRAME: "We wait till the Callback should fire (maximal 5 seconds; 25 x 200 ms",
-    DO_NOT_WAIT: "We don't wait for a callback, as we know the CMP is not TCF compliant"
-};
 
 export default class CMP {
-
 
     /**
      * Constructor for an Abstract CMP
@@ -23,16 +20,23 @@ export default class CMP {
      * @param scriptUrl URL from with the CMP was loaded
      * @param type Enumeration on Type of CMP to determine when we need to trigger the backend call.
      */
-    constructor(cmpId, node, name, scriptUrl, type, implemented, backendCall) {
+
+    private readonly _node: Document;
+    private _state: number;
+    private _callCounter: number;
+    private readonly _backendCall: BackendCall;
+    private _observer: MutationObserver;
+    private _cmpImplementation: ICmp;
+
+    constructor(node : Document, backendCall: BackendCall, cmpImplementation: ICmp) {
         this._node = node;
-        this._name = name;
         this._state = 0;
         this._callCounter = 0;
+        this._cmpImplementation = cmpImplementation;
         this._backendCall = backendCall;
-        this._backendCall.cmpData(cmpId, name, scriptUrl, type, implemented);
     }
 
-    connect() {
+    connect() :void {
         let _self = this;
         this._observer = new MutationObserver(function (mutations) {
             _self.mainCmpHandler(mutations);
@@ -43,36 +47,25 @@ export default class CMP {
         this.mainCmpHandler(null);
     }
 
-
-    /**
-     * Fetching the CMP Type Enumeration.
-     *
-     * @returns {{DO_NOT_WAIT: string, WAIT_FOR_ASYNC_CALLBACK: string, WAIT_FOR_TIME_FRAME: string}}
-     */
-
-    static get cmpType() {
-        return enumeration;
-    }
-
     /**
      * Getting the Root Node of the Document where a CMP is runnning
      *
      * @returns {*}
      */
 
-    get node() {
+    get node() :Document{
         return this._node;
     }
 
-    get state() {
+    get state() :number  {
         return this._state;
     }
 
-    set state(state) {
+    set state(state)  {
         this._state = state;
     }
 
-    get minimalConsentLink() {
+    get minimalConsentLink() :string {
         return minimalConsentLink;
     }
 
@@ -82,12 +75,12 @@ export default class CMP {
      * @param mutations
      */
 
-    mainCmpHandler(mutations) {
-        Utils.log("Handling " + this._name);
+    mainCmpHandler(mutations: MutationRecord[]): void {
+        Utils.log("Handling " + this._cmpImplementation.name);
         this._callCounter++;
         // if after x changes to the DOM there as not popup, we stop listening to the changes.
         if (this._callCounter < maximalLimitOfDomChangeTillStop) {
-            this.handleCmp(mutations);
+            this._cmpImplementation.handleCmp();
         } else {
             this._observer.disconnect();
             this._state = -1;
@@ -97,26 +90,15 @@ export default class CMP {
     }
 
     /**
-     * Abstract Method which need to be overwritten by the extending classes.
-     *
-     * @param mutations
-     */
-
-    handleCmp(mutations) {
-        throw new Error("Calling 'handleCmp' Superclass handler");
-    }
-
-    /**
      * Reset the state of the CMP if the Consent was successfully given. Might trigger a backend call.
      */
 
-    reset() {
+    reset() : void{
         // If everything is fine, remove the listener.
         this._observer.disconnect();
         this._state = -1;
         this._backendCall.successfulBlock();
-        Utils.log('Consent for ' + this._name + ' denied.');
-
+        Utils.log('Consent for ' + this._cmpImplementation.name + ' denied.');
     }
 
     /**
@@ -125,7 +107,7 @@ export default class CMP {
      * @returns {Element | any}
      */
 
-    queryNodeSelector(selector) {
+    queryNodeSelector(selector: string): any {
         return this._node.querySelector(selector);
     }
 
@@ -134,7 +116,7 @@ export default class CMP {
      * @param selector CSS Selector to search for
      * @returns {NodeListOf<HTMLElementTagNameMap[*]> | NodeListOf<Element> | NodeListOf<SVGElementTagNameMap[*]>}
      */
-    queryNodeSelectorAll(selector) {
+    queryNodeSelectorAll(selector: string) : any {
         return this._node.querySelectorAll(selector)
     }
 }

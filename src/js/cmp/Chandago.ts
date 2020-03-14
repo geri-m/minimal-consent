@@ -2,24 +2,35 @@
 
 import Utils from "../Utils";
 import CMP from "./CMP";
+import ICmp from "./ICmp"
+import CmpType from "./CmpType";
+import BackendCall from "../BackendCall"
 
 
-export default class Chandago extends CMP {
+export default class Chandago implements ICmp {
 
-    constructor(node, scriptUrl, backendCall) {
-        super(2, node, "Chandago", scriptUrl, CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK, true, backendCall);
+    readonly _cmp: CMP;
+    private readonly _name = "Chandago";
+
+    constructor(node: Document, scriptUrl: string, backendCall: BackendCall) {
+        backendCall.cmpData(2, this._name, scriptUrl, CmpType.WAIT_FOR_ASYNC_CALLBACK, true);
+        this._cmp = new CMP(node, backendCall, this);
+    }
+
+    get name(): string {
+        return this._name
     }
 
     handleCmp() {
         const chandagoButtonDenyCss = "button.deny";
-        let chandagoButtonDeny = super.queryNodeSelector(chandagoButtonDenyCss);
+        let chandagoButtonDeny = this._cmp.queryNodeSelector(chandagoButtonDenyCss);
 
-        if (Utils.objectClickable(chandagoButtonDeny) && super.state === 0) {
+        if (Utils.objectClickable(chandagoButtonDeny) && this._cmp.state === 0) {
             Utils.log("Click Deny now");
             // looks like this does not work.
             chandagoButtonDeny.click();
             Utils.log('Consent on denied.');
-            super.reset();
+            this._cmp.reset();
         }
 
         /*
@@ -57,5 +68,4 @@ export default class Chandago extends CMP {
         // this is a special Case for V2. The Banner was found and we only click on the Deny Button.
 
     }
-
 }
