@@ -1,7 +1,6 @@
 "use strict";
 
 import Utils from "./Utils";
-import CMP from "./cmp/CMP";
 import PingResult from "./entities/PingResult";
 import CmpType from "./cmp/CmpType";
 
@@ -9,10 +8,24 @@ const contentScript = "contentscript";
 
 export default class BackendCall {
 
+    // This is Data we are going to send
+    _cmp: string;
+    _cmpId: number;
+    _type: CmpType;
+    _cmpScriptUrl: string;
+    _implemented: boolean;
+    // This is required for the logic within the class
+    _isSuccessfulBlock: boolean;
+    _isPingResultReceived: boolean;
+    _dataReceived: boolean;
+    _timeoutForBackendCall: any;
+
+    _pingResult: any;
+
     constructor() {
         this._cmp = "na";
         this._cmpScriptUrl = "na";
-        this._pingResult = { };
+        this._pingResult = {};
         this._implemented = false;
 
         // this is for the states.
@@ -27,7 +40,7 @@ export default class BackendCall {
      * @param pingResult
      */
 
-    set pingResult(pingResult) {
+    set pingResult(pingResult: PingResult) {
         Utils.log("Pingback in BackendCall set: " + pingResult);
         this._pingResult = PingResult.classFromJson(pingResult);
         this._isPingResultReceived = true;
@@ -56,7 +69,7 @@ export default class BackendCall {
         }
     }
 
-    cmpData(cmpId, cmp, cmpScriptUrl, type, implemented) {
+    public cmpData(cmpId: number, cmp: string, cmpScriptUrl: string, type: CmpType, implemented: boolean): void {
         Utils.log("Data set by CMP");
         this._cmpId = cmpId;
         this._cmp = cmp;
@@ -66,7 +79,7 @@ export default class BackendCall {
         this._dataReceived = true;
     }
 
-    successfulBlock() {
+    public successfulBlock(): void {
         Utils.log("succefulblock in BackendCall");
         this._isSuccessfulBlock = true;
 
@@ -104,8 +117,7 @@ export default class BackendCall {
      * Actual Method to trigger the backend call. Can be triggered from various functions
      */
 
-
-    triggerCall() {
+    private triggerCall(): void {
         Utils.log("Call now Triggered");
 
         // If the CMP-ID is not set in the Ping Result, put it there.

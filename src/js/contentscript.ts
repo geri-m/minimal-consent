@@ -18,10 +18,7 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
     script.text = 'window.addEventListener("load",checkForCmp,!1);let dataframeForPingReturn={type:"FROM_MINIMAL_CONSENT"},checkForCmpCounter=0,maxTimeoutForResearch=200,maxRetryForSearch=25;function checkForCmp(){this.__cmp?this.__cmp("ping",2,sendMessage):this.__tcfapi?this.__tcfapi("ping",2,sendMessage):this.frames&&this.frames.length&&this.frames.__tcfapiLocator?this.__tcfapi("ping",2,sendMessage):checkForCmpCounter<maxRetryForSearch?(setTimeout(checkForCmp,maxTimeoutForResearch),checkForCmpCounter++):window.removeEventListener("load",checkForCmp,!1)}function sendMessage(e,t){t&&(dataframeForPingReturn.cmp=JSON.stringify(e),window.postMessage(dataframeForPingReturn,"*"),window.removeEventListener("load",checkForCmp,!1))}';
     document.head.appendChild(script);
 
-    // Select the node that will be observed for mutations
-    const targetNode = document.getRootNode();
-
-    const detector = new Detector(targetNode);
+    const detector = new Detector(document);
     detector.connectObserver();
 
     window.addEventListener("message", function (event) {

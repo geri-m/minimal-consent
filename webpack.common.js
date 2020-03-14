@@ -6,11 +6,10 @@ const options = {
 
     mode: process.env.NODE_ENV || 'development',
     entry: {
-        "./contentscript": path.join(__dirname, './src/js/contentscript.js'),
-        "./background": path.join(__dirname, './src/js/background.js'),
-        './popup/popup': './src/js/popup/popup.js',
-        './options/options': './src/js/options/options.js',
-        './typescript': './src/index.ts'
+        "./contentscript": path.join(__dirname, './src/js/contentscript.ts'),
+        "./background": path.join(__dirname, './src/js/background.ts'),
+        './popup/popup': './src/js/popup/popup.ts',
+        './options/options': './src/js/options/options.ts'
     },
     output: {
         path: path.join(__dirname, 'dist/'),

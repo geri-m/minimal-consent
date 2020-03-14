@@ -1,8 +1,8 @@
 import HistoryEntry from "../entities/HistoryEntry";
 
-let bkg;
+let bkg: Window;
 
-window.addEventListener('load', function load(event) {
+window.addEventListener('load', function load(event: Event) {
     bkg = chrome.extension.getBackgroundPage();
     bkg.console.log("OptionsJS Loaded");
 
@@ -17,22 +17,22 @@ window.addEventListener('load', function load(event) {
     document.querySelector('#close-window').addEventListener('click', closeWindow);
 });
 
-function handleResponse(response) {
+function handleResponse(response: any): void {
     bkg.console.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
     if (typeof response !== "undefined" && response.length) {
 
         // sort array by date.
-        response.sort(function (a, b) {
+        response.sort(function (a: HistoryEntry, b: HistoryEntry) {
             // Turn your strings into dates, and then subtract them
             // to get a value that is either negative, positive, or zero.
-            return new Date(b.date) - new Date(a.date);
+            return new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds();
         });
 
         response.forEach(createRow);
     }
 }
 
-function clearHistory() {
+function clearHistory(): void {
     chrome.runtime.sendMessage({
         from: "optionsScript",
         cmd: "clearHistory"
@@ -42,13 +42,13 @@ function clearHistory() {
     closeWindow();
 }
 
-function closeWindow() {
+function closeWindow(): void {
     // check if the browsers supports Option Pages.
     bkg.console.log("Closing Window");
     window.close();
 }
 
-function createRow(historyEntry, index) {
+function createRow(historyEntry: HistoryEntry, index: number): void {
     bkg.console.log("Item: " + JSON.stringify(historyEntry));
     let item = HistoryEntry.classFromJson(historyEntry);
 

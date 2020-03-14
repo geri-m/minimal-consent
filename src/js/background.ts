@@ -21,7 +21,7 @@ let icon = new Icon();
 
 chrome.runtime.onMessage.addListener(messageHandler);
 
-function messageHandler(request, sender, sendResponse) {
+function messageHandler(request: any, sender: any, sendResponse: any): boolean {
     switch (request.from) {
         case "contentscript":
             handleContentScript(request, sender, sendResponse);
@@ -41,7 +41,7 @@ function messageHandler(request, sender, sendResponse) {
 }
 
 
-async function handleContentScript(request, sender, sendResponse) {
+async function handleContentScript(request: any, sender: any, sendResponse: any) {
     Utils.log("handleContentScript");
     let link = await getUrl();
 
@@ -62,19 +62,19 @@ async function handleContentScript(request, sender, sendResponse) {
             let now = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
             let he = new HistoryEntry(now, link.host, request.cmp, request.cmpScripUrl, pr, request.implemented);
             logBackend(he);
-            storeRequest(he);
             switchIcon(he.implemented);
+            storeRequest(he);
         }
     } else {
         Utils.log("handleContentScript: Current Page is not HTTP/HTTPS");
     }
 }
 
-async function handlePopupScript(request, sender, sendResponse) {
+async function handlePopupScript(request: any, sender: any, sendResponse: any) {
     let url = await getUrl();
     Utils.log("handlePopupScript: Current URL: " + JSON.stringify(url));
 
-    let lastFound = {};
+    let lastFound: HistoryEntry;
 
     // only HTTP Pages will be supported
     if (url.isHttp) {
@@ -92,7 +92,7 @@ async function handlePopupScript(request, sender, sendResponse) {
     sendResponse(response);
 }
 
-async function handleOptionsScript(request, sender, sendResponse) {
+async function handleOptionsScript(request: any, sender: any, sendResponse: any) {
     if (request.cmd === "getHistory") {
         let hist = await history.load();
         sendResponse(hist);
@@ -101,7 +101,7 @@ async function handleOptionsScript(request, sender, sendResponse) {
     }
 }
 
-function getUrl() {
+function getUrl(): Promise<URL> {
     return new Promise(function (resolve, reject) {
         chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
             if (tabs.length > 0) {
@@ -115,15 +115,15 @@ function getUrl() {
     });
 }
 
-function logBackend(requestJson) {
+function logBackend(requestJson: any) {
     request.send(requestJson);
 }
 
-async function storeRequest(requestJson) {
+async function storeRequest(requestJson: any) {
     await history.save(requestJson);
 }
 
-function switchIcon(implemented) {
+function switchIcon(implemented: boolean) {
     icon.switchIcon(implemented);
 }
 

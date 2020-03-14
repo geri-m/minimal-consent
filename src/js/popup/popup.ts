@@ -1,6 +1,6 @@
 import ResponseForPopup from "../entities/ResponseForPopup";
 
-let bkg;
+let bkg: Window;
 
 window.addEventListener('load', onLoad);
 
@@ -26,13 +26,13 @@ function openOptions() {
     }
 }
 
-function handleResponse(response) {
+function handleResponse(response: any) {
     bkg.console.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
 
     let popupMessage = ResponseForPopup.classFromJson(response);
     bkg.console.log("parsed: " + JSON.stringify(popupMessage));
 
-    document.getElementById("cmpCount").textContent = popupMessage.count;
+    document.getElementById("cmpCount").textContent = popupMessage.count + "";
     let details = document.getElementById("details");
 
     // Possible Cases
@@ -80,7 +80,7 @@ function handleResponse(response) {
     }
 }
 
-function sendUrlToBackendForImplementation(url) {
+function sendUrlToBackendForImplementation(url: string) {
     // check if the browsers supports Option Pages.
     bkg.console.log("Feature Request from User for URL '" + url + "'. TODO: Send to Backend");
     window.close();
