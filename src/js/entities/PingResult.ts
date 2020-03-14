@@ -112,7 +112,6 @@ export default class PingResult {
         } else {
             tcfVersion = "not defined";
         }
-
         return tcfVersion;
     }
 
