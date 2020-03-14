@@ -20,7 +20,11 @@ export default class UserCentrics implements ICmp {
         return this._name
     }
 
-    handleCmp() {
+    public connect(): void {
+        this._cmp.connect();
+    }
+
+    public handleCmp(): void {
         // we are looking for a banner and if this banner is visible, we then inject the javascript.
         const ucBannerContent = 'div.uc-banner-content';
         let banner = this._cmp.queryNodeSelector(ucBannerContent);

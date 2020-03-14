@@ -20,6 +20,10 @@ export default class ConsentManager implements ICmp {
         return this._name
     }
 
+    public connect(): void {
+        this._cmp.connect();
+    }
+
     public handleCmp(): void {
         const deny = '#cmpbntnotxt';
         let buttonDeny = this._cmp.queryNodeSelector(deny);

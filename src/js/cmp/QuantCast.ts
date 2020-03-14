@@ -20,7 +20,11 @@ export default class QuantCast implements ICmp {
         return this._name
     }
 
-    handleCmp() {
+    public connect(): void {
+        this._cmp.connect();
+    }
+
+    public handleCmp(): void {
         const purpose = "a#qc-cmp-purpose-button";
         let purposeButton = this._cmp.queryNodeSelector(purpose);
 

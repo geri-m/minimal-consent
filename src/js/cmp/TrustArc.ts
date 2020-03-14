@@ -12,12 +12,16 @@ export default class TrustArc implements ICmp {
     private readonly _name = "TrustArc Inc";
 
     constructor(node: Document, scriptUrl: string, backendCall: BackendCall) {
-        backendCall.cmpData(41, this._name, scriptUrl, CmpType.WAIT_FOR_ASYNC_CALLBACK, true);
+        backendCall.cmpData(41, this._name, scriptUrl, CmpType.DO_NOT_WAIT, true);
         this._cmp = new CMP(node, backendCall, this);
     }
 
     public get name(): string {
         return this._name
+    }
+
+    public connect(): void {
+        this._cmp.connect();
     }
 
     public async handleCmp() {

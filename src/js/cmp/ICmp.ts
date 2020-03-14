@@ -5,4 +5,6 @@ export default interface ICmp {
     name: string;
 
     handleCmp(): void;
+
+    connect(): void;
 }

@@ -3,6 +3,7 @@
 import Utils from "./Utils";
 import CMP from "./cmp/CMP";
 import PingResult from "./entities/PingResult";
+import CmpType from "./cmp/CmpType";
 
 const contentScript = "contentscript";
 
@@ -78,17 +79,17 @@ export default class BackendCall {
         } else {
             // Sending to Background Script
             switch (this._type) {
-                case CMP.cmpType.WAIT_FOR_ASYNC_CALLBACK:
+                case CmpType.WAIT_FOR_ASYNC_CALLBACK:
                     // if we wait for the callback, the backend call is done in the 'setPingResult';
                     // we already have click away the CMP so, wait for the pingresult and go.
                     Utils.log("We are waiting for the Website to send the PingResult");
                     break;
-                case CMP.cmpType.WAIT_FOR_TIME_FRAME:
+                case CmpType.WAIT_FOR_TIME_FRAME:
                     Utils.log("We are waiting five seconds to trigger the backend call");
                     clearTimeout(this._timeoutForBackendCall);
                     this._timeoutForBackendCall = setTimeout(this.triggerCall.bind(this), 5000);
                     break;
-                case CMP.cmpType.DO_NOT_WAIT:
+                case CmpType.DO_NOT_WAIT:
                     Utils.log("We Trigger the Backend Call right now");
                     clearTimeout(this._timeoutForBackendCall);
                     this.triggerCall();

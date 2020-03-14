@@ -22,6 +22,10 @@ export default class CustomImpl implements ICmp {
         return this._name
     }
 
+    public connect(): void {
+        this._cmp.connect();
+    }
+
     public handleCmp(): void {
         let button = this._cmp.queryNodeSelector(this._button);
         let minimalConsent = this._cmp.queryNodeSelector(this._cmp.minimalConsentLink);

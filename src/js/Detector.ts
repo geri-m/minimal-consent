@@ -1,6 +1,6 @@
 "use strict";
 import Utils from "./Utils";
-
+import ICmp from "./cmp/ICmp";
 import TrustArc from "./cmp/TrustArc";
 import Evidon from "./cmp/Evidon"
 import CustomImpl from "./cmp/CustomImpl";
@@ -13,6 +13,7 @@ import ConsentManager from "./cmp/ConsentManager";
 import NotYetImplementedCmp from "./cmp/NoYetImplementedCmp";
 import BackendCall from "./BackendCall";
 import Chandago from "./cmp/Chandago";
+import PingResult from "./entities/PingResult";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -24,12 +25,17 @@ const config = {attributes: true, childList: true, subtree: true};
 
 export default class Detector {
 
-    constructor(node) {
+    _targetNode: Document;
+    _backendCall: BackendCall;
+    _observerForScriptSource: MutationObserver;
+    _cmp: ICmp;
+
+    constructor(node: Document) {
         this._targetNode = node;
         this._backendCall = new BackendCall();
     }
 
-    set pingResult(pingResult) {
+    set pingResult(pingResult: PingResult) {
         this._backendCall.pingResult = pingResult;
     }
 
@@ -51,7 +57,7 @@ export default class Detector {
         this._observerForScriptSource.disconnect();
     }
 
-    handleCMP(mutations) {
+    handleCMP(mutations: MutationRecord[]) {
         let allScriptTags = document.querySelectorAll("script");
         let scriptCounter;
         if (this._cmp) {

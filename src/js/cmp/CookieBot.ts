@@ -21,6 +21,10 @@ export default class CookieBot implements ICmp {
         return this._name
     }
 
+    public connect(): void {
+        this._cmp.connect();
+    }
+
     public handleCmp(): void {
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = this._cmp.queryNodeSelectorAll(cookiebotCheckboxesSelector);

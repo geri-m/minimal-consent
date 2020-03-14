@@ -20,6 +20,10 @@ export default class Evidon implements ICmp {
         return this._name
     }
 
+    public connect(): void {
+        this._cmp.connect();
+    }
+
     public async handleCmp() {
         const evidonDenyAll = "button#_evidon-decline-button";
         let button = this._cmp.queryNodeSelector(evidonDenyAll);

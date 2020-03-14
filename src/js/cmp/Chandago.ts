@@ -21,6 +21,10 @@ export default class Chandago implements ICmp {
         return this._name
     }
 
+    public connect(): void {
+        this._cmp.connect();
+    }
+
     public handleCmp(): void {
         const chandagoButtonDenyCss = "button.deny";
         let chandagoButtonDeny = this._cmp.queryNodeSelector(chandagoButtonDenyCss);
