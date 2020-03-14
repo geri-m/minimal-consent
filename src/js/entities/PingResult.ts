@@ -11,11 +11,9 @@ export default class PingResult {
     private readonly _displayStatus: string;
     private readonly _apiVersion: string;
     private readonly _cmpVersion: number;
+    private readonly _cmpId: number;
     private readonly _gvlVersion: number;
     private readonly _tcfPolicyVersion: number;
-
-    // TODO: DTO should be readonly
-    private _cmpId: number;
 
     constructor(gdprAppliesGlobally: boolean, gdprApplies: boolean, cmpLoaded: boolean, cmpStatus: string, displayStatus: string, apiVersion: string, cmpVersion: number, cmpId: number, gvlVersion: number, tcfPolicyVersion: number) {
         if (Utils.checkIfDefinedAndNotNull(gdprAppliesGlobally)) {
@@ -89,10 +87,6 @@ export default class PingResult {
 
     get cmpVersion(): number {
         return this._cmpVersion;
-    }
-
-    set cmpId(cmdId) {
-        this._cmpId = cmdId;
     }
 
     get gvlVersion(): number {

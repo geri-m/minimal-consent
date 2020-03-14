@@ -49,7 +49,7 @@ async function handleContentScript(request, sender, sendResponse) {
     let lastFound = await history.getLastFound(link.host);
 
     // if there is already something, don't process further.
-    if (Object.entries(lastFound).length !== 0) {
+    if (lastFound !== null) {
         Utils.log("The Page is already in the History. Don't consider further");
     }
     // only HTTP Pages will be supported

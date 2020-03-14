@@ -17,5 +17,9 @@
   ],
   "typeRoots": [
     "node_modules/@types"
+  ],
+  "types": [
+    //(various types, e.g. jquery, core-js),
+    "chrome"
   ]
 }
