@@ -53,15 +53,15 @@ export default class HistoryEntry {
         }
     }
 
-    public get date() {
+    public get date(): string {
         return this._date;
     }
 
-    public get url() {
+    public get url(): string {
         return this._url;
     }
 
-    public get cmp() {
+    public get cmp(): string {
         if (this._cmp === "na") {
             return HistoryEntry.CMP_UNKNOWN;
         } else {
@@ -69,19 +69,19 @@ export default class HistoryEntry {
         }
     }
 
-    public get cmpScriptUrl() {
+    public get cmpScriptUrl(): string {
         return this._cmpScriptUrl;
     }
 
-    public get pingResult() {
+    public get pingResult(): PingResult {
         return this._pingResult;
     }
 
-    public get implemented() {
+    public get implemented(): boolean {
         return this._implemented;
     }
 
-    public static classFromJson(historyEntry: HistoryEntry) {
+    public static classFromJson(historyEntry: HistoryEntry): HistoryEntry {
         return new HistoryEntry(historyEntry.date,
             historyEntry.url,
             historyEntry.cmp,
@@ -90,7 +90,7 @@ export default class HistoryEntry {
             historyEntry.implemented);
     }
 
-    public static classFromDisk(historyEntry: any) {
+    public static classFromDisk(historyEntry: any): HistoryEntry {
         return new HistoryEntry(historyEntry._date,
             historyEntry._url,
             historyEntry._cmp,
@@ -99,7 +99,7 @@ export default class HistoryEntry {
             historyEntry._implemented);
     }
 
-    public toJSON() {
+    public toJSON(): any {
         return {
             date: this._date,
             url: this._url,

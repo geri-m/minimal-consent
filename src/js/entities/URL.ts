@@ -14,25 +14,25 @@ export default class URL {
         }
     }
 
-    public get url() {
+    public get url(): string {
         return this._url;
     }
 
-    public get host() {
+    public get host(): string {
         let parser = document.createElement('a');
         parser.href = this._url;
         return parser.hostname;
     }
 
-    public get isHttp() {
+    public get isHttp(): boolean {
         return (this._url.includes("http://") || this._url.includes("https://"));
     }
 
-    public static class(obj: URL) {
+    public static class(obj: URL): URL {
         return new URL(obj.url);
     }
 
-    toJSON() {
+    toJSON(): any {
         return {
             url: this._url
         }

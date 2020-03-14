@@ -4,16 +4,18 @@ import Utils from "../Utils";
 
 export default class PingResult {
 
-    _gdprAppliesGlobally: boolean;
-    _gdprApplies: boolean;
-    _cmpLoaded: boolean;
-    _cmpStatus: string;
-    _displayStatus: string;
-    _apiVersion: string;
-    _cmpVersion: number;
-    _cmpId: number;
-    _gvlVersion: number;
-    _tcfPolicyVersion: number;
+    private readonly _gdprAppliesGlobally: boolean;
+    private readonly _gdprApplies: boolean;
+    private readonly _cmpLoaded: boolean;
+    private readonly _cmpStatus: string;
+    private readonly _displayStatus: string;
+    private readonly _apiVersion: string;
+    private readonly _cmpVersion: number;
+    private readonly _gvlVersion: number;
+    private readonly _tcfPolicyVersion: number;
+
+    // TODO: DTO should be readonly
+    private _cmpId: number;
 
     constructor(gdprAppliesGlobally: boolean, gdprApplies: boolean, cmpLoaded: boolean, cmpStatus: string, displayStatus: string, apiVersion: string, cmpVersion: number, cmpId: number, gvlVersion: number, tcfPolicyVersion: number) {
         if (Utils.checkIfDefinedAndNotNull(gdprAppliesGlobally)) {
@@ -57,51 +59,64 @@ export default class PingResult {
         }
     }
 
-    get gdprAppliesGlobally() {
+    get cmpId(): number {
+        return this._cmpId;
+    }
+
+    get gdprAppliesGlobally(): boolean {
         return this._gdprAppliesGlobally;
     }
 
-    get gdprApplies() {
+    get gdprApplies(): boolean {
         return this._gdprApplies;
     }
 
-    get cmpLoaded() {
+    get cmpLoaded(): boolean {
         return this._cmpLoaded;
     }
 
-    get cmpStatus() {
+    get cmpStatus(): string {
         return this._cmpStatus;
     }
 
-    get displayStatus() {
+    get displayStatus(): string {
         return this._displayStatus;
     }
 
-    get apiVersion() {
+    get apiVersion(): string {
         return this._apiVersion;
     }
 
-    get cmpVersion() {
+    get cmpVersion(): number {
         return this._cmpVersion;
-    }
-
-    get cmpId() {
-        return this._cmpId;
     }
 
     set cmpId(cmdId) {
         this._cmpId = cmdId;
     }
 
-    get gvlVersion() {
+    get gvlVersion(): number {
         return this._gvlVersion;
     }
 
-    get tcfPolicyVersion() {
+    get tcfPolicyVersion(): number {
         return this._tcfPolicyVersion;
     }
 
-    static classFromJson(pingResult: PingResult) {
+    get tcfVersion(): string {
+        let tcfVersion = "";
+        if (typeof this.gdprAppliesGlobally !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprApplies === 'undefined') {
+            tcfVersion = "TCF 1.1";
+        } else if (typeof this.gdprApplies !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprAppliesGlobally === 'undefined') {
+            tcfVersion = "TCF 2.0";
+        } else {
+            tcfVersion = "not defined";
+        }
+
+        return tcfVersion;
+    }
+
+    static classFromJson(pingResult: PingResult): PingResult {
         return new PingResult(pingResult.gdprAppliesGlobally,
             pingResult.gdprApplies,
             pingResult.cmpLoaded,
@@ -114,7 +129,7 @@ export default class PingResult {
             pingResult.tcfPolicyVersion);
     }
 
-    static classFromDisk(pingResult: any) {
+    static classFromDisk(pingResult: any): PingResult {
         return new PingResult(pingResult._gdprAppliesGlobally,
             pingResult._gdprApplies,
             pingResult._cmpLoaded,
@@ -127,7 +142,7 @@ export default class PingResult {
             pingResult._tcfPolicyVersion);
     }
 
-    toJSON() {
+    toJSON(): any {
         return {
             gdprAppliesGlobally: this._gdprAppliesGlobally,
             gdprApplies: this._gdprApplies,
@@ -140,19 +155,6 @@ export default class PingResult {
             gvlVersion: this._gvlVersion,
             tcfPolicyVersion: this._tcfPolicyVersion
         };
-    }
-
-    get tcfVersion() {
-        let tcfVersion = "";
-        if (typeof this.gdprAppliesGlobally !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprApplies === 'undefined') {
-            tcfVersion = "TCF 1.1";
-        } else if (typeof this.gdprApplies !== 'undefined' && typeof this.cmpLoaded !== 'undefined' && typeof this.gdprAppliesGlobally === 'undefined') {
-            tcfVersion = "TCF 2.0";
-        } else {
-            tcfVersion = "not defined";
-        }
-
-        return tcfVersion;
     }
 }
 

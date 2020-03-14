@@ -31,19 +31,19 @@ export default class ResponseForPopup {
         }
     }
 
-    public get url() {
+    public get url(): URL {
         return this._url;
     }
 
-    public get lastFound() {
+    public get lastFound(): HistoryEntry {
         return this._lastFound;
     }
 
-    public get count() {
+    public get count(): number {
         return this._count;
     }
 
-    public get case() {
+    public get case(): number {
         if (this._url.isHttp) {
             console.log(this._lastFound);
             if (this._lastFound !== null && Object.entries(this._lastFound).length > 0) {
@@ -73,11 +73,11 @@ export default class ResponseForPopup {
         }
     }
 
-    public static classFromJson(obj: any) {
+    public static classFromJson(obj: any): ResponseForPopup {
         return new ResponseForPopup(obj.url, obj.lastFound, obj.count);
     }
 
-    public toJSON() {
+    public toJSON(): any {
         return {
             url: this._url,
             lastFound: this._lastFound,
