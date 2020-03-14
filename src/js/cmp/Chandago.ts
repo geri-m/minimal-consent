@@ -17,11 +17,11 @@ export default class Chandago implements ICmp {
         this._cmp = new CMP(node, backendCall, this);
     }
 
-    get name(): string {
+    public get name(): string {
         return this._name
     }
 
-    handleCmp() {
+    public handleCmp(): void {
         const chandagoButtonDenyCss = "button.deny";
         let chandagoButtonDeny = this._cmp.queryNodeSelector(chandagoButtonDenyCss);
 

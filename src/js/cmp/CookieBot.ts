@@ -13,15 +13,15 @@ export default class CookieBot implements ICmp {
     private readonly _name = "CookieBot";
 
     constructor(node: Document, scriptUrl: string, backendCall: BackendCall) {
-        backendCall.cmpData(134, this._name, scriptUrl, CmpType.WAIT_FOR_ASYNC_CALLBACK, true);
+        backendCall.cmpData(134, this._name, scriptUrl, CmpType.DO_NOT_WAIT, true);
         this._cmp = new CMP(node, backendCall, this);
     }
 
-    get name(): string {
+    public get name(): string {
         return this._name
     }
 
-    handleCmp() {
+    public handleCmp(): void {
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = this._cmp.queryNodeSelectorAll(cookiebotCheckboxesSelector);
 

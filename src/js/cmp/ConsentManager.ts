@@ -16,11 +16,11 @@ export default class ConsentManager implements ICmp {
         this._cmp = new CMP(node, backendCall, this);
     }
 
-    get name(): string {
+    public get name(): string {
         return this._name
     }
 
-    handleCmp() {
+    public handleCmp(): void {
         const deny = '#cmpbntnotxt';
         let buttonDeny = this._cmp.queryNodeSelector(deny);
         if (Utils.objectClickable(buttonDeny) && this._cmp.state === 0) {

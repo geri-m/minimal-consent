@@ -13,16 +13,16 @@ export default class CustomImpl implements ICmp {
     private readonly _button: string;
 
     constructor(node: Document, key: string, backendCall: BackendCall) {
-        backendCall.cmpData(134, this._name, "na", CmpType.DO_NOT_WAIT, true);
+        backendCall.cmpData(0, this._name, "na", CmpType.DO_NOT_WAIT, true);
         this._cmp = new CMP(node, backendCall, this);
         this._button = key;
     }
 
-    get name(): string {
+    public get name(): string {
         return this._name
     }
 
-    handleCmp() {
+    public handleCmp(): void {
         let button = this._cmp.queryNodeSelector(this._button);
         let minimalConsent = this._cmp.queryNodeSelector(this._cmp.minimalConsentLink);
 
