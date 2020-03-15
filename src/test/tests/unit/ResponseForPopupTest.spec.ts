@@ -22,7 +22,7 @@ describe('ResponseForPopup Tests', () => {
     });
 
     it('Properly Full Example (Case 2)', async function () {
-        let pr = new PingResult();
+        let pr = new PingResult(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
         let he = new HistoryEntry("2020-02-21 10:00:00", "https://www.anothersite.de/", "CookieBot", "https://www.usercentrics.com/js/latest/bundle.js", pr, false);
         let url = new URL("http://www.anothersite.de");
         let rfp = new ResponseForPopup(url, he, 10);
@@ -33,7 +33,7 @@ describe('ResponseForPopup Tests', () => {
     });
 
     it('Properly Full Example (Case 3)', async function () {
-        let pr = new PingResult();
+        let pr = new PingResult(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
         let he = new HistoryEntry("2020-02-22 10:00:00", "https://www.somesite.de/", "na", "na", pr, false);
         let url = new URL("http://www.somesite.de");
         let rfp = new ResponseForPopup(url, he, 10);
@@ -63,12 +63,12 @@ describe('ResponseForPopup Tests', () => {
 
     it('Missing Parameter', async function () {
         expect(function () {
-            new ResponseForPopup();
+            new ResponseForPopup(undefined, undefined, undefined);
         }).toThrow(new Error("URL String in ResponseForPopup must not be null"));
     });
 
     it('Wrong Parameter', async function () {
-        let rfp = new ResponseForPopup(new URL("www.orf.at"));
+        let rfp = new ResponseForPopup(new URL("www.orf.at"), undefined, undefined);
         expect(rfp.lastFound).toBeNull();
     });
 

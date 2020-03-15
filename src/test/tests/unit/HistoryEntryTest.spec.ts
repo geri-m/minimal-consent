@@ -32,7 +32,7 @@ describe('History Tests', () => {
 
     it('Missing Parameter', async function () {
         expect(function () {
-            let he = new HistoryEntry("2020-02-20 10:00:00", "https://www.heise.de/", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js");
+            let he = new HistoryEntry("2020-02-20 10:00:00", "https://www.heise.de/", "UserCentrics", "https://www.usercentrics.com/js/latest/bundle.js", undefined, undefined);
         }).toThrow(new Error("Ping Result in History Entry must not be null"));
     });
 

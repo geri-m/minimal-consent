@@ -6,7 +6,7 @@ describe('PingResult Tests', () => {
 
 
     it('TCF 1.1 Example', async function () {
-        let pr = new PingResult(false, undefined, false);
+        let pr = new PingResult(false, undefined, false, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
         expect(JSON.stringify(pr)).toEqual("{\"gdprAppliesGlobally\":false,\"cmpLoaded\":false}");
         let pr2 = PingResult.classFromJson(pr);
         expect(pr).toEqual(pr2);
@@ -34,7 +34,7 @@ describe('PingResult Tests', () => {
     });
 
     it('Null Example', async function () {
-        let pr = new PingResult();
+        let pr = new PingResult(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
         expect(JSON.stringify(pr)).toEqual("{}");
         let pr2 = PingResult.classFromJson(pr);
         expect(pr).toEqual(pr2);
@@ -61,11 +61,14 @@ describe('PingResult Tests', () => {
 
 
     it('From Object', async function () {
-        let json = {};
-        json.gdprAppliesGlobally = true;
-        json.gdprApplies = false;
 
-        let pr2 = PingResult.classFromJson(json);
+
+        let json: { [id: string]: any; } = {
+            gdprAppliesGlobally: true,
+            gdprApplies: false
+        };
+
+        let pr2 = PingResult.classFromJson(JSON.parse(JSON.stringify(json)));
         expect(pr2.gdprAppliesGlobally).toBeTrue();
         expect(pr2.gdprApplies).toBeFalse();
         expect(pr2.cmpLoaded).toBeUndefined();

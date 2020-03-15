@@ -56,7 +56,7 @@ describe('URL Tests', () => {
 
     it('Missing Parameter 1', async function () {
         expect(function () {
-            new URL();
+            new URL(null);
         }).toThrow(new Error("URL String in Url must not be null"));
     });
 
