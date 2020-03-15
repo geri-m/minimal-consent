@@ -1,8 +1,14 @@
 "use strict";
 
-import {waitInit} from '../utils/Background';
+let Background;
 
+let waitInit = ( /* async */ () => {
+  // Background = await chrome.runtime.getBackgroundPage();
+  Background = chrome.extension.getBackgroundPage();
+  window.Background = Background
+})();
 
+export {Background, waitInit}
 let queryString = new jasmine.QueryString({
   getWindowLocation: function () {
     return window.location;

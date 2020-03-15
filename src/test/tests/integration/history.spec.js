@@ -24,7 +24,7 @@ describe('History', () => {
         expect(found).toBeNull();
 
         let blockCount = await hist.getAmountOfUrlsBlocked();
-        // FIXME: expect(blockCount).toBe(0);
+        expect(blockCount).toBe(0);
     });
 
     it('Add one records and do lastFound', async function () {
@@ -46,7 +46,7 @@ describe('History', () => {
         let blockCount = await hist.getAmountOfUrlsBlocked();
         console.log("add one: " + JSON.stringify(hist));
         console.log("blockCount1: " + blockCount);
-        // FIXME: expect(blockCount).toBe(1);
+        expect(blockCount).toBe(1);
     });
 
     it('Multiple History Entries in one Storage', async function () {
@@ -76,7 +76,7 @@ describe('History', () => {
         let blockCount = await hist.getAmountOfUrlsBlocked();
         console.log("Multiple: " + JSON.stringify(hist));
         console.log("blockCount2: " + blockCount);
-        // FIXME: expect(blockCount).toBe(2);
+        expect(blockCount).toBe(2);
     });
 
 
