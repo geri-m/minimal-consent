@@ -46,12 +46,12 @@ export default class History {
                 // to get a value that is either negative, positive, or zero.
                 return new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds();
             });
-            Utils.log("New history sorted");
 
             let history: { [id: string]: HistoryEntry[]; } = {
-                historyKeyOfStorage: resultArray
+                history: resultArray
             };
 
+            Utils.log("Data to be save to storage (stored): " + JSON.stringify(history));
 
             return new Promise(function (resolve) {
                 chrome.storage.sync.set(history, function () {
@@ -70,6 +70,7 @@ export default class History {
         let resultArray = await this.load();
         Utils.log("Data loaded");
         let result: any;
+        result = null;
         for (let i = 0; i < resultArray.length; i++) {
             Utils.log("Counter: " + i + ", URL: " + resultArray[i].url.includes(host));
             if (resultArray[i].url.includes(host)) {

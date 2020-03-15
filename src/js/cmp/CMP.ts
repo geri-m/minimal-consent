@@ -2,13 +2,11 @@
 
 import Utils from "../Utils";
 import BackendCall from "../BackendCall"
-import CmpType from "./CmpType";
 import ICmp from "./ICmp";
 
 const config = {attributes: true, childList: true, subtree: true};
 const minimalConsentLink = "a.minimal-consent";
 const maximalLimitOfDomChangeTillStop = 100;
-
 
 export default class CMP {
 

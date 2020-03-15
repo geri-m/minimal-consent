@@ -27,7 +27,7 @@ function messageHandler(request: any, sender: any, sendResponse: any): boolean {
             handleContentScript(request, sender, sendResponse);
             break;
         case "popupScript":
-            Utils.log("sendResponse: " + JSON.stringify(sendResponse));
+            Utils.log("sendResponse");
             handlePopupScript(request, sender, sendResponse);
             break;
         case "optionsScript":

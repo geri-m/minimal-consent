@@ -1,87 +1,113 @@
-import ResponseForPopup from "../entities/ResponseForPopup";
+"use strict";
 
-let bkg: Window;
+import ResponseForPopup from "../entities/ResponseForPopup";
+import OnPageLog from "../OnPageLog";
 
 window.addEventListener('load', onLoad);
 
 function onLoad() {
-    bkg = chrome.extension.getBackgroundPage();
+    let bkg = chrome.extension.getBackgroundPage();
     bkg.console.log("PopupJS Loaded");
-
-    chrome.runtime.sendMessage({
-        from: "popupScript"
-    }, function (response) {
-        handleResponse(response)
-    });
-
-    document.querySelector('#go-to-options').addEventListener('click', openOptions);
+    let popup: Popup;
+    popup = new Popup(document);
+    popup.init();
 }
 
-function openOptions() {
-    // check if the browsers supports Option Pages.
-    if (chrome.runtime.openOptionsPage) {
-        chrome.runtime.openOptionsPage();
-    } else {
-        window.open(chrome.runtime.getURL('/options/options.html'));
+class Popup {
+
+    private readonly _log: OnPageLog;
+    private readonly _cmpCount: Element;
+    private readonly _toOptionsLink: Element;
+    private readonly _details: Element;
+
+    constructor(document: Document) {
+        this._log = new OnPageLog(chrome.extension.getBackgroundPage().console);
+        this._toOptionsLink = document.getElementById('go-to-options');
+        this._cmpCount = document.getElementById("cmpCount");
+        this._details = document.getElementById("details");
     }
-}
 
-function handleResponse(response: any) {
-    bkg.console.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
-
-    let popupMessage = ResponseForPopup.classFromJson(response);
-    bkg.console.log("parsed: " + JSON.stringify(popupMessage));
-
-    document.getElementById("cmpCount").textContent = popupMessage.count + "";
-    let details = document.getElementById("details");
-
-    // Possible Cases
-    // (1) HTTP + Found + known + Implemented: We know and implemented (= block) the CMP. Now or in the past. (Script + Implementation)
-    let messageCase1 = "Consent for <i>%URL</i> denied on %DATE.";
-    // (2) HTTP + Found + known + Not Implemented: We know the CMP, but have no implemented it. We will do implement this in the future (Script found, maybe CMP Object)
-    let messageCas2 = "We aware of <i>%URL</i>'s solution for Cookie Banner. We are working on it.";
-    // (3) HTTP + Found + not known + Not Implemented: There is a CMP on the Page we don't know yet. (CMP Object on Page, but no Script)
-    let messageCase3 = "<i>%URL</i> uses a solution for cookie banners we have not yet seen. <a href='#' id='submit-this-url'>Submit this URL</a>.";
-    // (4) HTTP + not Found + not known + Not Implemented:
-    let messageCase4 = "Was there a cookie banner on <i>%URL</i>? If yes, <a href='#' id='submit-this-url'>submit this URL</a>.";
-    // (5) The Page is not a HTTP/HTTPs Page.
-    let messageCase5 = "Only HTTP(s) Pages are supported";
-
-    switch (popupMessage.case) {
-        case 1:
-            bkg.console.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date));
-            details.innerHTML = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
-            break;
-
-        case 2:
-            bkg.console.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
-            details.innerHTML = messageCas2.replace("%URL", popupMessage.url.host);
-            break;
-
-        case 3:
-            bkg.console.log("Case 3: Unknown CMP Detected");
-            details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
-            document.querySelector('#submit-this-url').addEventListener('click', function () {
-                sendUrlToBackendForImplementation(popupMessage.url.host);
-            });
-            break;
-
-        case 4:
-            bkg.console.log("Case 4: No CMP detected");
-            details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
-            document.querySelector('#submit-this-url').addEventListener('click', function () {
-                sendUrlToBackendForImplementation(popupMessage.url.host);
-            });
-            break;
-
-        default:
-            bkg.console.log("Case 5: No HTTP Page");
-            details.innerHTML = messageCase5;
+    public init(): void {
+        let _self = this;
+        this._toOptionsLink.addEventListener('click', this.openOptions);
+        chrome.runtime.sendMessage({
+            from: "popupScript"
+        }, function (response) {
+            _self.handleResponse(response, _self)
+        });
     }
+
+
+    private openOptions(): void {
+        // check if the browsers supports Option Pages.
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        } else {
+            window.open(chrome.runtime.getURL('/options/options.html'));
+        }
+    }
+
+    private handleResponse(response: any, _self: Popup): void {
+        this._log.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
+
+        let popupMessage = ResponseForPopup.classFromJson(response);
+        this._log.log("parsed: " + JSON.stringify(popupMessage));
+
+        this._cmpCount.textContent = popupMessage.count + "";
+
+        // Possible Cases
+        // (1) HTTP + Found + known + Implemented: We know and implemented (= block) the CMP. Now or in the past. (Script + Implementation)
+        let messageCase1 = "Consent for <i>%URL</i> denied on %DATE.";
+        // (2) HTTP + Found + known + Not Implemented: We know the CMP, but have no implemented it. We will do implement this in the future (Script found, maybe CMP Object)
+        let messageCas2 = "We aware of <i>%URL</i>'s solution for Cookie Banner. We are working on it.";
+        // (3) HTTP + Found + not known + Not Implemented: There is a CMP on the Page we don't know yet. (CMP Object on Page, but no Script)
+        let messageCase3 = "<i>%URL</i> uses a solution for cookie banners we have not yet seen. <a href='#' id='submit-this-url'>Submit this URL</a>.";
+        // (4) HTTP + not Found + not known + Not Implemented:
+        let messageCase4 = "Was there a cookie banner on <i>%URL</i>? If yes, <a href='#' id='submit-this-url'>submit this URL</a>.";
+        // (5) The Page is not a HTTP/HTTPs Page.
+        let messageCase5 = "Only HTTP(s) Pages are supported";
+
+        switch (popupMessage.case) {
+            case 1:
+                this._log.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date));
+                this._details.innerHTML = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
+                break;
+
+            case 2:
+                this._log.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
+                this._details.innerHTML = messageCas2.replace("%URL", popupMessage.url.host);
+                break;
+
+            case 3:
+                this._log.log("Case 3: Unknown CMP Detected");
+                this._details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
+                document.querySelector('#submit-this-url').addEventListener('click', function () {
+                    _self.sendUrlToBackendForImplementation(popupMessage.url.host);
+                });
+                break;
+
+            case 4:
+                this._log.log("Case 4: No CMP detected");
+                this._details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
+                document.querySelector('#submit-this-url').addEventListener('click', function () {
+                    _self.sendUrlToBackendForImplementation(popupMessage.url.host);
+                });
+                break;
+
+            default:
+                this._log.log("Case 5: No HTTP Page");
+                this._details.innerHTML = messageCase5;
+        }
+    }
+
+    private sendUrlToBackendForImplementation(url: string) {
+        // check if the browsers supports Option Pages.
+        this._log.log("Feature Request from User for URL '" + url + "'. TODO: Send to Backend");
+        window.close();
+    }
+
+
 }
 
-function sendUrlToBackendForImplementation(url: string) {
-    // check if the browsers supports Option Pages.
-    bkg.console.log("Feature Request from User for URL '" + url + "'. TODO: Send to Backend");
-    window.close();
-}
+
+
