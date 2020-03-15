@@ -18,7 +18,9 @@ import PingResult from "./entities/PingResult";
 // this is some static stuff for the long tail.
 const buttons = {
     '#hs-eu-decline-button': "npmjs.com",
-    "#cookie_action_close_header": "tealium.com"
+    "#cookie_action_close_header": "tealium.com",
+    "#gdpr-banner-accept": "ebay.com & ebay-kleinanzeigen.com",
+    "#acceptAllButton": "PayPal"
 };
 
 const config = {attributes: true, childList: true, subtree: true};
