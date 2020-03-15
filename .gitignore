@@ -1,7 +1,5 @@
 node_modules
 dist
-build
-.nyc_output
 *.zip
 
 # Extensions related stuff
@@ -11,3 +9,4 @@ build
 # Yarn temp files
 yarn.lock
 yarn-error.log
+package-lock.json
