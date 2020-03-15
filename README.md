@@ -3,7 +3,9 @@
 
 ## Extension Description for Publishing
 
-The extension block a hand full of so call Consent Management Platforms (CMP) asking the user for consent to drop cookies or for tracking purpose. The extension in the current version blocks already 10 CMPs such as Quantcast, OneTrust or UserCentrics.
+The extension block a hand full of so call Consent Management Platforms (CMP) asking the user for consent to drop 
+cookies or for tracking purpose. The extension in the current version blocks already 10 CMPs such as Quantcast, 
+OneTrust or UserCentrics.
 
 How to Test
 1) Load Extension
@@ -16,12 +18,16 @@ This extension requires `webpack` for bundling/minifing/obfuscating and debuggin
 
 Dependency management is done using `yarn` as it is a package manager for JavaScript/Node. 
 
+The extensions is written in TypeScript.
+
+Unit tests base on Karma and Jasmine and can be u
+
 ### Requirements
 
 We run builds on OSX 10.15.2
 We currently use Yarn 1.21.1 (latest 1.x Build)
-We use npm version 6.13.7  (latest)
-We use node version 13.7.0 (latest)
+We use npm version 6.14.2  (latest)
+We use node version 13.10.1 (latest)
 We use zip 3.0 to create the package for upload
 
 ### Setup on OSX 
@@ -38,7 +44,10 @@ latest version use `npm install npm@latest -g`.
 In order to install all required dependencies for the project run `yarn install`. It will download all libraries stated
 in `package.json` and store them locally in `./node_modules`.
 
-## Commands to User
+## Commands to Use
+
+To run Units test, there is a setup with Karma and Jasmine: `yarn test`. Integration Tests base on Jasmine and are
+run directly in the Browser. (requires Chrome)
 
 To Clean and Build the code for production: `yarn build`
 - `./dist/` Folder is removed.
@@ -66,6 +75,9 @@ For Development you would only use `yarn start`.
 If you make changes to `manifest.json` or `webpack.js` please restart as these files are not covered during hot deploy.
 
 Source code and images are located in `./src/`.
+
+After installation in the browser the pages for testing will open automatically. This functionally is triggered from
+the backendscript.
 
 ## Permission
 

@@ -36,6 +36,5 @@ module.exports = merge(parentWebPack, {
     /* This is how the test Page will be available on the page */
     entry: {
         './test/tests/integration/all.spec': './src/test/tests/integration/all.spec.js',
-        './test/tests/unit/all.spec': './src/test/tests/unit/all.spec.js'
     }
 });
