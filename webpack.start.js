@@ -30,11 +30,11 @@ module.exports = merge(parentWebPack, {
             {from: './src/images/', to: './images/'},
             {from: './src/js/popup/popup.html', to: './popup/'},
             {from: './src/js/options/options.html', to: './options/'},
-            {from: './src/test/', to: './test/'},
+            {from: './src/test/test-page/integration.html', to: './test/test-page/integration.html'},
             {from: './src/_locales/', to: './_locales/'}])
     ],
     /* This is how the test Page will be available on the page */
     entry: {
-        './test/tests/integration/all.spec': './src/test/tests/integration/all.spec.js',
+        './test/tests/integration/history.spec': './src/test/tests/integration/history.spec.ts',
     }
 });
