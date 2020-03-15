@@ -21,7 +21,7 @@ describe('History', () => {
     it('Empty History', async function () {
         let hist = new History();
         let found = await hist.getLastFound("www.someurl.at");
-        expect(found).toBeUndefined();
+        expect(found).toBeNull();
 
         let blockCount = await hist.getAmountOfUrlsBlocked();
         // FIXME: expect(blockCount).toBe(0);
@@ -38,7 +38,7 @@ describe('History', () => {
         expect(found).not.toBeNull();
 
         found = await hist.getLastFound("www.heise.at");
-        expect(found).toBeUndefined();
+        expect(found).toBeNull();
 
         let entries = await hist.load();
         console.log("add one Entires: " + entries.length);
@@ -68,7 +68,7 @@ describe('History', () => {
         expect(found).not.toBeNull();
 
         found = await hist.getLastFound("www.forbes.de");
-        expect(found).toBeUndefined();
+        expect(found).toBeNull();
 
         let entries = await hist.load();
         console.log("Multiple Entires: " + entries.length);

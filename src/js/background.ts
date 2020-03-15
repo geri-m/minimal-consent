@@ -144,7 +144,10 @@ class BackgroundScript {
  */
 
 const backgroundScript = new BackgroundScript();
-chrome.runtime.onMessage.addListener(backgroundScript.messageHandler);
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    return backgroundScript.messageHandler(request, sender, sendResponse);
+});
 
 /* Open Test and Option Pages on Startup */
 chrome.runtime.onInstalled.addListener(function (details) {

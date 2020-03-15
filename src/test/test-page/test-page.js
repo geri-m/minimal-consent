@@ -2,6 +2,7 @@
 
 import {waitInit} from '../utils/Background';
 
+
 let queryString = new jasmine.QueryString({
   getWindowLocation: function () {
     return window.location;

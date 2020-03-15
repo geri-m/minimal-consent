@@ -7,7 +7,6 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js",
     "clean": "rm -rf ./dist/",
     "start": "rm -rf ./dist/; webpack --watch --config webpack.start.js",
     "build-dev": "rm -rf ./dist/; webpack --config webpack.dev.js; cd ./dist/; zip -r ../minimal-consent-dev.zip .; cd ..",
@@ -15,24 +14,6 @@
     "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "@babel/register": "^7.0.0",
-    "copy-webpack-plugin": "5.0.5",
-    "css-loader": "3.2.0",
-    "eslint": "^6.6.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-jasmine": "^2.10.1",
-    "file-loader": "4.3.0",
-    "fs": "0.0.1-security",
-    "fs-extra": "8.1.0",
-    "html-loader": "0.5.5",
-    "style-loader": "1.0.0",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10",
     "webpack-extension-reloader": "^1.1.4",
@@ -43,26 +24,6 @@
     "webpack-obfuscator": "^0.25.2",
     "@types/lodash": "^4.14.149",
     "@types/chrome": "^0.0.100"
-  },
-  "eslintConfig": {
-    "env": {
-      "node": true,
-      "browser": true
-    },
-    "globals": {
-      "chrome": true
-    },
-    "parser": "babel-eslint",
-    "parserOptions": {
-      "ecmaVersion": 8
-    },
-    "rules": {
-      "eol-last": 0,
-      "quotes": [
-        2,
-        "double"
-      ]
-    }
   },
   "dependencies": {
     "dateformat": "^3.0.3"
