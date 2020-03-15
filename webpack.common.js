@@ -1,7 +1,5 @@
 const path = require('path');
 
-const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
-
 const options = {
 
     mode: process.env.NODE_ENV || 'development',
@@ -19,31 +17,16 @@ const options = {
     },
     module: {
         rules: [
-            {
-                test: /\.css$/,
-                loader: 'style-loader!css-loader',
-                exclude: /node_modules/
-            },
-            {
-                test: new RegExp('.(' + fileExtensions.join('|') + ')$'),
-                loader: 'file-loader?name=[name].[ext]',
-                exclude: /node_modules/
-            },
-            {
-                test: /\.html$/,
-                loader: 'html-loader',
-                exclude: /node_modules/
-            },
             // TypeScript Loader
             {
-                test: /\.tsx?$/,
+                test: /\.ts$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
             }
         ]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.ts', '.js'],
     }
 };
 

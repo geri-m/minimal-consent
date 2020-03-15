@@ -152,27 +152,29 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 /* Open Test and Option Pages on Startup */
 chrome.runtime.onInstalled.addListener(function (details) {
 
-    let pages = [
-        "/test/test-page/integration.html",
-        "/options/options.html",
-        "/test/test-page/unit.html",
-    ];
+    if (process.env.NODE_ENV === 'development') {
+        let pages = [
+            "/test/test-page/integration.html",
+            "/options/options.html",
+            "/test/test-page/unit.html",
+        ];
 
-    // Only when the extension is installed for the first time
-    if (details.reason === "install") {
-        pages.forEach((url) => {
-            chrome.tabs.create({
-                active: false,
-                url: chrome.extension.getURL(url),
+        // Only when the extension is installed for the first time
+        if (details.reason === "install") {
+            pages.forEach((url) => {
+                chrome.tabs.create({
+                    active: false,
+                    url: chrome.extension.getURL(url),
+                });
             });
-        });
-    } else if (details.reason === "update") {
-        pages.forEach((url) => {
-            chrome.tabs.create({
-                active: false,
-                url: chrome.extension.getURL(url),
+        } else if (details.reason === "update") {
+            pages.forEach((url) => {
+                chrome.tabs.create({
+                    active: false,
+                    url: chrome.extension.getURL(url),
+                });
             });
-        });
+        }
     }
 
     backgroundScript.history.doMigration();
