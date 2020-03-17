@@ -219,6 +219,21 @@ to consensu.org.
 
 - [FarFetch](https://www.farfetch.com)
 
+# Chandago
+
+## Sample Pages
+
+-
+
+# Oath
+
+## Samples Pages
+
+- [tomshardware](https://www.tomshardware.com)
+- [techradar](https://global.techradar.com/de-de)
+
+
+
 # Uncovered CMPs
 
 # Other pages covered

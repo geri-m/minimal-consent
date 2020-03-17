@@ -7,7 +7,18 @@ import Utils from "./Utils";
 // - if there are some child nodes in the body
 Utils.log("Consent Script Parameter: " + JSON.stringify(document.doctype) + ", Len: " + document.body.innerHTML.length + ", Nodes: " + document.body.childNodes.length);
 
-if (document.doctype && document.body.innerHTML.length > 100 && document.body.childNodes.length > 3) {
+
+let inFrame: boolean = false;
+
+try {
+    inFrame = window.self !== window.top;
+    Utils.log("Running in IFrame: " + inFrame);
+} catch (e) {
+    Utils.log("Error Figuring out if we are running in an iFrame");
+    inFrame = false;
+}
+
+if (document.doctype && document.body.innerHTML.length > 100) {
     Utils.log("Triggering Content Script");
     const messageFrom = "FROM_MINIMAL_CONSENT";
 
@@ -17,8 +28,7 @@ if (document.doctype && document.body.innerHTML.length > 100 && document.body.ch
     script.async = true;
     script.text = 'window.addEventListener("load",checkForCmp,!1);let dataframeForPingReturn={type:"FROM_MINIMAL_CONSENT"},checkForCmpCounter=0,maxTimeoutForResearch=200,maxRetryForSearch=25;function checkForCmp(){this.__cmp?this.__cmp("ping",2,sendMessage):this.__tcfapi?this.__tcfapi("ping",2,sendMessage):this.frames&&this.frames.length&&this.frames.__tcfapiLocator?this.__tcfapi("ping",2,sendMessage):checkForCmpCounter<maxRetryForSearch?(setTimeout(checkForCmp,maxTimeoutForResearch),checkForCmpCounter++):window.removeEventListener("load",checkForCmp,!1)}function sendMessage(e,t){t&&(dataframeForPingReturn.cmp=JSON.stringify(e),window.postMessage(dataframeForPingReturn,"*"),window.removeEventListener("load",checkForCmp,!1))}';
     document.head.appendChild(script);
-
-    const detector = new Detector(document);
+    const detector = new Detector(document, inFrame);
     detector.connectObserver();
 
     window.addEventListener("message", function (event) {
