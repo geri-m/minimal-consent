@@ -212,6 +212,8 @@ to consensu.org.
 
 - [programiz](https://www.programiz.com/)
 - [Doodle](https://www.doodle.com)
+- [Quantcast](www.pronews.gr)
+
 
 # [SoloCMP](https://www.solocpm.com)
 

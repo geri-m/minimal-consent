@@ -12,7 +12,7 @@ export default class NotYetImplementedCmp implements ICmp {
 
     constructor(cmpId: number, node: Document, name: string, scriptUrl: string, backendCall: BackendCall) {
         this._name = name;
-        backendCall.cmpData(cmpId, this._name, scriptUrl, CmpType.WAIT_FOR_TIME_FRAME, true);
+        backendCall.cmpData(cmpId, this._name, scriptUrl, CmpType.WAIT_FOR_TIME_FRAME, false);
         this._cmp = new CMP(node, backendCall, this);
     }
 

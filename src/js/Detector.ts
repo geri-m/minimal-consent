@@ -74,15 +74,11 @@ export default class Detector {
 
         // some CMPs run in iFrames and therefore require different handling.
         if (this._inIFrame) {
-            Utils.log("Detector in IFrame");
             for (scriptCounter = 0; scriptCounter < allScriptTags.length; scriptCounter++) {
-                Utils.log("Iterating over Script");
                 let urlOfScript = allScriptTags[scriptCounter].getAttribute("src");
                 if (urlOfScript && typeof urlOfScript !== 'undefined') {
                     // if the script defined, make it lowercase.
                     urlOfScript = urlOfScript.toLowerCase();
-                    Utils.log(urlOfScript);
-
                     // OATH.com
                     if (urlOfScript.includes('cmpui.js')) {
                         this._cmp = new OathCmp(this._document, urlOfScript, this._backendCall);
@@ -90,7 +86,9 @@ export default class Detector {
                     }
                 } // if of SRC Tak
             } // for Script
-        } else {
+        }
+        // Not in IFrame.
+        else {
             // this is the jump point we required for the nested loop
             allScripts:
                 for (scriptCounter = 0; scriptCounter < allScriptTags.length; scriptCounter++) {
@@ -499,6 +497,9 @@ export default class Detector {
                             break;
                         } else if (urlOfScript.includes('thefreedictionary.com') || urlOfScript.includes('thefreedictionary.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(282, this._document, 'Farlex Inc', urlOfScript, this._backendCall);
+                            break;
+                        } else if (urlOfScript.includes('osano.com') || urlOfScript.includes('osano.js')) {
+                            this._cmp = new NotYetImplementedCmp(282, this._document, 'Osano Inc.,Cookie Consent', urlOfScript, this._backendCall);
                             break;
                         } else {
                             for (let key in buttons) {
