@@ -300,10 +300,10 @@ export default class Detector {
                         } else if (urlOfScript.includes('liqwid.com') || urlOfScript.includes('liqwid.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(124, this._document, 'LIQWID', urlOfScript, this._backendCall);
                             break;
-                        } else if (urlOfScript.includes('ebay.com') || urlOfScript.includes('ebay.mgr.consensu.org')) {
+                        } /*else if (urlOfScript.includes('ebay.com') || urlOfScript.includes('ebay.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(125, this._document, 'eBay Inc', urlOfScript, this._backendCall);
                             break;
-                        } else if (urlOfScript.includes('adevinta.com') || urlOfScript.includes('schibstedspain.mgr.consensu.org')) {
+                        } */ else if (urlOfScript.includes('adevinta.com') || urlOfScript.includes('schibstedspain.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(129, this._document, 'Adevinta Spain S.L.U.', urlOfScript, this._backendCall);
                             break;
                         } else if (urlOfScript.includes('oriel.io') || urlOfScript.includes('oriel.mgr.consensu.org')) {
