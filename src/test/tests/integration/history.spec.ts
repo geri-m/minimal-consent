@@ -18,6 +18,8 @@ describe('History', () => {
         await hist.clearStorage();
     });
 
+
+
     it('Empty History', async function () {
         let hist = new History();
         let found = await hist.getLastFound("www.someurl.at");
@@ -48,6 +50,26 @@ describe('History', () => {
         console.log("blockCount1: " + blockCount);
         expect(blockCount).toBe(1);
     });
+
+
+/*
+    it("Simple History Tests", async function () {
+
+        let result : any;
+        chrome.storage.sync.set({"entry": {"key": "value"}}, function () {
+            console.log('Saved new history object to Chrome Storage.' + chrome.runtime.lastError.message);
+        });
+
+        chrome.storage.sync.get("entry", function (r: { [id: string]: any }) {
+            console.log("load: Data in Storage: " + JSON.stringify(result) + " " + chrome.runtime.lastError.message);
+            result = r;
+        });
+
+        console.log("Result: " + result);
+
+        expect(result).toBe(JSON.parse('{"key": "value"}'));
+    });
+*/
 
     it('Multiple History Entries in one Storage', async function () {
         let hist = new History();
@@ -150,6 +172,8 @@ describe('History', () => {
         expect(ucObject.pingResult.cmpId).toBe(5);
 
     });
+
+
 });
 
 

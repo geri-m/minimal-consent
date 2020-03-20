@@ -11,20 +11,35 @@ export default class History {
     }
 
     public load(): Promise<HistoryEntry[]> {
-        return new Promise(function (resolve) {
-            chrome.storage.sync.get(historyKeyOfStorage, function (result) {
+        return new Promise(function (resolve, reject) {
+            chrome.storage.sync.get(historyKeyOfStorage, function (result: {[id: string]: any}) {
                 Utils.log("load: Data in Storage: " + JSON.stringify(result));
 
-                let resultArray = [];
+                let resultArray = new Array<HistoryEntry>();
 
                 if (result && result.history && result.history.length) {
                     // in this case there is already some history.
                     for (let i = 0; i < result.history.length; i++) {
-                        resultArray.push(HistoryEntry.classFromDisk(result.history[i]));
+                        let historyEntry = result.history[i];
+                        let entry;
+                        if(historyEntry.url){
+                            Utils.log("FireFox");
+                            entry = HistoryEntry.classFromJson(result.history[i]);
+                        }
+                        else {
+                            Utils.log("Chrome");
+                            entry =HistoryEntry.classFromDisk(result.history[i]);
+                        }
+
+                        Utils.log("Entry: " + JSON.stringify(entry));
+                        resultArray.push(entry);
+                        if(chrome.runtime.lastError){
+                            Utils.log(chrome.runtime.lastError.message);
+                        }
                     }
                 }
                 // if we are good, resolve (equal to an return, but async)
-                resolve(resultArray);
+                chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve(resultArray);
             });
         })
     }
@@ -53,11 +68,11 @@ export default class History {
 
             Utils.log("Data to be save to storage (stored): " + JSON.stringify(history));
 
-            return new Promise(function (resolve) {
+            return new Promise(function (resolve, reject) {
                 chrome.storage.sync.set(history, function () {
-                    Utils.log('Saved new history object to Chrome Storage.');
+                    Utils.log('Saved new history object to Chrome Storage.' + JSON.stringify(history));
                     // store worked, resolve now.
-                    resolve();
+                    chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve();
                 });
             });
         } else {
@@ -66,19 +81,18 @@ export default class History {
     }
 
     public async getLastFound(host: string) {
+        Utils.log("getLastFound for: " + host);
         // get the data from the storage
         let resultArray = await this.load();
-        Utils.log("Data loaded");
-        let result: any;
-        result = null;
+        Utils.log("Data loaded: " + JSON.stringify(resultArray) + ", Len: " + resultArray.length);
         for (let i = 0; i < resultArray.length; i++) {
             Utils.log("Counter: " + i + ", URL: " + resultArray[i].url.includes(host));
             if (resultArray[i].url.includes(host)) {
                 Utils.log(JSON.stringify(resultArray[i]));
-                result = resultArray[i];
+                return resultArray[i];
             }
         }
-        return result;
+        return null;
     }
 
     async getAmountOfUrlsBlocked() {
@@ -93,7 +107,7 @@ export default class History {
             chrome.storage.sync.remove(historyKeyOfStorage, function () {
                 Utils.log('Storage Cleared');
                 // store worked, resolve now.
-                resolve();
+                chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve();
             });
         });
     }
@@ -144,7 +158,7 @@ export default class History {
                         chrome.storage.sync.set(result, function () {
                             Utils.log('Saved new history object to Chrome Storage.');
                             // store worked, resolve now.
-                            resolve(result);
+                            chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve(result);
                         });
 
                     } else {
@@ -152,7 +166,7 @@ export default class History {
                     }
                 }
                 // if we are good, resolve (equal to an return, but async)
-                resolve(result);
+                chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve(result);
             });
         })
     }

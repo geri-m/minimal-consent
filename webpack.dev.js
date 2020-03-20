@@ -25,6 +25,7 @@ module.exports = merge(parentWebPack, {
             {from: './src/images/', to: './images/'},
             {from: './src/js/popup/popup.html', to: './popup/'},
             {from: './src/js/options/options.html', to: './options/'},
+            {from: './src/js/background.html', to: './background.html'},
             {from: './src/test/', to: './test/'},
             {from: './src/_locales/', to: './_locales/'}])
     ],

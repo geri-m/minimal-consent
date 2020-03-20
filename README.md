@@ -81,7 +81,7 @@ the backendscript.
 
 ## Permission
 
-The chrome extension requires the following permissions
+The extension requires the following permissions
 
 - *https://\*.cloudfunctions.net/:* This is the URL we successful blocks of Consent Banners are stored. Also see data 
 protection regulation. 
