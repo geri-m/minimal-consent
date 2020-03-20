@@ -2,12 +2,11 @@
 
 import OnPageLog from "../OnPageLog";
 import HistoryEntry from "../entities/HistoryEntry"
+import Utils from "../Utils";
 
 window.addEventListener('load', onLoad);
 
 function onLoad() {
-    let bkg = chrome.extension.getBackgroundPage();
-    bkg.console.log("OptionsJS Loaded");
     let options: Options;
     options = new Options(document);
     options.init();
@@ -22,7 +21,6 @@ class Options {
     constructor(document: Document) {
         this._clearHistory = document.getElementById('clear-history');
         this._closeWindow = document.getElementById('close-window');
-        this._log = new OnPageLog(chrome.extension.getBackgroundPage().console);
     }
 
     get log() {
@@ -30,6 +28,7 @@ class Options {
     }
 
     public init(): void {
+        Utils.log("init");
         let _self = this;
         this._clearHistory.addEventListener('click', function () {
             _self.clearHistory(_self);
@@ -46,7 +45,7 @@ class Options {
     }
 
     private handleResponse(response: any): void {
-        this._log.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
+        Utils.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
         if (typeof response !== "undefined" && response.length) {
 
             // sort array by date.
@@ -68,14 +67,24 @@ class Options {
             from: "optionsScript",
             cmd: "clearHistory"
         }, function (response) {
-            option.log.log("History cleared");
+            Utils.log("History cleared");
         });
         window.close();
     }
 
     private createRow(historyEntry: HistoryEntry, option: Options): void {
-        option.log.log("Item: " + JSON.stringify(historyEntry));
-        let item = HistoryEntry.classFromJson(historyEntry);
+        Utils.log("Item: " + JSON.stringify(historyEntry));
+
+        let item: HistoryEntry;
+        if (historyEntry.url) {
+            Utils.log("Chrome");
+            item = HistoryEntry.classFromJson(historyEntry);
+        } else {
+            Utils.log("Firefox");
+            item = HistoryEntry.classFromDisk(historyEntry);
+        }
+
+        // let item = HistoryEntry.classFromJson(historyEntry);
 
         let url = document.createElement('td');
         url.innerHTML = item.url;

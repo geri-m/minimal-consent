@@ -13,7 +13,7 @@ export default class ResponseForPopup {
 
     constructor(url: URL, lastFound: HistoryEntry, count: number) {
         if (Utils.checkIfDefinedAndNotNull(url)) {
-            this._url = URL.class(url);
+            this._url = URL.classFromJson(url);
         } else {
             throw new Error("URL String in ResponseForPopup must not be null");
         }
@@ -74,7 +74,11 @@ export default class ResponseForPopup {
     }
 
     public static classFromJson(obj: any): ResponseForPopup {
-        return new ResponseForPopup(obj.url, obj.lastFound, obj.count);
+        return new ResponseForPopup(URL.classFromJson(obj.url), obj.lastFound, obj.count);
+    }
+
+    public static classFromDisk(obj: any): ResponseForPopup {
+        return new ResponseForPopup(URL.classFromDisk(obj._url), obj._lastFound, obj._count);
     }
 
     public toJSON(): any {

@@ -50,7 +50,17 @@ class Popup {
     private handleResponse(response: any, _self: Popup): void {
         this._log.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
 
-        let popupMessage = ResponseForPopup.classFromJson(response);
+        document.getElementById("log").innerText = "handleResponse: " + JSON.stringify(response) + ", Length: " + response.count;
+
+
+        let popupMessage: ResponseForPopup;
+        if (response.url) {
+            popupMessage = ResponseForPopup.classFromJson(response);
+        } else {
+            popupMessage = ResponseForPopup.classFromDisk(response);
+        }
+
+        // let popupMessage = ResponseForPopup.classFromJson(response);
         this._log.log("parsed: " + JSON.stringify(popupMessage));
 
         this._cmpCount.textContent = popupMessage.count + "";

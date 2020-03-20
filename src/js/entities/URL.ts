@@ -28,8 +28,12 @@ export default class URL {
         return (this._url.includes("http://") || this._url.includes("https://"));
     }
 
-    public static class(obj: URL): URL {
+    public static classFromJson(obj: URL): URL {
         return new URL(obj.url);
+    }
+
+    public static classFromDisk(obj: URL): URL {
+        return new URL(obj._url);
     }
 
     toJSON(): any {

@@ -21,14 +21,14 @@ export default class History {
                     // in this case there is already some history.
                     for (let i = 0; i < result.history.length; i++) {
                         let historyEntry = result.history[i];
-                        let entry;
-                        if(historyEntry.url){
+
+                        let entry: HistoryEntry;
+                        if (historyEntry.url) {
                             Utils.log("FireFox");
                             entry = HistoryEntry.classFromJson(result.history[i]);
-                        }
-                        else {
+                        } else {
                             Utils.log("Chrome");
-                            entry =HistoryEntry.classFromDisk(result.history[i]);
+                            entry = HistoryEntry.classFromDisk(result.history[i]);
                         }
 
                         Utils.log("Entry: " + JSON.stringify(entry));
