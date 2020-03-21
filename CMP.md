@@ -93,7 +93,7 @@ this.truste.eu.prefclosebutton();
 ## Sample Pages
 
 - [Forbes](https://www.forbes.com)
-- https://www.twilio.com/blog/building-microlearning-python-twilio-sendgrid
+- [twilio](https://www.twilio.com/)
 ### Other functions in the notice.js
 
 #### Versions

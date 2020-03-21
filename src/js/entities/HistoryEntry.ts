@@ -41,7 +41,7 @@ export default class HistoryEntry {
         }
 
         if (Utils.checkIfDefinedAndNotNull(pingResult)) {
-            this._pingResult = PingResult.classFromJson(pingResult);
+            this._pingResult = PingResult.class(pingResult);
         } else {
             throw new Error("Ping Result in History Entry must not be null");
         }
@@ -81,22 +81,22 @@ export default class HistoryEntry {
         return this._implemented;
     }
 
-    public static classFromJson(historyEntry: HistoryEntry): HistoryEntry {
-        return new HistoryEntry(historyEntry.date,
-            historyEntry.url,
-            historyEntry.cmp,
-            historyEntry.cmpScriptUrl,
-            historyEntry.pingResult,
-            historyEntry.implemented);
-    }
-
-    public static classFromDisk(historyEntry: any): HistoryEntry {
-        return new HistoryEntry(historyEntry._date,
-            historyEntry._url,
-            historyEntry._cmp,
-            historyEntry._cmpScriptUrl,
-            PingResult.classFromDisk(historyEntry._pingResult),
-            historyEntry._implemented);
+    public static class(historyEntry: any): HistoryEntry {
+        if (historyEntry._date) {
+            return new HistoryEntry(historyEntry._date,
+                historyEntry._url,
+                historyEntry._cmp,
+                historyEntry._cmpScriptUrl,
+                PingResult.class(historyEntry._pingResult),
+                historyEntry._implemented);
+        } else {
+            return new HistoryEntry(historyEntry.date,
+                historyEntry.url,
+                historyEntry.cmp,
+                historyEntry.cmpScriptUrl,
+                PingResult.class(historyEntry.pingResult),
+                historyEntry.implemented);
+        }
     }
 
     public toJSON(): any {

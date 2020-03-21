@@ -13,13 +13,13 @@ export default class ResponseForPopup {
 
     constructor(url: URL, lastFound: HistoryEntry, count: number) {
         if (Utils.checkIfDefinedAndNotNull(url)) {
-            this._url = URL.classFromJson(url);
+            this._url = URL.class(url);
         } else {
             throw new Error("URL String in ResponseForPopup must not be null");
         }
 
         if (Utils.checkIfDefinedAndNotNull(lastFound) && Object.entries(lastFound).length > 0) {
-            this._lastFound = HistoryEntry.classFromJson(lastFound);
+            this._lastFound = HistoryEntry.class(lastFound);
         } else {
             this._lastFound = null;
         }
@@ -44,7 +44,7 @@ export default class ResponseForPopup {
     }
 
     public get case(): number {
-        if (this._url.isHttp) {
+        if (this.url.isHttp) {
             console.log(this._lastFound);
             if (this._lastFound !== null && Object.entries(this._lastFound).length > 0) {
                 if (this._lastFound.cmp !== HistoryEntry.CMP_UNKNOWN) {
@@ -73,12 +73,12 @@ export default class ResponseForPopup {
         }
     }
 
-    public static classFromJson(obj: any): ResponseForPopup {
-        return new ResponseForPopup(URL.classFromJson(obj.url), obj.lastFound, obj.count);
-    }
-
-    public static classFromDisk(obj: any): ResponseForPopup {
-        return new ResponseForPopup(URL.classFromDisk(obj._url), obj._lastFound, obj._count);
+    public static class(obj: any): ResponseForPopup {
+        if (obj._url) {
+            return new ResponseForPopup(URL.class(obj._url), obj._lastFound, obj._count);
+        } else {
+            return new ResponseForPopup(URL.class(obj.url), obj.lastFound, obj.count);
+        }
     }
 
     public toJSON(): any {

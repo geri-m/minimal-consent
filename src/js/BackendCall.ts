@@ -42,7 +42,7 @@ export default class BackendCall {
 
     set pingResult(pingResult: PingResult) {
         Utils.log("Pingback in BackendCall set: " + pingResult);
-        this._pingResult = PingResult.classFromJson(pingResult);
+        this._pingResult = PingResult.class(pingResult);
         this._isPingResultReceived = true;
 
         // if the CMP was already clicked, do the backend call

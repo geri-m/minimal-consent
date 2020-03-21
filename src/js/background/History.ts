@@ -12,7 +12,7 @@ export default class History {
 
     public load(): Promise<HistoryEntry[]> {
         return new Promise(function (resolve, reject) {
-            chrome.storage.sync.get(historyKeyOfStorage, function (result: {[id: string]: any}) {
+            chrome.storage.sync.get(historyKeyOfStorage, function (result: { [id: string]: any }) {
                 Utils.log("load: Data in Storage: " + JSON.stringify(result));
 
                 let resultArray = new Array<HistoryEntry>();
@@ -20,20 +20,12 @@ export default class History {
                 if (result && result.history && result.history.length) {
                     // in this case there is already some history.
                     for (let i = 0; i < result.history.length; i++) {
-                        let historyEntry = result.history[i];
 
-                        let entry: HistoryEntry;
-                        if (historyEntry.url) {
-                            Utils.log("FireFox");
-                            entry = HistoryEntry.classFromJson(result.history[i]);
-                        } else {
-                            Utils.log("Chrome");
-                            entry = HistoryEntry.classFromDisk(result.history[i]);
-                        }
+                        let entry = HistoryEntry.class(result.history[i]);
 
                         Utils.log("Entry: " + JSON.stringify(entry));
                         resultArray.push(entry);
-                        if(chrome.runtime.lastError){
+                        if (chrome.runtime.lastError) {
                             Utils.log(chrome.runtime.lastError.message);
                         }
                     }
@@ -127,7 +119,7 @@ export default class History {
                             let he = {};
                             try {
                                 // parsing as JSON.
-                                he = HistoryEntry.classFromJson(result.history[i]);
+                                he = HistoryEntry.class(result.history[i]);
                                 // okay, we have at lest one Element with the old Syntax:
                                 if (typeof he !== 'undefined' && he !== null) {
                                     // put the Update back into the storage.

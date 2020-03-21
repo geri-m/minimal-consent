@@ -20,7 +20,7 @@ describe('History Tests', () => {
         expect(he.implemented).toBeTrue();
         expect(Object.entries(he).length).toEqual(6);
 
-        let he2 = HistoryEntry.classFromJson(he);
+        let he2 = HistoryEntry.class(he);
         expect(he2.date).toEqual("2020-02-20 10:00:00");
         expect(he2.url).toEqual("https://www.heise.de/");
         expect(he2.cmp).toEqual("UserCentrics");

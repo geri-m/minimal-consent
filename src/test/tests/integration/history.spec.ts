@@ -162,13 +162,13 @@ describe('History', () => {
         let forbes = await hist.getLastFound("www.forbes.com");
         expect(forbes).not.toBeNull();
         console.log("Forbes: " + forbes);
-        let forbesObject = HistoryEntry.classFromDisk(forbes);
+        let forbesObject = HistoryEntry.class(forbes);
         expect(forbesObject.pingResult.cmpId).toBe(41);
 
         let uc = await hist.getLastFound("www.usercentrics.com");
         expect(uc).not.toBeNull();
         console.log("UC: " + uc);
-        let ucObject = HistoryEntry.classFromDisk(uc);
+        let ucObject = HistoryEntry.class(uc);
         expect(ucObject.pingResult.cmpId).toBe(5);
 
     });

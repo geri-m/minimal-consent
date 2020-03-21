@@ -113,30 +113,41 @@ export default class PingResult {
         return tcfVersion;
     }
 
-    static classFromJson(pingResult: PingResult): PingResult {
-        return new PingResult(pingResult.gdprAppliesGlobally,
-            pingResult.gdprApplies,
-            pingResult.cmpLoaded,
-            pingResult.cmpStatus,
-            pingResult.displayStatus,
-            pingResult.apiVersion,
-            pingResult.cmpVersion,
-            pingResult.cmpId,
-            pingResult.gvlVersion,
-            pingResult.tcfPolicyVersion);
-    }
+    static class(pingResult: any): PingResult {
 
-    static classFromDisk(pingResult: any): PingResult {
-        return new PingResult(pingResult._gdprAppliesGlobally,
-            pingResult._gdprApplies,
-            pingResult._cmpLoaded,
-            pingResult._cmpStatus,
-            pingResult._displayStatus,
-            pingResult._apiVersion,
-            pingResult._cmpVersion,
-            pingResult._cmpId,
-            pingResult._gvlVersion,
-            pingResult._tcfPolicyVersion);
+        if (pingResult._gdprAppliesGlobally || pingResult._gdprApplies ||
+            pingResult._cmpLoaded ||
+            pingResult._cmpStatus ||
+            pingResult._displayStatus ||
+            pingResult._apiVersion ||
+            pingResult._cmpVersion ||
+            pingResult._cmpId ||
+            pingResult._gvlVersion ||
+            pingResult._tcfPolicyVersion) {
+            return new PingResult(pingResult._gdprAppliesGlobally,
+                pingResult._gdprApplies,
+                pingResult._cmpLoaded,
+                pingResult._cmpStatus,
+                pingResult._displayStatus,
+                pingResult._apiVersion,
+                pingResult._cmpVersion,
+                pingResult._cmpId,
+                pingResult._gvlVersion,
+                pingResult._tcfPolicyVersion);
+        } else {
+            return new PingResult(pingResult.gdprAppliesGlobally,
+                pingResult.gdprApplies,
+                pingResult.cmpLoaded,
+                pingResult.cmpStatus,
+                pingResult.displayStatus,
+                pingResult.apiVersion,
+                pingResult.cmpVersion,
+                pingResult.cmpId,
+                pingResult.gvlVersion,
+                pingResult.tcfPolicyVersion);
+        }
+
+
     }
 
     toJSON(): any {

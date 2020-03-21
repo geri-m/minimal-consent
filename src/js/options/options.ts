@@ -1,6 +1,5 @@
 "use strict";
 
-import OnPageLog from "../OnPageLog";
 import HistoryEntry from "../entities/HistoryEntry"
 import Utils from "../Utils";
 
@@ -16,22 +15,17 @@ class Options {
 
     private readonly _clearHistory: Element;
     private readonly _closeWindow: Element;
-    private readonly _log: OnPageLog;
 
     constructor(document: Document) {
         this._clearHistory = document.getElementById('clear-history');
         this._closeWindow = document.getElementById('close-window');
     }
 
-    get log() {
-        return this._log;
-    }
-
     public init(): void {
         Utils.log("init");
         let _self = this;
         this._clearHistory.addEventListener('click', function () {
-            _self.clearHistory(_self);
+            _self.clearHistory();
         });
         this._closeWindow.addEventListener('click', function () {
             window.close();
@@ -44,25 +38,34 @@ class Options {
         });
     }
 
-    private handleResponse(response: any): void {
+    private handleResponse(response: HistoryEntry[]): void {
         Utils.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
-        if (typeof response !== "undefined" && response.length) {
+        if (Utils.checkIfDefinedAndNotNull(response) && response.length) {
+
+            // Create an Object we can work with.
+            let history = new Array<HistoryEntry>();
+            response.forEach(function (item: HistoryEntry) {
+                history.push(HistoryEntry.class(item));
+            });
+
 
             // sort array by date.
-            response.sort(function (a: HistoryEntry, b: HistoryEntry) {
+            history.sort(function (a: HistoryEntry, b: HistoryEntry) {
                 // Turn your strings into dates, and then subtract them
                 // to get a value that is either negative, positive, or zero.
                 return new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds();
             });
 
             let _self = this;
-            response.forEach(function (item: HistoryEntry, index: number) {
-                _self.createRow(item, _self)
+            history.forEach(function (item: HistoryEntry, index: number) {
+                _self.createRow(item)
             });
+        } else {
+            throw Error("Unable to parse 'HistoryEntry[]' in options.ts");
         }
     }
 
-    private clearHistory(option: Options): void {
+    private clearHistory(): void {
         chrome.runtime.sendMessage({
             from: "optionsScript",
             cmd: "clearHistory"
@@ -72,34 +75,23 @@ class Options {
         window.close();
     }
 
-    private createRow(historyEntry: HistoryEntry, option: Options): void {
+    private createRow(historyEntry: HistoryEntry): void {
         Utils.log("Item: " + JSON.stringify(historyEntry));
 
-        let item: HistoryEntry;
-        if (historyEntry.url) {
-            Utils.log("Chrome");
-            item = HistoryEntry.classFromJson(historyEntry);
-        } else {
-            Utils.log("Firefox");
-            item = HistoryEntry.classFromDisk(historyEntry);
-        }
-
-        // let item = HistoryEntry.classFromJson(historyEntry);
-
         let url = document.createElement('td');
-        url.innerHTML = item.url;
+        url.innerHTML = historyEntry.url;
 
         let date = document.createElement('td');
-        date.innerHTML = item.date;
+        date.innerHTML = historyEntry.date;
 
         let cmp = document.createElement('td');
-        cmp.innerHTML = item.cmp;
+        cmp.innerHTML = historyEntry.cmp;
 
         let implemented = document.createElement('td');
-        implemented.innerHTML = String(item.implemented);
+        implemented.innerHTML = String(historyEntry.implemented);
 
         let tcf = document.createElement('td');
-        tcf.innerHTML = item.pingResult.tcfVersion;
+        tcf.innerHTML = historyEntry.pingResult.tcfVersion;
 
         let row = document.createElement('tr');
         row.appendChild(date);

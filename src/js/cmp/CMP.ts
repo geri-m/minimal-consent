@@ -4,10 +4,6 @@ import Utils from "../Utils";
 import BackendCall from "../BackendCall"
 import ICmp from "./ICmp";
 
-const config = {attributes: true, childList: true, subtree: true};
-const minimalConsentLink = "a.minimal-consent";
-const maximalLimitOfDomChangeTillStop = 100;
-
 export default class CMP {
 
     /**
@@ -19,6 +15,11 @@ export default class CMP {
      * @param type Enumeration on Type of CMP to determine when we need to trigger the backend call.
      */
 
+
+    private readonly _config = {attributes: true, childList: true, subtree: true};
+    private readonly _minimalConsentLink = "a.minimal-consent";
+    private readonly _maximalLimitOfDomChangeTillStop = 100;
+
     private readonly _node: Document;
     private _state: number;
     private _callCounter: number;
@@ -26,23 +27,12 @@ export default class CMP {
     private _observer: MutationObserver;
     private _cmpImplementation: ICmp;
 
-    constructor(node : Document, backendCall: BackendCall, cmpImplementation: ICmp) {
+    constructor(node: Document, backendCall: BackendCall, cmpImplementation: ICmp) {
         this._node = node;
         this._state = 0;
         this._callCounter = 0;
         this._cmpImplementation = cmpImplementation;
         this._backendCall = backendCall;
-    }
-
-    connect() :void {
-        let _self = this;
-        this._observer = new MutationObserver(function (mutations) {
-            _self.mainCmpHandler(mutations);
-        });
-        this._observer.observe(this._node, config);
-
-        // in case there is no DOM change on the site at this place, the Handler should run at least once.
-        this.mainCmpHandler(null);
     }
 
     /**
@@ -51,20 +41,31 @@ export default class CMP {
      * @returns {*}
      */
 
-    get node() :Document{
+    get node(): Document {
         return this._node;
     }
 
-    get state() :number  {
+    get state(): number {
         return this._state;
     }
 
-    set state(state)  {
+    set state(state) {
         this._state = state;
     }
 
-    get minimalConsentLink() :string {
-        return minimalConsentLink;
+    get minimalConsentLink(): string {
+        return this._minimalConsentLink;
+    }
+
+    connect(): void {
+        let _self = this;
+        this._observer = new MutationObserver(function (mutations) {
+            _self.mainCmpHandler(mutations);
+        });
+        this._observer.observe(this._node, this._config);
+
+        // in case there is no DOM change on the site at this place, the Handler should run at least once.
+        this.mainCmpHandler(null);
     }
 
     /**
@@ -77,7 +78,7 @@ export default class CMP {
         Utils.log("Handling " + this._cmpImplementation.name);
         this._callCounter++;
         // if after x changes to the DOM there as not popup, we stop listening to the changes.
-        if (this._callCounter < maximalLimitOfDomChangeTillStop) {
+        if (this._callCounter < this._maximalLimitOfDomChangeTillStop) {
             this._cmpImplementation.handleCmp();
         } else {
             this._observer.disconnect();
@@ -91,7 +92,7 @@ export default class CMP {
      * Reset the state of the CMP if the Consent was successfully given. Might trigger a backend call.
      */
 
-    reset() : void{
+    reset(): void {
         // If everything is fine, remove the listener.
         this._observer.disconnect();
         this._state = -1;
@@ -114,7 +115,7 @@ export default class CMP {
      * @param selector CSS Selector to search for
      * @returns {NodeListOf<HTMLElementTagNameMap[*]> | NodeListOf<Element> | NodeListOf<SVGElementTagNameMap[*]>}
      */
-    queryNodeSelectorAll(selector: string) : any {
+    queryNodeSelectorAll(selector: string): any {
         return this._node.querySelectorAll(selector)
     }
 }

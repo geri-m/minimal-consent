@@ -13,7 +13,7 @@ describe('URL Tests', () => {
         expect(JSON.stringify(url)).toEqual("{\"url\":\"https://www.orf.at\"}");
         expect(Object.entries(url).length).toEqual(1);
 
-        let url2 = URL.classFromJson(url);
+        let url2 = URL.class(url);
         expect(url2.isHttp).toBeTrue();
         expect(url2.host).toEqual("www.orf.at");
         expect(url2.url).toEqual("https://www.orf.at");
@@ -29,7 +29,7 @@ describe('URL Tests', () => {
         expect(JSON.stringify(url)).toEqual("{\"url\":\"chrome-extension://cgoaendlnmfajjjkhckajkmjinjinlkb/options/options.html\"}");
         expect(Object.entries(url).length).toEqual(1);
 
-        let url2 = URL.classFromJson(url);
+        let url2 = URL.class(url);
         expect(url2.isHttp).toBeFalse();
         expect(url2.host).toEqual("cgoaendlnmfajjjkhckajkmjinjinlkb");
         expect(url2.url).toEqual("chrome-extension://cgoaendlnmfajjjkhckajkmjinjinlkb/options/options.html");
@@ -45,7 +45,7 @@ describe('URL Tests', () => {
         expect(JSON.stringify(url3)).toEqual("{\"url\":\"#\"}");
         expect(Object.entries(url3).length).toEqual(1);
 
-        let url4 = URL.classFromJson(url3);
+        let url4 = URL.class(url3);
         expect(url4.isHttp).toBeFalse();
         // expect(url4.host).toEqual("#"); -> This will not work, as in this case, the hostname from the current page (where we get the document form, will be taken
         expect(url4.url).toEqual("#");

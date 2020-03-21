@@ -2,6 +2,7 @@
 
 import ResponseForPopup from "../entities/ResponseForPopup";
 import OnPageLog from "../OnPageLog";
+import Utils from "../Utils";
 
 window.addEventListener('load', onLoad);
 
@@ -47,76 +48,68 @@ class Popup {
         }
     }
 
-    private handleResponse(response: any, _self: Popup): void {
-        this._log.log("handleResponse: " + JSON.stringify(response) + ", Length: " + response.count);
+    private handleResponse(response: ResponseForPopup, _self: Popup): void {
+        if (Utils.checkIfDefinedAndNotNull(response)) {
+            let popupMessage = ResponseForPopup.class(response);
+            this._log.log("handleResponse: " + JSON.stringify(popupMessage) + ", Length: " + popupMessage.count);
 
-        document.getElementById("log").innerText = "handleResponse: " + JSON.stringify(response) + ", Length: " + response.count;
+            document.getElementById("log").innerText = "handleResponse: " + JSON.stringify(popupMessage) + ", Length: " + popupMessage.count;
 
+            // let popupMessage = ResponseForPopup.class(response);
+            this._log.log("parsed: " + JSON.stringify(popupMessage));
 
-        let popupMessage: ResponseForPopup;
-        if (response.url) {
-            popupMessage = ResponseForPopup.classFromJson(response);
+            this._cmpCount.textContent = popupMessage.count + "";
+
+            // Possible Cases
+            // (1) HTTP + Found + known + Implemented: We know and implemented (= block) the CMP. Now or in the past. (Script + Implementation)
+            let messageCase1 = "Consent for <i>%URL</i> denied on %DATE.";
+            // (2) HTTP + Found + known + Not Implemented: We know the CMP, but have no implemented it. We will do implement this in the future (Script found, maybe CMP Object)
+            let messageCas2 = "We aware of <i>%URL</i>'s solution for Cookie Banner. We are working on it.";
+            // (3) HTTP + Found + not known + Not Implemented: There is a CMP on the Page we don't know yet. (CMP Object on Page, but no Script)
+            let messageCase3 = "<i>%URL</i> uses a solution for cookie banners we have not yet seen. <a href='#' id='submit-this-url'>Submit this URL</a>.";
+            // (4) HTTP + not Found + not known + Not Implemented:
+            let messageCase4 = "Was there a cookie banner on <i>%URL</i>? If yes, <a href='#' id='submit-this-url'>submit this URL</a>.";
+            // (5) The Page is not a HTTP/HTTPs Page.
+            let messageCase5 = "Only HTTP(s) Pages are supported";
+
+            switch (popupMessage.case) {
+                case 1:
+                    this._log.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date));
+                    this._details.innerHTML = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
+                    break;
+                case 2:
+                    this._log.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
+                    this._details.innerHTML = messageCas2.replace("%URL", popupMessage.url.host);
+                    break;
+                case 3:
+                    this._log.log("Case 3: Unknown CMP Detected");
+                    this._details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
+                    document.querySelector('#submit-this-url').addEventListener('click', function () {
+                        _self.sendUrlToBackendForImplementation(popupMessage.url.host);
+                    });
+                    break;
+                case 4:
+                    this._log.log("Case 4: No CMP detected");
+                    this._details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
+                    document.querySelector('#submit-this-url').addEventListener('click', function () {
+                        _self.sendUrlToBackendForImplementation(popupMessage.url.host);
+                    });
+                    break;
+                default:
+                    this._log.log("Case 5: No HTTP Page");
+                    this._details.innerHTML = messageCase5;
+            }
         } else {
-            popupMessage = ResponseForPopup.classFromDisk(response);
-        }
-
-        // let popupMessage = ResponseForPopup.classFromJson(response);
-        this._log.log("parsed: " + JSON.stringify(popupMessage));
-
-        this._cmpCount.textContent = popupMessage.count + "";
-
-        // Possible Cases
-        // (1) HTTP + Found + known + Implemented: We know and implemented (= block) the CMP. Now or in the past. (Script + Implementation)
-        let messageCase1 = "Consent for <i>%URL</i> denied on %DATE.";
-        // (2) HTTP + Found + known + Not Implemented: We know the CMP, but have no implemented it. We will do implement this in the future (Script found, maybe CMP Object)
-        let messageCas2 = "We aware of <i>%URL</i>'s solution for Cookie Banner. We are working on it.";
-        // (3) HTTP + Found + not known + Not Implemented: There is a CMP on the Page we don't know yet. (CMP Object on Page, but no Script)
-        let messageCase3 = "<i>%URL</i> uses a solution for cookie banners we have not yet seen. <a href='#' id='submit-this-url'>Submit this URL</a>.";
-        // (4) HTTP + not Found + not known + Not Implemented:
-        let messageCase4 = "Was there a cookie banner on <i>%URL</i>? If yes, <a href='#' id='submit-this-url'>submit this URL</a>.";
-        // (5) The Page is not a HTTP/HTTPs Page.
-        let messageCase5 = "Only HTTP(s) Pages are supported";
-
-        switch (popupMessage.case) {
-            case 1:
-                this._log.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date));
-                this._details.innerHTML = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
-                break;
-
-            case 2:
-                this._log.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
-                this._details.innerHTML = messageCas2.replace("%URL", popupMessage.url.host);
-                break;
-
-            case 3:
-                this._log.log("Case 3: Unknown CMP Detected");
-                this._details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
-                document.querySelector('#submit-this-url').addEventListener('click', function () {
-                    _self.sendUrlToBackendForImplementation(popupMessage.url.host);
-                });
-                break;
-
-            case 4:
-                this._log.log("Case 4: No CMP detected");
-                this._details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
-                document.querySelector('#submit-this-url').addEventListener('click', function () {
-                    _self.sendUrlToBackendForImplementation(popupMessage.url.host);
-                });
-                break;
-
-            default:
-                this._log.log("Case 5: No HTTP Page");
-                this._details.innerHTML = messageCase5;
+            throw Error("Unable to parse 'ResponseForPopup' in popup.ts");
         }
     }
+
 
     private sendUrlToBackendForImplementation(url: string) {
         // check if the browsers supports Option Pages.
         this._log.log("Feature Request from User for URL '" + url + "'. TODO: Send to Backend");
         window.close();
     }
-
-
 }
 
 
