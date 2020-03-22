@@ -57,7 +57,7 @@ export default class CMP {
         return this._minimalConsentLink;
     }
 
-    connect(): void {
+    public connect(): void {
         let _self = this;
         this._observer = new MutationObserver(function (mutations) {
             _self.mainCmpHandler(mutations);
@@ -67,6 +67,14 @@ export default class CMP {
         // in case there is no DOM change on the site at this place, the Handler should run at least once.
         this.mainCmpHandler(null);
     }
+
+
+    public disconnect(): void {
+        this._observer.disconnect();
+        this._state = -1;
+        this._callCounter = 0;
+    }
+
 
     /**
      * Handle which is called, when a modification is detected.
@@ -81,9 +89,7 @@ export default class CMP {
         if (this._callCounter < this._maximalLimitOfDomChangeTillStop) {
             this._cmpImplementation.handleCmp();
         } else {
-            this._observer.disconnect();
-            this._state = -1;
-            this._callCounter = 0;
+            this.disconnect();
             Utils.log("Looks like, CMP was already given consent.");
         }
     }

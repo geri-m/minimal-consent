@@ -66,13 +66,13 @@ So what we do, is inject a button which contains a javascript and then press thi
 - [usercentrics](https://www.usercentrics.de/)
 - [Andreas Stocker](https://www.andreasstocker.at/)
 
-# [Trustarc](https://www.trustarc.com) aka TrustArc
+# [Trustarc](https://www.trustarc.com) aka TrustArcIFrame
 
 ## Variant 1 iFrame 
 
 ### Version v1.7 (Release up from 220)
 
-TrustArc integrates a JavaScript on the Page as well as an iFrame. The [iFrame](https://consent-pref.trustarc.com/?type=forbes&site=forbes.com&action=notice&country=de&locale=de&behavior=expressed&layout=default_eu&from=https://consent.trustarc.com/) holds the UI for the interaction with the 
+TrustArcIFrame integrates a JavaScript on the Page as well as an iFrame. The [iFrame](https://consent-pref.trustarc.com/?type=forbes&site=forbes.com&action=notice&country=de&locale=de&behavior=expressed&layout=default_eu&from=https://consent.trustarc.com/) holds the UI for the interaction with the 
 customer. The WebSite (JavaScript [notice.js](https://consent.trustarc.com/asset/notice.js/v/v1.7-220)) uses Message passing
 via ```iframe.postMessage()``` to send and ```window.addEventListener()``` to receive information from the iFrame. 
 

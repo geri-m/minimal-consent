@@ -53,7 +53,7 @@ class Popup {
             let popupMessage = ResponseForPopup.class(response);
             this._log.log("handleResponse: " + JSON.stringify(popupMessage) + ", Length: " + popupMessage.count);
 
-            document.getElementById("log").innerText = "handleResponse: " + JSON.stringify(popupMessage) + ", Length: " + popupMessage.count;
+            // document.getElementById("log").innerText = "handleResponse: " + JSON.stringify(popupMessage) + ", Length: " + popupMessage.count;
 
             // let popupMessage = ResponseForPopup.class(response);
             this._log.log("parsed: " + JSON.stringify(popupMessage));

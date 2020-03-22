@@ -1,7 +1,8 @@
 "use strict";
 import Utils from "./Utils";
 import ICmp from "./cmp/ICmp";
-import TrustArc from "./cmp/TrustArc";
+import TrustArcIFrame from "./cmp/TrustArcIFrame";
+import TrustArcBanner from "./cmp/TrustArcBanner";
 import Evidon from "./cmp/Evidon"
 import CustomImpl from "./cmp/CustomImpl";
 import OneTrust from "./cmp/OneTrust";
@@ -83,6 +84,9 @@ export default class Detector {
                     if (urlOfScript.includes('cmpui.js')) {
                         this._cmp = new OathCmp(this._document, urlOfScript, this._backendCall);
                         break;
+                    } else if (urlOfScript.includes('defaultpreferencemanager/defaultpreferencemanager.nocache.js')) {
+                        this._cmp = new TrustArcIFrame(this._document, urlOfScript, this._backendCall);
+                        break;
                     }
                 } // if of SRC Tak
             } // for Script
@@ -98,7 +102,7 @@ export default class Detector {
                         urlOfScript = urlOfScript.toLowerCase();
                         // Utils.log(urlOfScript);
                         if (urlOfScript.includes('truste.com') || urlOfScript.includes('trustarc.com') || urlOfScript.includes('trustarc.mgr.consensu.org')) {
-                            this._cmp = new TrustArc(this._document, urlOfScript, this._backendCall);
+                            this._cmp = new TrustArcBanner(this._document, urlOfScript, this._backendCall);
                             break;
                         } else if (urlOfScript.includes('evidon.com') || urlOfScript.includes("evidon.mgr.consensu.org")) {
                             this._cmp = new Evidon(this._document, urlOfScript, this._backendCall);
