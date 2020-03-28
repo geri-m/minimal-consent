@@ -94,6 +94,9 @@ this.truste.eu.prefclosebutton();
 
 - [Forbes](https://www.forbes.com)
 - [twilio](https://www.twilio.com/)
+- [wacom](https://www.wacom.com/de-de)
+- [F5](https://f5.com/)
+
 ### Other functions in the notice.js
 
 #### Versions
@@ -212,7 +215,8 @@ to consensu.org.
 
 - [programiz](https://www.programiz.com/)
 - [Doodle](https://www.doodle.com)
-- [Quantcast](www.pronews.gr)
+- [Quantcast](https://www.pronews.gr)
+- [Imgur](https://imgur.com/)
 
 
 # [SoloCMP](https://www.solocpm.com)

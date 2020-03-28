@@ -34,6 +34,12 @@ export default class QuantCast implements ICmp {
         const save = "button.qc-cmp-save-and-exit";
         let saveButton = this._cmp.queryNodeSelector(save);
 
+        const rejectAll = "button.qc-cmp-secondary-button";
+        let rejectAllButton = this._cmp.queryNodeSelector(rejectAll);
+        /*
+        <button class="qc-cmp-button qc-cmp-button-small qc-cmp-secondary-button" onclick="window.__cmpui(&quot;disableAllPurposeConsents&quot;)"> Reject all </button>
+         */
+
         // press on "Options"
         if (Utils.objectClickable(purposeButton) && this._cmp.state === 0) {
             this._cmp.state = 1;
@@ -47,6 +53,12 @@ export default class QuantCast implements ICmp {
         // save settings
         else if (Utils.objectClickable(saveButton) && this._cmp.state === 2) {
             saveButton.click();
+            this._cmp.reset();
+        }
+
+        // separated Branch, if there is "Reject-All Button"
+        else if (Utils.objectClickable(rejectAllButton) && this._cmp.state === 0) {
+            rejectAllButton.click();
             this._cmp.reset();
         }
     }

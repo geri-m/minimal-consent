@@ -1,4 +1,4 @@
-# Chrome Extension, Opera + FireFox AddOn for Minimal Consent
+# Chrome Extension, Opera, FireFox and Microsoft Edge AddOn form Minimal Consent
 
 
 ## Extension Description for Publishing
@@ -9,7 +9,7 @@ OneTrust or UserCentrics.
 
 How to Test
 1) Load Extension
-2) Open a Webpage with a CMP (eg: https://www.doodle.com)
+2) Open a Webpage with a CMP (eg: https://www.quancast.com)
 3) CMP will be managed and the Icon with switch to green for 3 seconds. 
 
 ## Development Setup
@@ -77,7 +77,7 @@ If you make changes to `manifest.json` or `webpack.js` please restart as these f
 Source code and images are located in `./src/`.
 
 After installation in the browser the pages for testing will open automatically. This functionally is triggered from
-the backendscript.
+the backend script.
 
 ## Permission
 
