@@ -10,8 +10,7 @@ import ResponseForPopup from "./entities/ResponseForPopup";
 import PingResult from "./entities/PingResult";
 import HistoryEntry from "./entities/HistoryEntry";
 
-const dateFormat = require('dateformat'); // from library
-
+const dateFormat = require("dateformat");
 
 class BackgroundScript {
 

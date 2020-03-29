@@ -36,9 +36,6 @@ export default class QuantCast implements ICmp {
 
         const rejectAll = "button.qc-cmp-secondary-button";
         let rejectAllButton = this._cmp.queryNodeSelector(rejectAll);
-        /*
-        <button class="qc-cmp-button qc-cmp-button-small qc-cmp-secondary-button" onclick="window.__cmpui(&quot;disableAllPurposeConsents&quot;)"> Reject all </button>
-         */
 
         // press on "Options"
         if (Utils.objectClickable(purposeButton) && this._cmp.state === 0) {

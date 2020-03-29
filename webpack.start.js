@@ -36,5 +36,6 @@ module.exports = merge(parentWebPack, {
     /* This is how the test Page will be available on the page */
     entry: {
         './test/tests/integration/history.spec': './src/test/tests/integration/history.spec.ts',
+        './test/tests/integration/deviceId.spec': './src/test/tests/integration/deviceId.spec.ts',
     }
 });

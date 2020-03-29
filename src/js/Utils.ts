@@ -1,6 +1,6 @@
 "use strict";
 
-const dateFormat = require('dateformat'); // from library
+const dateFormat = require("dateformat");
 
 export default class Utils {
 

@@ -7,18 +7,15 @@ import PingResult from "../../../js/entities/PingResult";
 
 describe('History', () => {
 
-    beforeAll(async function () {
-    });
-
-    afterAll(async function () {
+    afterEach(async function () {
+        let hist = new History();
+        await hist.clearStorage();
     });
 
     beforeEach(async function () {
         let hist = new History();
         await hist.clearStorage();
     });
-
-
 
     it('Empty History', async function () {
         let hist = new History();
