@@ -9,6 +9,7 @@ import URL from "./entities/URL";
 import ResponseForPopup from "./entities/ResponseForPopup";
 import PingResult from "./entities/PingResult";
 import HistoryEntry from "./entities/HistoryEntry";
+import DeviceId from "./background/DeviceId";
 
 const dateFormat = require("dateformat");
 
@@ -165,6 +166,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
                     url: chrome.extension.getURL(url),
                 });
             });
+
         } else if (details.reason === "update") {
             pages.forEach((url) => {
                 chrome.tabs.create({
@@ -172,6 +174,24 @@ chrome.runtime.onInstalled.addListener(function (details) {
                     url: chrome.extension.getURL(url),
                 });
             });
+        }
+    }
+    // this is now for producitn
+    else {
+        // Only when the extension is installed for the first time
+        if (details.reason === "install") {
+            // send information on install to backend.
+            let deviceId = new DeviceId();
+            let uuid = deviceId.loadOrGenerate();
+            let request = new Request();
+            request.install(uuid);
+
+        } else if (details.reason === "update") {
+            // send information on update to backend.
+            let deviceId = new DeviceId();
+            let uuid = deviceId.loadOrGenerate();
+            let request = new Request();
+            request.update(uuid);
         }
     }
 

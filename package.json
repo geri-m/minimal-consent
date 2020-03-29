@@ -35,8 +35,8 @@
     "webpack-obfuscator": "^0.26.0"
   },
   "dependencies": {
-    "dateformat": "^3.0.3",
-    "@types/uuid": "^7.0.2"
+    "@types/uuid": "^7.0.2",
+    "dateformat": "^3.0.3"
   },
   "repository": {
     "type": "git",
