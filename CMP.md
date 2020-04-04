@@ -98,6 +98,7 @@ this.truste.eu.prefclosebutton();
 - [F5](https://f5.com/)
 - [Docker](https://www.docker.com)
 - [iRobot](https://www.irobot.de/)
+
 ### Other functions in the notice.js
 
 #### Versions
@@ -110,7 +111,7 @@ this.truste.eu.prefclosebutton();
 
 Look for #truste-consent-required, press and all good. 
 
-Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich. 
+Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.  
 
 ### Sample Pages
 
