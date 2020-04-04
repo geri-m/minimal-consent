@@ -6,6 +6,9 @@ dist
 .idea
 .sass-cache
 
+*.iml
+*.workspace.xml
+
 # Yarn temp files
 yarn.lock
 yarn-error.log
