@@ -96,7 +96,8 @@ this.truste.eu.prefclosebutton();
 - [twilio](https://www.twilio.com/)
 - [wacom](https://www.wacom.com/de-de)
 - [F5](https://f5.com/)
-
+- [Docker](https://www.docker.com)
+- [iRobot](https://www.irobot.de/)
 ### Other functions in the notice.js
 
 #### Versions
@@ -113,7 +114,6 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 ### Sample Pages
 
-- [Docker](https://www.docker.com)
 
 ---
 

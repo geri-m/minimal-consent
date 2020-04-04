@@ -28,7 +28,6 @@ export default class CustomImpl implements ICmp {
 
     public handleCmp(): void {
         let button = this._cmp.queryNodeSelector(this._button);
-        let minimalConsent = this._cmp.queryNodeSelector(this._cmp.minimalConsentLink);
 
         if (Utils.objectClickable(button) && this._cmp.state === 0) {
             Utils.log("Button Found, clicking");

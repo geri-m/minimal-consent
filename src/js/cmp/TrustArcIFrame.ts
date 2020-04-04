@@ -34,8 +34,9 @@ export default class TrustArcIFrame implements ICmp {
         let advancedButton = this._cmp.queryNodeSelector(advanced);
         Utils.log("advanced: " + advancedButton);
 
-        const spanOn = 'span.on';
+        const spanOn = '.on';
         let spanOnGroup = this._cmp.queryNodeSelectorAll(spanOn);
+        Utils.log(spanOnGroup);
         Utils.log("Span on Group Length: " + spanOnGroup.length);
 
         const submit = ".submit";
@@ -48,11 +49,11 @@ export default class TrustArcIFrame implements ICmp {
         Utils.log("State: " + this._cmp.state);
 
 
-        if (Utils.objectClickable(moreInformationButton) && this._cmp.state < 3) {
+        if (Utils.objectClickable(moreInformationButton) && this._cmp.state < 1) {
             Utils.log("moreInformationButton clicked");
             moreInformationButton.click();
             this._cmp.state = 1;
-        } else if (Utils.objectClickable(advancedButton) && this._cmp.state < 3) {
+        } else if (Utils.objectClickable(advancedButton) && this._cmp.state < 2) {
             Utils.log("advanced clicked");
             advancedButton.click();
             this._cmp.state = 2;
