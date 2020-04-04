@@ -55,7 +55,7 @@ export default class Request {
     }
 
     public urlRequestToImplement(url: URL): void {
-        this.xhr.open(Request.HTTP_METHOD, Request.URL_STATUS, true);
+        this.xhr.open(Request.HTTP_METHOD, Request.URL_USER_REQUEST, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
         // Sanity Check, so we only send correct data to the backend.

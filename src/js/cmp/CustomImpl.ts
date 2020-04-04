@@ -31,14 +31,8 @@ export default class CustomImpl implements ICmp {
         let minimalConsent = this._cmp.queryNodeSelector(this._cmp.minimalConsentLink);
 
         if (Utils.objectClickable(button) && this._cmp.state === 0) {
-            Utils.log("GDPR Button + Decline found: " + this._button);
-            let javaScript = 'javascript:function s(){ document.querySelector(\"' + this._button + '\").click();} s();';
-            Utils.createMinimalConsentButton(this._cmp.node, javaScript);
-            this._cmp.state = 1;
-        } else if (Utils.objectClickable(minimalConsent) && this._cmp.state === 1) {
-            Utils.log("New button is here");
-            minimalConsent.click();
-            Utils.log('Consent on denied.');
+            Utils.log("Button Found, clicking");
+            button.click();
             this._cmp.reset();
         }
     }

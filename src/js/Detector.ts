@@ -19,10 +19,10 @@ import OathCmp from "./cmp/OathCmp";
 
 // this is some static stuff for the long tail.
 const buttons = {
-    '#hs-eu-decline-button': "npmjs.com",
-    "#cookie_action_close_header": "tealium.com",
-    "#gdpr-banner-accept": "ebay.com & ebay-kleinanzeigen.com",
-    "#acceptAllButton": "PayPal"
+    'a#hs-eu-decline-button': "npmjs.com",
+    "a#cookie_action_close_header": "tealium.com",
+    "button#gdpr-banner-accept": "ebay.com & ebay-kleinanzeigen.com",
+    "button#acceptAllButton": "PayPal"
 };
 
 const config = {attributes: true, childList: true, subtree: true};
