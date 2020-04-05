@@ -25,15 +25,20 @@ export default class Request {
         Utils.log("Backend call done:" + JSON.stringify(requestJson));
     }
 
-    public onInstall(uuid: { [id: string]: any }, reason: string): void {
+    public onInstall(uuid: string, reason: string): void {
         // Sanity Check, so we only send correct data to the backend.
-        uuid["status"] = reason;
+        let statusToSend: { [id: string]: string; } = {
+            uuid: uuid,
+            status: reason
+        };
+
+        Utils.log("Install Data: " + JSON.stringify(statusToSend));
         this.xhr.open(Request.HTTP_METHOD, Request.URL_STATUS, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
         // Sanity Check, so we only send correct data to the backend.
-        this.xhr.send(JSON.stringify(uuid));
-        Utils.log("onInstall Info Sent for UUID" + JSON.stringify(uuid));
+        this.xhr.send(JSON.stringify(statusToSend));
+        Utils.log("onInstall Info Sent for UUID" + JSON.stringify(statusToSend));
     }
 
     public urlRequestToImplement(url: string, uuid: string): void {

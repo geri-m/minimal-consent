@@ -18,22 +18,38 @@ class BackgroundScript {
     private readonly _request: Request;
     private readonly _history: History;
     private readonly _icon: Icon;
+    private readonly _deviceId: DeviceId;
+    private _uuid: string;
 
     constructor() {
         this._request = new Request();
         this._history = new History();
         this._icon = new Icon();
+        this._deviceId = new DeviceId();
+
     }
 
     public async init() {
 
+        let u = await this._deviceId.loadOrGenerate();
+        Utils.log("Generated");
+        this._uuid = u.deviceId;
+        let _self = this;
+
+        Utils.log("_self");
+
+        let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
+        Utils.log("UUID for uninstall: " + _self._uuid);
+        chrome.runtime.setUninstallURL(uninstallUrl + _self._uuid);
+
         chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+            Utils.log("onMessage");
             return backgroundScript.messageHandler(request, sender, sendResponse);
         });
 
         /* Open Test and Option Pages on Startup */
         chrome.runtime.onInstalled.addListener(function (details) {
-
+            Utils.log("onInstalled");
             if (process.env.NODE_ENV === 'development') {
                 let pages = [
                     "/test/test-page/integration.html",
@@ -62,21 +78,14 @@ class BackgroundScript {
             else {
                 // Only when the extension is installed for the first time
                 // send information on install to backend.
-                let deviceId = new DeviceId();
-                let uuid = deviceId.loadOrGenerate();
                 let request = new Request();
-                request.onInstall(uuid, details.reason);
+                request.onInstall(_self._uuid, details.reason);
             }
 
-            backgroundScript.history.doMigration();
 
         });
 
-        let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
-        let deviceId = new DeviceId();
-        let uuid = await deviceId.loadOrGenerate();
-        Utils.log("UUID for uninstall: " + uuid["deviceId"]);
-        chrome.runtime.setUninstallURL(uninstallUrl + uuid["deviceId"]);
+
     }
 
 

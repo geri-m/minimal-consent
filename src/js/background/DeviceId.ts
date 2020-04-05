@@ -8,6 +8,7 @@ const deviceIdKeyInStorage = "deviceId";
 export default class DeviceId {
 
     constructor() {
+
     }
 
     /**
