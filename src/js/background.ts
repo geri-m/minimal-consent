@@ -19,28 +19,18 @@ class BackgroundScript {
     private readonly _history: History;
     private readonly _icon: Icon;
     private readonly _deviceId: DeviceId;
-    private _uuid: string;
+
 
     constructor() {
         this._request = new Request();
         this._history = new History();
         this._icon = new Icon();
         this._deviceId = new DeviceId();
-
     }
 
-    public async init() {
+    public init() {
 
-        let u = await this._deviceId.loadOrGenerate();
-        Utils.log("Generated");
-        this._uuid = u.deviceId;
         let _self = this;
-
-        Utils.log("_self");
-
-        let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
-        Utils.log("UUID for uninstall: " + _self._uuid);
-        chrome.runtime.setUninstallURL(uninstallUrl + _self._uuid);
 
         chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             Utils.log("onMessage");
@@ -48,8 +38,12 @@ class BackgroundScript {
         });
 
         /* Open Test and Option Pages on Startup */
-        chrome.runtime.onInstalled.addListener(function (details) {
+        chrome.runtime.onInstalled.addListener(async function (details) {
             Utils.log("onInstalled");
+
+            let u = await _self._deviceId.loadOrGenerate();
+            let uuid = u.deviceId;
+
             if (process.env.NODE_ENV === 'development') {
                 let pages = [
                     "/test/test-page/integration.html",
@@ -73,21 +67,22 @@ class BackgroundScript {
                         });
                     });
                 }
+
             }
             // this is now for production
             else {
                 // Only when the extension is installed for the first time
                 // send information on install to backend.
                 let request = new Request();
-                request.onInstall(_self._uuid, details.reason);
+                request.onInstall(uuid, details.reason);
+
+                // make sure that the uninstall triggers a backend call
+                let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
+                Utils.log("UUID for uninstall: " + uuid);
+                chrome.runtime.setUninstallURL(uninstallUrl + uuid);
             }
-
-
         });
-
-
     }
-
 
     // only Required for Migrations on Startup.
     get history() {
