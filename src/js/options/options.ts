@@ -60,6 +60,8 @@ class Options {
             history.forEach(function (item: HistoryEntry, index: number) {
                 _self.createRow(item)
             });
+        } else if (response.length === 0) {
+            Utils.log("Result from Storage is/was empty.");
         } else {
             throw Error("Unable to parse 'HistoryEntry[]' in options.ts");
         }

@@ -25,6 +25,60 @@ class BackgroundScript {
         this._icon = new Icon();
     }
 
+    public async init() {
+
+        chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+            return backgroundScript.messageHandler(request, sender, sendResponse);
+        });
+
+        /* Open Test and Option Pages on Startup */
+        chrome.runtime.onInstalled.addListener(function (details) {
+
+            if (process.env.NODE_ENV === 'development') {
+                let pages = [
+                    "/test/test-page/integration.html",
+                    "/options/options.html",
+                ];
+
+                // Only when the extension is installed for the first time
+                if (details.reason === "install") {
+                    pages.forEach((url) => {
+                        chrome.tabs.create({
+                            active: false,
+                            url: chrome.extension.getURL(url),
+                        });
+                    });
+
+                } else if (details.reason === "update") {
+                    pages.forEach((url) => {
+                        chrome.tabs.create({
+                            active: false,
+                            url: chrome.extension.getURL(url),
+                        });
+                    });
+                }
+            }
+            // this is now for production
+            else {
+                // Only when the extension is installed for the first time
+                // send information on install to backend.
+                let deviceId = new DeviceId();
+                let uuid = deviceId.loadOrGenerate();
+                let request = new Request();
+                request.onInstall(uuid, details.reason);
+            }
+
+            backgroundScript.history.doMigration();
+
+        });
+
+        let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
+        let deviceId = new DeviceId();
+        let uuid = await deviceId.loadOrGenerate();
+        Utils.log("UUID for uninstall: " + uuid["deviceId"]);
+        chrome.runtime.setUninstallURL(uninstallUrl + uuid["deviceId"]);
+    }
+
 
     // only Required for Migrations on Startup.
     get history() {
@@ -37,7 +91,6 @@ class BackgroundScript {
                 this.handleContentScript(request, sender, sendResponse);
                 break;
             case "popupScript":
-                Utils.log("sendResponse");
                 this.handlePopupScript(request, sender, sendResponse);
                 break;
             case "optionsScript":
@@ -81,25 +134,37 @@ class BackgroundScript {
     }
 
     private async handlePopupScript(request: any, sender: any, sendResponse: any) {
-        let url = await this.getUrl();
-        Utils.log("handlePopupScript: Current URL: " + JSON.stringify(url));
+        Utils.log("handlePopupScript");
+        if (request.cmd === "startup") {
+            let url = await this.getUrl();
+            Utils.log("startup: Current URL: " + JSON.stringify(url));
 
-        let lastFound: HistoryEntry;
+            let lastFound: HistoryEntry;
 
-        // only HTTP Pages will be supported
-        if (url.isHttp) {
-            lastFound = await this._history.getLastFound(url.host);
-            Utils.log("handlePopupScript: lastFound: " + JSON.stringify(lastFound));
-        } else {
-            Utils.log("handlePopupScript: Current Page is not HTTP/HTTPS");
+            // only HTTP Pages will be supported
+            if (url.isHttp) {
+                lastFound = await this._history.getLastFound(url.host);
+                Utils.log("handlePopupScript: lastFound: " + JSON.stringify(lastFound));
+            } else {
+                Utils.log("handlePopupScript: Current Page is not HTTP/HTTPS");
+            }
+
+            // counting all elements we blocked.
+            let count = await this._history.getAmountOfUrlsBlocked();
+            let response = new ResponseForPopup(url, lastFound, count);
+
+            Utils.log("Response to Popup: " + JSON.stringify(response));
+            sendResponse(response);
+        } else if (request.cmd === "userRequest") {
+            Utils.log("userRequest: Submit URL: " + request.url);
+            let requestToBackend = new Request();
+            let deviceId = new DeviceId();
+            let uuid = await deviceId.loadOrGenerate();
+            Utils.log("UUID: " + uuid);
+            requestToBackend.urlRequestToImplement(request.url, uuid["deviceId"]);
         }
 
-        // counting all elements we blocked.
-        let count = await this._history.getAmountOfUrlsBlocked();
-        let response = new ResponseForPopup(url, lastFound, count);
 
-        Utils.log("Response to Popup: " + JSON.stringify(response));
-        sendResponse(response);
     }
 
     private async handleOptionsScript(request: any, sender: any, sendResponse: any) {
@@ -144,57 +209,4 @@ class BackgroundScript {
  */
 
 const backgroundScript = new BackgroundScript();
-
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    return backgroundScript.messageHandler(request, sender, sendResponse);
-});
-
-/* Open Test and Option Pages on Startup */
-chrome.runtime.onInstalled.addListener(function (details) {
-
-    if (process.env.NODE_ENV === 'development') {
-        let pages = [
-            "/test/test-page/integration.html",
-            "/options/options.html",
-        ];
-
-        // Only when the extension is installed for the first time
-        if (details.reason === "install") {
-            pages.forEach((url) => {
-                chrome.tabs.create({
-                    active: false,
-                    url: chrome.extension.getURL(url),
-                });
-            });
-
-        } else if (details.reason === "update") {
-            pages.forEach((url) => {
-                chrome.tabs.create({
-                    active: false,
-                    url: chrome.extension.getURL(url),
-                });
-            });
-        }
-    }
-    // this is now for producitn
-    else {
-        // Only when the extension is installed for the first time
-        if (details.reason === "install") {
-            // send information on install to backend.
-            let deviceId = new DeviceId();
-            let uuid = deviceId.loadOrGenerate();
-            let request = new Request();
-            request.install(uuid);
-
-        } else if (details.reason === "update") {
-            // send information on update to backend.
-            let deviceId = new DeviceId();
-            let uuid = deviceId.loadOrGenerate();
-            let request = new Request();
-            request.update(uuid);
-        }
-    }
-
-    backgroundScript.history.doMigration();
-
-});
+backgroundScript.init();

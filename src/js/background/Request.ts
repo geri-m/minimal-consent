@@ -1,7 +1,6 @@
 "use strict";
 
 import Utils from "../Utils";
-import URL from "../entities/URL";
 
 export default class Request {
 
@@ -26,41 +25,30 @@ export default class Request {
         Utils.log("Backend call done:" + JSON.stringify(requestJson));
     }
 
-    public install(uuid: { [id: string]: any }): void {
+    public onInstall(uuid: { [id: string]: any }, reason: string): void {
         // Sanity Check, so we only send correct data to the backend.
-        uuid["status"] = "installed";
-        this.statusUpdate(uuid);
-    }
-
-    public uninstall(uuid: { [id: string]: any }): void {
-        // Sanity Check, so we only send correct data to the backend.
-        uuid["status"] = "uninstall";
-        this.statusUpdate(uuid);
-    }
-
-    public update(uuid: { [id: string]: any }): void {
-        // Sanity Check, so we only send correct data to the backend.
-        uuid["status"] = "update";
-        this.statusUpdate(uuid);
-    }
-
-
-    public statusUpdate(uuid: { [id: string]: any }): void {
+        uuid["status"] = reason;
         this.xhr.open(Request.HTTP_METHOD, Request.URL_STATUS, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
         // Sanity Check, so we only send correct data to the backend.
         this.xhr.send(JSON.stringify(uuid));
-        Utils.log("Uninstall Info Sent for UUID" + JSON.stringify(uuid));
+        Utils.log("onInstall Info Sent for UUID" + JSON.stringify(uuid));
     }
 
-    public urlRequestToImplement(url: URL): void {
+    public urlRequestToImplement(url: string, uuid: string): void {
         this.xhr.open(Request.HTTP_METHOD, Request.URL_USER_REQUEST, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
         // Sanity Check, so we only send correct data to the backend.
-        this.xhr.send(JSON.stringify(url));
-        Utils.log("URL to revisit requested by User: " + JSON.stringify(url));
+
+        let urlToSend: { [id: string]: string; } = {
+            uuid: uuid,
+            url: url
+        };
+        Utils.log("Send to backend: " + JSON.stringify(urlToSend));
+        this.xhr.send(JSON.stringify(urlToSend));
+        Utils.log("URL to revisit requested by User: " + JSON.stringify(urlToSend));
     }
 
 

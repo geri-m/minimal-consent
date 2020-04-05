@@ -32,6 +32,7 @@ class Popup {
         let _self = this;
         this._toOptionsLink.addEventListener('click', this.openOptions);
         chrome.runtime.sendMessage({
+            cmd: "startup",
             from: "popupScript"
         }, function (response) {
             _self.handleResponse(response, _self)
@@ -107,7 +108,11 @@ class Popup {
 
     private sendUrlToBackendForImplementation(url: string) {
         // check if the browsers supports Option Pages.
-        this._log.log("Feature Request from User for URL '" + url + "'. TODO: Send to Backend");
+        chrome.runtime.sendMessage({
+            cmd: "userRequest",
+            url: url,
+            from: "popupScript"
+        });
         window.close();
     }
 }
