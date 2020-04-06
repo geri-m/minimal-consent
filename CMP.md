@@ -146,6 +146,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 - [Mena](https://www.mona.nl/)
 - [Allianz](https://www.allianz.de/)
 - [Springer](https://www.springer.com/gp)
+- [haglofs](https://www.haglofs.com/de/de-de/)
 
 # [Evidon](https://www.evidon.com/) from CrownPark => broken
 
@@ -153,6 +154,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 - [RSA](http://www.rsa.com/) => Implementierung Broken, auch auf der Evidon Seite selbst auch. Später nochmal probieren.
 - [Crownpark](https://www.crownpeak.com/)
+- [Telegraph](https://www.telegraph.co.uk/)
 
 # [Nymity](https://www.nymity.com/) as aquired by Trustarc
 
@@ -183,8 +185,9 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 ## SamplePages
 
-# [Cookiebot](https://www.cookiebot.com/de/)
-# [Gitlab](https://www.gitlab.com/)
+- [Cookiebot](https://www.cookiebot.com/de/)
+- [Gitlab](https://www.gitlab.com/)
+- [applause](https://www.applause.com/)
 
 ## v2 you can deny all right on the banner
 
@@ -239,7 +242,12 @@ to consensu.org.
 - [tomshardware](https://www.tomshardware.com)
 - [techradar](https://global.techradar.com/de-de)
 
+# SourcePoint
 
+## Samples Pages
+
+- [stornowaygazette](https://www.stornowaygazette.co.uk/)
+- [thetimes](https://www.thetimes.co.uk/)
 
 # Uncovered CMPs
 

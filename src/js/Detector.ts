@@ -16,6 +16,7 @@ import BackendCall from "./BackendCall";
 import Chandago from "./cmp/Chandago";
 import PingResult from "./entities/PingResult";
 import OathCmp from "./cmp/OathCmp";
+import SourcePoint from "./cmp/SourcePoint";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -69,28 +70,22 @@ export default class Detector {
         let allScriptTags = document.querySelectorAll("script");
         let scriptCounter;
         if (this._cmp) {
-            Utils.log("CMP Defined (we should never end up here, as the observer will disconnect, if this.__cmp is set");
+            Utils.log("CMP Defined (we should never end up here, as the observer will disconnect, if this._cmp is set");
             return;
         }
 
-
         // some CMPs run in iFrames and therefore require different handling.
         if (this._inIFrame) {
-            for (scriptCounter = 0; scriptCounter < allScriptTags.length; scriptCounter++) {
-                let urlOfScript = allScriptTags[scriptCounter].getAttribute("src");
-                if (urlOfScript && typeof urlOfScript !== 'undefined') {
-                    // if the script defined, make it lowercase.
-                    urlOfScript = urlOfScript.toLowerCase();
-                    // OATH.com
-                    if (urlOfScript.includes('cmpui.js')) {
-                        this._cmp = new OathCmp(this._document, urlOfScript, this._backendCall);
-                        break;
-                    } else if (urlOfScript.includes('defaultpreferencemanager/defaultpreferencemanager.nocache.js')) {
-                        this._cmp = new TrustArcIFrame(this._document, urlOfScript, this._backendCall);
-                        break;
-                    }
-                } // if of SRC Tak
-            } // for Script
+            if (document.location.toString().includes("sp-prod.net") || document.location.toString().includes("sourcepoint.mgr.consensu.org")) {
+                Utils.log("SP: " + document.location.toString());
+                this._cmp = this._cmp = new SourcePoint(this._document, document.location.toString(), this._backendCall);
+            } else if (document.location.toString().includes("trustarc.com")) {
+                this._cmp = new TrustArcIFrame(this._document, document.location.toString(), this._backendCall);
+            } else if (document.location.toString().includes("/cmpui.html") && document.location.toString().includes("consent")) {
+                this._cmp = new OathCmp(this._document, document.location.toString(), this._backendCall);
+            } else {
+                // not found.
+            }
         }
         // Not in IFrame.
         else {
@@ -129,13 +124,9 @@ export default class Detector {
                         } else if (urlOfScript.includes('chandago.com') || urlOfScript.includes('appconsent.mgr.consensu.org') || urlOfScript.includes('appconsent.io')) {
                             this._cmp = new Chandago(this._document, urlOfScript, this._backendCall);
                             break;
-                        }
-                        /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
+                        }                     /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
                         else if (urlOfScript.includes('faktor.io') || urlOfScript.includes('faktor.mgr.consensu.org') || urlOfScript.includes('liveramp.com')) {
                             this._cmp = new NotYetImplementedCmp(3, this._document, 'Faktor BV', urlOfScript, this._backendCall);
-                            break;
-                        } else if (urlOfScript.includes('sourcepoint.com') || urlOfScript.includes('sourcepoint.mgr.consensu.org')) {
-                            this._cmp = new NotYetImplementedCmp(6, this._document, 'Sourcepoint Technologies, Inc.', urlOfScript, this._backendCall);
                             break;
                         } else if (urlOfScript.includes('didomi.io') || urlOfScript.includes('didomi.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(7, this._document, 'Didomi', urlOfScript, this._backendCall);
@@ -419,7 +410,7 @@ export default class Detector {
                         } else if (urlOfScript.includes('gedispa.it') || urlOfScript.includes('gedi.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(223, this._document, 'Gedi Digital s.r.l.', urlOfScript, this._backendCall);
                             break;
-                        } else if (urlOfScript.includes('ensighten.com') || urlOfScript.includes('ensighten.mgr.consensu.org')) {
+                        } else if ((urlOfScript.includes('ensighten.com') || urlOfScript.includes('ensighten.mgr.consensu.org')) && !urlOfScript.includes('nexus.ensighten.com')) {
                             this._cmp = new NotYetImplementedCmp(224, this._document, 'Ensighten, Inc', urlOfScript, this._backendCall);
                             break;
                         } else if (urlOfScript.includes('idmnet.grupazpr.pl') || urlOfScript.includes('idmnet.mgr.consensu.org')) {
