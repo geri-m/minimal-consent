@@ -6,6 +6,9 @@ dist
 .idea
 .sass-cache
 
+# Python
+venv
+
 *.iml
 *.workspace.xml
 

@@ -76,9 +76,10 @@ export default class Detector {
 
         // some CMPs run in iFrames and therefore require different handling.
         if (this._inIFrame) {
+            Utils.log("iFrame Scr: " + document.location.toString());
             if (document.location.toString().includes("sp-prod.net") || document.location.toString().includes("sourcepoint.mgr.consensu.org")) {
                 Utils.log("SP: " + document.location.toString());
-                this._cmp = this._cmp = new SourcePoint(this._document, document.location.toString(), this._backendCall);
+                this._cmp = new SourcePoint(this._document, document.location.toString(), this._backendCall);
             } else if (document.location.toString().includes("trustarc.com")) {
                 this._cmp = new TrustArcIFrame(this._document, document.location.toString(), this._backendCall);
             } else if (document.location.toString().includes("/cmpui.html") && document.location.toString().includes("consent")) {
