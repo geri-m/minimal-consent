@@ -48,8 +48,24 @@ export default class OneTrust implements ICmp {
         let optanonCheckBoxesV2 = this._cmp.queryNodeSelectorAll(optanonCheckboxesSelectorV2);
 
 
+        const optanonOnetrustRejectAllandler = "button#onetrust-reject-all-handler";
+        let optanonOnetrustRejectAllandlerButton = this._cmp.queryNodeSelector(optanonOnetrustRejectAllandler);
+
+
+        // Variante 3 (Single-Press is prefered over others
+        if (Utils.objectClickable(optanonOnetrustRejectAllandlerButton) && this._cmp.state === 0) {
+            Utils.log("V3 (first click)");
+            optanonOnetrustRejectAllandlerButton.click();
+            Utils.log("Reject all clicked");
+            this._cmp.state = 1;
+        } else if (Utils.objectClickable(optanonOnetrustRejectAllandlerButton) && this._cmp.state === 1) {
+            Utils.log("V3 (second click)");
+            optanonOnetrustRejectAllandlerButton.click();
+            Utils.log("Reject all clicked");
+            this._cmp.reset();
+        }
         // Variant 1
-        if (Utils.objectClickable(optananDetailsV1) && this._cmp.state === 0) {
+        else if (Utils.objectClickable(optananDetailsV1) && this._cmp.state === 0) {
             Utils.log("V1");
             optananDetailsV1.click();
             Utils.log("Details clicked");
@@ -61,7 +77,12 @@ export default class OneTrust implements ICmp {
                 Utils.log("Checkbox unset");
             });
             optanonSaveSettingsV1.click();
-            Utils.log("Settings click");
+            Utils.log("Save Settings Clicked click");
+            this._cmp.state = 2;
+        } else if (Utils.objectClickable(optanonOnetrustRejectAllandlerButton) && this._cmp.state === 2) {
+            Utils.log("V1 (second click)");
+            optanonOnetrustRejectAllandlerButton.click();
+            Utils.log("Reject all clicked");
             this._cmp.reset();
         }
 
@@ -70,8 +91,8 @@ export default class OneTrust implements ICmp {
             Utils.log("V2");
             optanonDetailsButtonV2.click();
             Utils.log("Details clicked");
-            this._cmp.state = 2;
-        } else if (Utils.objectClickable(optanonSaveSettingsV2) && this._cmp.state === 2) {
+            this._cmp.state = 3;
+        } else if (Utils.objectClickable(optanonSaveSettingsV2) && this._cmp.state === 3) {
             Utils.log("Save Button found");
             optanonListItemsV2.forEach(function (listItem: any) {
                 listItem.click();
@@ -85,5 +106,4 @@ export default class OneTrust implements ICmp {
             this._cmp.reset();
         }
     }
-
 }

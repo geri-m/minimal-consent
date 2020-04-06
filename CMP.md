@@ -118,7 +118,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 
 ---
 
-# [OneTrust](https://www.onetrust.com/products/cookies/) - Product Name 'Optanon', Host: cookielaw.org
+# [OneTrust](https://www.onetrust.com/) - Product Name 'Optanon', Host: cookielaw.org
 
 ## Variant 1 (3 checkboxes, which are unchecked)
 
