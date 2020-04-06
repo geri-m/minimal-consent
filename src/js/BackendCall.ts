@@ -4,23 +4,20 @@ import Utils from "./Utils";
 import PingResult from "./entities/PingResult";
 import CmpType from "./cmp/CmpType";
 
-const contentScript = "contentscript";
-
 export default class BackendCall {
 
+    private static readonly _fromPage: string = "backendCall";
     // This is Data we are going to send
-    _cmp: string;
-    _cmpId: number;
-    _type: CmpType;
-    _cmpScriptUrl: string;
-    _implemented: boolean;
+    private _cmp: string;
+    private _cmpId: number;
+    private _type: CmpType;
+    private _cmpScriptUrl: string;
+    private _implemented: boolean;
     // This is required for the logic within the class
-    _isSuccessfulBlock: boolean;
-    _isPingResultReceived: boolean;
-    _dataReceived: boolean;
-    _timeoutForBackendCall: any;
-
-    _pingResult: any;
+    private _isSuccessfulBlock: boolean;
+    private _isPingResultReceived: boolean;
+    private _dataReceived: boolean;
+    private _timeoutForBackendCall: any;
 
     constructor() {
         this._cmp = "na";
@@ -32,6 +29,12 @@ export default class BackendCall {
         this._isSuccessfulBlock = false;
         this._isPingResultReceived = false;
         this._dataReceived = false;
+    }
+
+    private _pingResult: any;
+
+    public static get pageName(): string {
+        return BackendCall._fromPage;
     }
 
     /**
@@ -133,7 +136,7 @@ export default class BackendCall {
             cmpScripUrl: this._cmpScriptUrl,
             pingResult: this._pingResult,
             implemented: this._implemented,
-            from: contentScript
+            from: BackendCall.pageName
         });
     }
 }

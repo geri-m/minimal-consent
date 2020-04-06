@@ -11,7 +11,6 @@ export default class PingResult {
     private readonly _displayStatus: string;
     private readonly _apiVersion: string;
     private readonly _cmpVersion: number;
-    private _cmpId: number;
     private readonly _gvlVersion: number;
     private readonly _tcfPolicyVersion: number;
 
@@ -56,6 +55,8 @@ export default class PingResult {
             this._tcfPolicyVersion = tcfPolicyVersion;
         }
     }
+
+    private _cmpId: number;
 
     get cmpId(): number {
         return this._cmpId;
@@ -146,8 +147,6 @@ export default class PingResult {
                 pingResult.gvlVersion,
                 pingResult.tcfPolicyVersion);
         }
-
-
     }
 
     toJSON(): any {

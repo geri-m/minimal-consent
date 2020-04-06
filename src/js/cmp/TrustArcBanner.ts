@@ -59,10 +59,4 @@ export default class TrustArcBanner implements ICmp {
         }
 
     }
-
-
-    private sleep(milliseconds: number) {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-    }
-
 }

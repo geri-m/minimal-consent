@@ -11,8 +11,11 @@ function onLoad() {
     options.init();
 }
 
-class Options {
+export default class Options {
 
+    private static readonly _fromPage: string = "optionsScript";
+    private static readonly _cmdGetHistory: string = "getHistory";
+    private static readonly _cmdClearHistory: string = "clearHistory";
     private readonly _clearHistory: Element;
     private readonly _closeWindow: Element;
 
@@ -20,6 +23,19 @@ class Options {
         this._clearHistory = document.getElementById('clear-history');
         this._closeWindow = document.getElementById('close-window');
     }
+
+    public static get pageName(): string {
+        return Options._fromPage;
+    }
+
+    public static get cmdGetHistory(): string {
+        return Options._cmdGetHistory;
+    }
+
+    public static get cmdClearHistory(): string {
+        return Options._cmdClearHistory;
+    }
+
 
     public init(): void {
         Utils.log("init");
@@ -31,8 +47,8 @@ class Options {
             window.close();
         });
         chrome.runtime.sendMessage({
-            from: "optionsScript",
-            cmd: "getHistory"
+            from: Options.pageName,
+            cmd: Options.cmdGetHistory
         }, function (response) {
             _self.handleResponse(response)
         });
@@ -69,8 +85,8 @@ class Options {
 
     private clearHistory(): void {
         chrome.runtime.sendMessage({
-            from: "optionsScript",
-            cmd: "clearHistory"
+            from: Options.pageName,
+            cmd: Options.cmdClearHistory
         }, function (response) {
             Utils.log("History cleared");
         });

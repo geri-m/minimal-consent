@@ -11,6 +11,10 @@ import PingResult from "./entities/PingResult";
 import HistoryEntry from "./entities/HistoryEntry";
 import DeviceId from "./background/DeviceId";
 
+import Popup from "./popup/popup";
+import Options from "./options/options"
+import BackendCall from "./BackendCall";
+
 const dateFormat = require("dateformat");
 
 class BackgroundScript {
@@ -26,6 +30,11 @@ class BackgroundScript {
         this._history = new History();
         this._icon = new Icon();
         this._deviceId = new DeviceId();
+    }
+
+    // only Required for Migrations on Startup.
+    get history() {
+        return this._history;
     }
 
     public init() {
@@ -51,7 +60,7 @@ class BackgroundScript {
                 ];
 
                 // Only when the extension is installed for the first time
-                if (details.reason === "install") {
+                if (details.reason === "install" || details.reason === "update") {
                     pages.forEach((url) => {
                         chrome.tabs.create({
                             active: false,
@@ -59,15 +68,7 @@ class BackgroundScript {
                         });
                     });
 
-                } else if (details.reason === "update") {
-                    pages.forEach((url) => {
-                        chrome.tabs.create({
-                            active: false,
-                            url: chrome.extension.getURL(url),
-                        });
-                    });
                 }
-
             }
             // this is now for production
             else {
@@ -75,7 +76,6 @@ class BackgroundScript {
                 // send information on install to backend.
                 let request = new Request();
                 request.onInstall(uuid, details.reason);
-
                 // make sure that the uninstall triggers a backend call
                 let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
                 Utils.log("UUID for uninstall: " + uuid);
@@ -84,32 +84,26 @@ class BackgroundScript {
         });
     }
 
-    // only Required for Migrations on Startup.
-    get history() {
-        return this._history;
-    }
-
     public messageHandler(request: any, sender: any, sendResponse: any): boolean {
         switch (request.from) {
-            case "contentscript":
-                this.handleContentScript(request, sender, sendResponse);
+            case BackendCall.pageName:
+                this.handleBackendCall(request, sender, sendResponse);
                 break;
-            case "popupScript":
+            case Popup.pageName:
                 this.handlePopupScript(request, sender, sendResponse);
                 break;
-            case "optionsScript":
+            case Options.pageName:
                 this.handleOptionsScript(request, sender, sendResponse);
                 break;
             default:
                 break;
         }
-
         return true;
     }
 
 
-    private async handleContentScript(request: any, sender: any, sendResponse: any) {
-        Utils.log("handleContentScript");
+    private async handleBackendCall(request: any, sender: any, sendResponse: any) {
+        Utils.log("Handle: " + BackendCall.pageName);
         let link = await this.getUrl();
 
         // check, if we have already something in the local storage.
@@ -133,13 +127,13 @@ class BackgroundScript {
                 this.storeRequest(he);
             }
         } else {
-            Utils.log("handleContentScript: Current Page is not HTTP/HTTPS");
+            Utils.log("handleBackendCall: Current Page is not HTTP/HTTPS");
         }
     }
 
     private async handlePopupScript(request: any, sender: any, sendResponse: any) {
-        Utils.log("handlePopupScript");
-        if (request.cmd === "startup") {
+        Utils.log("Handle: " + Popup.pageName);
+        if (request.cmd === Popup.cmdStartup) {
             let url = await this.getUrl();
             Utils.log("startup: Current URL: " + JSON.stringify(url));
 
@@ -159,23 +153,21 @@ class BackgroundScript {
 
             Utils.log("Response to Popup: " + JSON.stringify(response));
             sendResponse(response);
-        } else if (request.cmd === "userRequest") {
+        } else if (request.cmd === Popup.cmdUserRequest) {
             Utils.log("userRequest: Submit URL: " + request.url);
             let requestToBackend = new Request();
-            let deviceId = new DeviceId();
-            let uuid = await deviceId.loadOrGenerate();
+            let uuid = await this._deviceId.loadOrGenerate();
             Utils.log("UUID: " + uuid);
-            requestToBackend.urlRequestToImplement(request.url, uuid["deviceId"]);
+            requestToBackend.urlRequestToImplement(request.url, uuid.deviceId);
         }
-
-
     }
 
     private async handleOptionsScript(request: any, sender: any, sendResponse: any) {
-        if (request.cmd === "getHistory") {
+        Utils.log("Handle: " + Options.pageName);
+        if (request.cmd === Options.cmdGetHistory) {
             let hist = await this._history.load();
             sendResponse(hist);
-        } else if (request.cmd === "clearHistory") {
+        } else if (request.cmd === Options.cmdClearHistory) {
             await this._history.clearStorage();
         }
     }

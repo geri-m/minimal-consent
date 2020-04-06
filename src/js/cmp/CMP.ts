@@ -21,7 +21,6 @@ export default class CMP {
     private readonly _maximalLimitOfDomChangeTillStop = 100;
 
     private readonly _node: Document;
-    private _state: number;
     private _callCounter: number;
     private readonly _backendCall: BackendCall;
     private _observer: MutationObserver;
@@ -35,6 +34,16 @@ export default class CMP {
         this._backendCall = backendCall;
     }
 
+    private _state: number;
+
+    get state(): number {
+        return this._state;
+    }
+
+    set state(state) {
+        this._state = state;
+    }
+
     /**
      * Getting the Root Node of the Document where a CMP is runnning
      *
@@ -43,14 +52,6 @@ export default class CMP {
 
     get node(): Document {
         return this._node;
-    }
-
-    get state(): number {
-        return this._state;
-    }
-
-    set state(state) {
-        this._state = state;
     }
 
     get minimalConsentLink(): string {

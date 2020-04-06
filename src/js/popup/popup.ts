@@ -7,15 +7,16 @@ import Utils from "../Utils";
 window.addEventListener('load', onLoad);
 
 function onLoad() {
-    let bkg = chrome.extension.getBackgroundPage();
-    bkg.console.log("PopupJS Loaded");
     let popup: Popup;
     popup = new Popup(document);
     popup.init();
 }
 
-class Popup {
+export default class Popup {
 
+    private static readonly _fromPage: string = "popupScript";
+    private static readonly _cmdStartup: string = "startup";
+    private static readonly _cmdUserRequest: string = "userRequest";
     private readonly _log: OnPageLog;
     private readonly _cmpCount: Element;
     private readonly _toOptionsLink: Element;
@@ -23,24 +24,34 @@ class Popup {
 
     constructor(document: Document) {
         this._log = new OnPageLog(chrome.extension.getBackgroundPage().console);
-        this._toOptionsLink = document.getElementById('go-to-options');
+        this._toOptionsLink = document.getElementById("go-to-options");
         this._cmpCount = document.getElementById("cmpCount");
         this._details = document.getElementById("details");
     }
 
-    public init(): void {
-        let _self = this;
-        this._toOptionsLink.addEventListener('click', this.openOptions);
-        chrome.runtime.sendMessage({
-            cmd: "startup",
-            from: "popupScript"
-        }, function (response) {
-            _self.handleResponse(response, _self)
-        });
+    public static get pageName(): string {
+        return Popup._fromPage;
     }
 
+    public static get cmdStartup(): string {
+        return Popup._cmdStartup;
+    }
 
-    private openOptions(): void {
+    public static get cmdUserRequest(): string {
+        return Popup._cmdUserRequest;
+    }
+
+    private static sendUrlToBackendForImplementation(url: string) {
+        // check if the browsers supports Option Pages.
+        chrome.runtime.sendMessage({
+            cmd: Popup.cmdUserRequest,
+            url: url,
+            from: Popup.pageName
+        });
+        window.close();
+    }
+
+    private static openOptions(): void {
         // check if the browsers supports Option Pages.
         if (chrome.runtime.openOptionsPage) {
             chrome.runtime.openOptionsPage();
@@ -49,7 +60,18 @@ class Popup {
         }
     }
 
-    private handleResponse(response: ResponseForPopup, _self: Popup): void {
+    public init(): void {
+        let _self = this;
+        this._toOptionsLink.addEventListener('click', Popup.openOptions);
+        chrome.runtime.sendMessage({
+            cmd: Popup.cmdStartup,
+            from: Popup.pageName
+        }, function (response) {
+            _self.handleResponse(response)
+        });
+    }
+
+    private handleResponse(response: ResponseForPopup): void {
         if (Utils.checkIfDefinedAndNotNull(response)) {
             let popupMessage = ResponseForPopup.class(response);
             this._log.log("handleResponse: " + JSON.stringify(popupMessage) + ", Length: " + popupMessage.count);
@@ -65,7 +87,7 @@ class Popup {
             // (1) HTTP + Found + known + Implemented: We know and implemented (= block) the CMP. Now or in the past. (Script + Implementation)
             let messageCase1 = "Consent for <i>%URL</i> denied on %DATE.";
             // (2) HTTP + Found + known + Not Implemented: We know the CMP, but have no implemented it. We will do implement this in the future (Script found, maybe CMP Object)
-            let messageCas2 = "We aware of <i>%URL</i>'s solution for Cookie Banner. We are working on it.";
+            let messageCase2 = "We aware of <i>%URL</i>'s solution for Cookie Banner. We are working on it.";
             // (3) HTTP + Found + not known + Not Implemented: There is a CMP on the Page we don't know yet. (CMP Object on Page, but no Script)
             let messageCase3 = "<i>%URL</i> uses a solution for cookie banners we have not yet seen. <a href='#' id='submit-this-url'>Submit this URL</a>.";
             // (4) HTTP + not Found + not known + Not Implemented:
@@ -80,20 +102,20 @@ class Popup {
                     break;
                 case 2:
                     this._log.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
-                    this._details.innerHTML = messageCas2.replace("%URL", popupMessage.url.host);
+                    this._details.innerHTML = messageCase2.replace("%URL", popupMessage.url.host);
                     break;
                 case 3:
                     this._log.log("Case 3: Unknown CMP Detected");
                     this._details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
                     document.querySelector('#submit-this-url').addEventListener('click', function () {
-                        _self.sendUrlToBackendForImplementation(popupMessage.url.host);
+                        Popup.sendUrlToBackendForImplementation(popupMessage.url.host);
                     });
                     break;
                 case 4:
                     this._log.log("Case 4: No CMP detected");
                     this._details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
                     document.querySelector('#submit-this-url').addEventListener('click', function () {
-                        _self.sendUrlToBackendForImplementation(popupMessage.url.host);
+                        Popup.sendUrlToBackendForImplementation(popupMessage.url.host);
                     });
                     break;
                 default:
@@ -104,18 +126,5 @@ class Popup {
             throw Error("Unable to parse 'ResponseForPopup' in popup.ts");
         }
     }
-
-
-    private sendUrlToBackendForImplementation(url: string) {
-        // check if the browsers supports Option Pages.
-        chrome.runtime.sendMessage({
-            cmd: "userRequest",
-            url: url,
-            from: "popupScript"
-        });
-        window.close();
-    }
 }
-
-
 

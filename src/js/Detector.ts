@@ -22,7 +22,8 @@ const buttons = {
     'a#hs-eu-decline-button': "npmjs.com",
     "a#cookie_action_close_header": "tealium.com",
     "button#gdpr-banner-accept": "ebay.com & ebay-kleinanzeigen.com",
-    "button#acceptAllButton": "PayPal"
+    "button#acceptAllButton": "PayPal",
+    "span#cmpwelcomebtnno": "Wordpress Plugin https://www.tektutorialshub.com/"
 };
 
 const config = {attributes: true, childList: true, subtree: true};

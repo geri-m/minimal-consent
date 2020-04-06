@@ -58,6 +58,7 @@ export default class DeviceId {
     }
 
     public delete(): Promise<void> {
+
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.remove(deviceIdKeyInStorage, function () {
                 Utils.log('Storage Cleared');
