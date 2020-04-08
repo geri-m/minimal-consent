@@ -46,6 +46,10 @@ in `package.json` and store them locally in `./node_modules`.
 
 ## Commands to Use
 
+
+To install all dependencies for the build via yarn, pls delete all lock files `rm *.lock` and run `yarn install` to down
+load the node modules.
+
 To run Units test, there is a setup with Karma and Jasmine: `yarn test`. Integration Tests base on Jasmine and are
 run directly in the Browser. (requires Chrome)
 

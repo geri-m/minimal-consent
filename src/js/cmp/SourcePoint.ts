@@ -28,7 +28,7 @@ export default class SourcePoint implements ICmp {
         this._cmp.connect();
     }
 
-    // Sample: https://www.stornowaygazette.co.uk/, https://www.thetimes.co.uk/
+    // Sample: https://www.stornowaygazette.co.uk/, https://www.thetimes.co.uk/, https://www.duden.de/
     // https://notice.sp-prod.net/?message_id=116465&amp;mms_origin=https://cmp.stornowaygazette.co.uk/mms/v2%22%20id=%22sp_message_iframe_116465
     // https://notice.sp-prod.net/?message_id=101175&amp;mms_origin=https://cmp.thetimes.co.uk/mms/v2%22%20id=%22sp_message_iframe_101175
     public handleCmp(): void {
@@ -82,9 +82,11 @@ export default class SourcePoint implements ICmp {
     private secondButton(_self: SourcePoint, _counter: number) {
         const left = "div.right";
         let leftCheckbox = _self._cmp.queryNodeSelectorAll(left);
+        Utils.log(leftCheckbox[0]);
 
         const save = "button.priv-save-btn";
         let saveButton = _self._cmp.queryNodeSelector(save);
+        Utils.log(saveButton);
 
         if (Utils.objectClickable(leftCheckbox[0]) && Utils.objectClickable(saveButton) && leftCheckbox.length > 0) {
             leftCheckbox.forEach((span: any) => {
