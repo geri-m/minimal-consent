@@ -54,8 +54,8 @@ workflows:
 
   build_and_publish_beta:
     jobs:
-      - build-and-publish-beta: {requires: [test]}
+      - build-and-publish-beta: {}
 
   build_and_publish_prod:
     jobs:
-      - build-and-publish-prod: {requires: [test]}
+      - build-and-publish-prod: {}
