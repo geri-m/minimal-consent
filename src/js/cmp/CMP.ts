@@ -18,7 +18,7 @@ export default class CMP {
 
     private readonly _config = {attributes: true, childList: true, subtree: true};
     private readonly _minimalConsentLink = "a.minimal-consent";
-    private readonly _maximalLimitOfDomChangeTillStop = 100;
+    private readonly _maximalLimitOfDomChangeTillStop = 150;
 
     private readonly _node: Document;
     private _callCounter: number;
