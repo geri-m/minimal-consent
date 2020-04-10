@@ -248,6 +248,7 @@ to consensu.org.
 
 - [stornowaygazette](https://www.stornowaygazette.co.uk/)
 - [thetimes](https://www.thetimes.co.uk/)
+- [duden](https://www.duden.de)
 
 # Uncovered CMPs
 

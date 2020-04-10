@@ -10,10 +10,10 @@ export default class SourcePoint implements ICmp {
 
     readonly _cmp: CMP;
     private readonly _name = "Sourcepoint Technologies, Inc.";
-    private _firstStepCompleted : boolean = false;
+    private _firstStepCompleted: boolean = false;
     private _secondStepCompleted: boolean = false;
-    private _firstTimeout : ReturnType<typeof setTimeout>;
-    private _secondTimeout : ReturnType<typeof setTimeout>;
+    private _firstTimeout: ReturnType<typeof setTimeout>;
+    private _secondTimeout: ReturnType<typeof setTimeout>;
 
     constructor(node: Document, scriptUrl: string, backendCall: BackendCall) {
         backendCall.cmpData(6, this._name, scriptUrl, CmpType.DO_NOT_WAIT, true);
@@ -35,7 +35,7 @@ export default class SourcePoint implements ICmp {
 
         // This is the first Iframe, we need to handle. Here we click on details.
         // for some reason the Observer does not detect the changes.
-        if(document.location.toString().includes("sp-prod.net") && !this._firstStepCompleted){
+        if (document.location.toString().includes("sp-prod.net") && !this._firstStepCompleted) {
             Utils.log("in 1st IFrame");
             let _self = this;
             let _counter = 0;
@@ -46,7 +46,7 @@ export default class SourcePoint implements ICmp {
 
         // This is the Second Iframe, we need to handle. Here we uncheck all the checkboxes and save.
         // for some reason the Observer does not detect the changes.
-        if(document.location.toString().includes("sourcepoint.mgr.consensu.org") && !this._secondStepCompleted){
+        if (document.location.toString().includes("sourcepoint.mgr.consensu.org") && !this._secondStepCompleted) {
             Utils.log("in 2nd IFrame");
             let _self = this;
             let _counter = 0;
@@ -56,7 +56,7 @@ export default class SourcePoint implements ICmp {
         }
     }
 
-    private firstButton(_self: SourcePoint, _counter: number):void{
+    private firstButton(_self: SourcePoint, _counter: number): void {
         const allpopup = "button.message-button";
         let allpopupButtons = _self._cmp.queryNodeSelectorAll(allpopup);
 
@@ -68,9 +68,7 @@ export default class SourcePoint implements ICmp {
             _self._firstStepCompleted = true;
             clearTimeout(_self._firstTimeout);
             allpopupButtons[0].click();
-        }
-
-        if (_counter < 50) {
+        } else if (_counter < 50) {
             _self._firstTimeout = setTimeout(function () {
                 _self.secondButton(_self, _counter);
             }, 1000);
@@ -80,35 +78,52 @@ export default class SourcePoint implements ICmp {
     }
 
     private secondButton(_self: SourcePoint, _counter: number) {
-        const left = "div.right";
-        let leftCheckbox = _self._cmp.queryNodeSelectorAll(left);
-        Utils.log(leftCheckbox[0]);
+        const switchesAll = "div.sp-switch-arrow-block";
+        let switchesAllDiv = _self._cmp.queryNodeSelectorAll(switchesAll);
+        Utils.log("All switchesAll: " + switchesAllDiv.length);
+
+        const switchesOn = "div.sp-switch-arrow-block a.on";
+        let switchesOnDiv = _self._cmp.queryNodeSelectorAll(switchesOn);
+        Utils.log("On switchesAll: " + switchesOnDiv.length);
 
         const save = "button.priv-save-btn";
         let saveButton = _self._cmp.queryNodeSelector(save);
-        Utils.log(saveButton);
+        Utils.log("Save Button: " + saveButton);
 
-        if (Utils.objectClickable(leftCheckbox[0]) && Utils.objectClickable(saveButton) && leftCheckbox.length > 0) {
-            leftCheckbox.forEach((span: any) => {
-                Utils.log("Changing Button");
-                span.click();
-            });
+        const save2 = "button#tab-saveandexit";
+        let saveButton2 = _self._cmp.queryNodeSelector(save2);
+        Utils.log("Save2 Button: " + saveButton2);
+
+        // if there is at least one switch and if there is at least on switch "ON"
+        if (switchesAllDiv.length > 0 && (Utils.objectClickable(saveButton) || Utils.objectClickable(saveButton2))) {
+
+            // if there as switches to switch off, do so.
+            if (switchesOnDiv.length > 0) {
+                switchesOnDiv.forEach((href: any) => {
+                    Utils.log("Changing Button from ON to Off");
+                    href.click();
+                });
+            }
+
+            // now confirm.
+            if (Utils.objectClickable(saveButton)) {
+                saveButton.click();
+            } else {
+                saveButton2.click();
+            }
 
             _counter = 51;
             _self._secondStepCompleted = true;
             clearTimeout(_self._secondTimeout);
-            saveButton.click();
-            _self._cmp.reset();
-        }
 
-        if (_counter < 50) {
+            _self._cmp.reset();
+        } else if (_counter < 50) {
             _self._secondTimeout = setTimeout(function () {
                 _self.secondButton(_self, _counter);
             }, 1000);
             _counter++;
             Utils.log("Counter (2nd Button): " + _counter);
         }
-
     }
 
 }
