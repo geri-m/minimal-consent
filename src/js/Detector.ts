@@ -17,6 +17,7 @@ import Chandago from "./cmp/Chandago";
 import PingResult from "./entities/PingResult";
 import OathCmp from "./cmp/OathCmp";
 import SourcePoint from "./cmp/SourcePoint";
+import DiDoMi from "./cmp/DiDoMi";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -128,12 +129,14 @@ export default class Detector {
                         } else if (urlOfScript.includes('chandago.com') || urlOfScript.includes('appconsent.mgr.consensu.org') || urlOfScript.includes('appconsent.io')) {
                             this._cmp = new Chandago(this._document, urlOfScript, this._backendCall);
                             break;
-                        }                     /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
+                        } else if (urlOfScript.includes('didomi.io') || urlOfScript.includes('didomi.mgr.consensu.org') || urlOfScript.includes('privacy-center.org')) {
+                            this._cmp = new DiDoMi(this._document, urlOfScript, this._backendCall);
+                            break;
+                        }
+
+                        /* ATTENTION - THIS IS GENERATED CODE FROM THE EXECL SHEET */
                         else if (urlOfScript.includes('faktor.io') || urlOfScript.includes('faktor.mgr.consensu.org') || urlOfScript.includes('liveramp.com')) {
                             this._cmp = new NotYetImplementedCmp(3, this._document, 'Faktor BV', urlOfScript, this._backendCall);
-                            break;
-                        } else if (urlOfScript.includes('didomi.io') || urlOfScript.includes('didomi.mgr.consensu.org')) {
-                            this._cmp = new NotYetImplementedCmp(7, this._document, 'Didomi', urlOfScript, this._backendCall);
                             break;
                         } else if (urlOfScript.includes('baycloud.com') || urlOfScript.includes('consenthub.mgr.consensu.org')) {
                             this._cmp = new NotYetImplementedCmp(8, this._document, 'Baycloud Systems Limited', urlOfScript, this._backendCall);
