@@ -25,81 +25,78 @@ export default class CookieBot implements ICmp {
         this._cmp.connect();
     }
 
+    /*  https://www.cookiebot.com/de/
+        https://www.gitlab.com/
+        https://www.applause.com/
+        https://www.galeria.de/
+     */
     public handleCmp(): void {
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = this._cmp.queryNodeSelectorAll(cookiebotCheckboxesSelector);
-        Utils.log("cookiebotCheckBoxes: " + cookiebotCheckBoxes[0] + " " + Utils.objectClickable(cookiebotCheckBoxes[0]) + " " + (typeof cookiebotCheckBoxes[0] !== 'undefined') + " " + cookiebotCheckBoxes[0] + " " + (typeof cookiebotCheckBoxes[0].parentElement !== 'undefined') + " " + cookiebotCheckBoxes[0].offsetParent);
         Utils.log("cookiebotCheckBoxes: " + cookiebotCheckBoxes.length);
 
-
-        const allowSelectedSelector = "a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection";
-        let allowAllButton = this._cmp.queryNodeSelector(allowSelectedSelector);
-
+        const allowSelectedSelector1 = "a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection";
+        let allowAllButton1 = this._cmp.queryNodeSelector(allowSelectedSelector1);
 
         const allowSelectedSelector2 = "a#CybotCookiebotDialogBodyLevelButtonAccept";
         let allowAllButton2 = this._cmp.queryNodeSelector(allowSelectedSelector2);
 
-        const denyAllSelector = "a#CybotCookiebotDialogBodyButtonDecline";
-        let denyAll = this._cmp.queryNodeSelector(denyAllSelector);
+        const allowSelectedSelector3 = "a#CybotCookiebotDialogBodyButtonAccept";
+        const allowAllButton3 = this._cmp.queryNodeSelector(allowSelectedSelector3);
 
-        const details = "a#CybotCookiebotDialogBodyButtonDetails";
-        const detailsButton = this._cmp.queryNodeSelector(details);
 
-        const acceptVersion3 = "a#CybotCookiebotDialogBodyButtonAccept";
-        const acceptVersion3Button = this._cmp.queryNodeSelector(acceptVersion3);
-        Utils.log("OK: " + acceptVersion3Button);
+        const detailsSelector1 = "a#CybotCookiebotDialogBodyButtonDetails";
+        const detailsButton1 = this._cmp.queryNodeSelector(detailsSelector1);
+
+        const detailsSelector2 = "a#CybotCookiebotDialogBodyLevelDetailsButton";
+        const detailsButton2 = this._cmp.queryNodeSelector(detailsSelector2);
+
 
         // Case 1:
         // if there is the option to deny already on the first page - do so.
-        if (Utils.objectClickable(denyAll) && this._cmp.state === 0) {
-            Utils.log("Click Deny All now");
-            // looks like this does not work.
-            denyAll.click();
-            Utils.log('Consent on denied.');
-            this._cmp.reset();
-        }
-        // Test Page: https://www.cookiebot.com/de/, https://www.gitlab.com/ (check boxes on Banner)
-        else if ((Utils.objectClickable(allowAllButton) || Utils.objectClickable(allowAllButton2)) && this._cmp.state === 0) {
-            Utils.log("CookieBot Banner found");
+        // Test Page: https://www.possiblenow.com/, https://emojiterra.com/ (click on "only relevant cookies)
+        if ((Utils.objectClickable(detailsButton1) || Utils.objectClickable(detailsButton2)) && this._cmp.state === 0) {
+            Utils.log("Step 1: Show Details");
+
+            if (Utils.objectClickable(detailsButton1)) {
+                Utils.log("Details Type 1");
+                detailsButton1.click();
+            }
+
+            if (Utils.objectClickable(detailsButton2)) {
+                Utils.log("Details Type 2");
+                detailsButton2.click();
+            }
+
+            this._cmp.state = 1;
+        } // Test Page: https://www.cookiebot.com/de/, https://www.gitlab.com/, https://www.applause.com/ (check boxes on Banner)
+        else if (cookiebotCheckBoxes.length > 0 && (Utils.objectClickable(allowAllButton1) || Utils.objectClickable(allowAllButton2) || Utils.objectClickable(allowAllButton3)) && this._cmp.state === 1) {
+            Utils.log("Case 2: CookieBot Banner + Checkboxes found");
             cookiebotCheckBoxes.forEach(function (checkbox: any) {
                 checkbox.setAttribute("checked", "false");
                 Utils.log("Checkbox unset");
             });
-            this._cmp.state = 2;
-        }
-        // Test Page: https://www.possiblenow.com/ (click on "only relevant cookies)
-        else if (Utils.objectClickable(allowAllButton) && this._cmp.state === 2) {
-            Utils.log("Click Save now");
-            allowAllButton.click();
-            this._cmp.reset();
-        }
-        // Test page:  (check boxes on Banner)
-        else if (Utils.objectClickable(allowAllButton2) && this._cmp.state === 2) {
-            Utils.log("Click Save2 now");
-            allowAllButton2.click();
-            this._cmp.reset();
-            // Galeria.de
-        } else if (Utils.objectClickable(detailsButton) && this._cmp.state === 0) {
-            Utils.log("Details");
-            detailsButton.click();
-            this._cmp.state = 1;
 
-            // Test Page: Galeria.de
-        } else if (Utils.objectClickable(detailsButton) && this._cmp.state === 0) {
-            Utils.log("Details");
-            detailsButton.click();
-            this._cmp.state = 1;
-        } else if (Utils.objectClickable(cookiebotCheckBoxes[0]) && cookiebotCheckBoxes.length > 0 && this._cmp.state === 1) {
-            Utils.log("Clicking on Checkboxes");
-            cookiebotCheckBoxes.forEach(function (checkbox: any) {
-                checkbox.setAttribute("checked", "false");
-                Utils.log("Checkbox unset");
-            });
-            Utils.log("Click Accept now");
-            acceptVersion3Button.click();
+            if (Utils.objectClickable(allowAllButton1)) {
+                Utils.log("Accept Type 1");
+                allowAllButton1.click();
+                setTimeout(allowAllButton1.click(), 500);
+            }
+
+            if (Utils.objectClickable(allowAllButton2)) {
+                Utils.log("Accept Type 2");
+                allowAllButton2.click();
+                setTimeout(allowAllButton2.click(), 500);
+            }
+
+            if (Utils.objectClickable(allowAllButton3)) {
+                Utils.log("Accept Type 3");
+                allowAllButton3.click();
+                setTimeout(allowAllButton3.click(), 500);
+            }
+
             this._cmp.reset();
         }
-
 
         // this is a special Case for V2. The Banner was found and we only click on the Deny Button.
     }

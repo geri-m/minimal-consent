@@ -24,7 +24,10 @@ const buttons = {
     "a#cookie_action_close_header": "tealium.com",
     "button#gdpr-banner-accept": "ebay.com & ebay-kleinanzeigen.com",
     "button#acceptAllButton": "PayPal",
-    "span#cmpwelcomebtnno": "Wordpress Plugin https://www.tektutorialshub.com/"
+    "span#cmpwelcomebtnno": "Wordpress Plugin https://www.tektutorialshub.com/",
+    "a.cmpboxbtnno": "Wordpress Plugin www.mykong.com",
+    "p._brlbs-refuse-btn": "Wordpress Plugin https://www.staubsauger-berater.de/ (Borlabs)"
+
 };
 
 const config = {attributes: true, childList: true, subtree: true};
