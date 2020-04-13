@@ -58,9 +58,9 @@ export default class DiDoMi implements ICmp {
             let clicked: boolean = false;
             refuserButton.forEach(function (span: any) {
                 Utils.log(span.innerHTML);
-                if (span.innerHTML.includes("Refuser")) {
+                if (span.innerHTML.toLowerCase().includes("refuser") || span.innerHTML.toLowerCase().includes("disagree")) {
                     span.click();
-                    Utils.log("Clicked on Refuser");
+                    Utils.log("Clicked on Refuser/Disagree");
                     clicked = true;
                 }
             });
@@ -75,9 +75,9 @@ export default class DiDoMi implements ICmp {
             let clicked: boolean = false;
             enregistrerButton.forEach(function (span: any) {
                 Utils.log(span.innerHTML);
-                if (span.innerHTML.includes("Enregistrer")) {
+                if (span.innerHTML.toLowerCase().includes("enregistrer") || span.innerHTML.toLowerCase().includes("save")) {
                     span.click();
-                    Utils.log("Clicked on Enregistrer");
+                    Utils.log("Clicked on Enregistrer/Save");
                     clicked = true;
                 }
             });
