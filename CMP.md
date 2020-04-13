@@ -147,6 +147,7 @@ Und dann nochmal auf #gwt-debug-close_id clicken, falls erforderlich.
 - [Allianz](https://www.allianz.de/)
 - [Springer](https://www.springer.com/gp)
 - [haglofs](https://www.haglofs.com/de/de-de/)
+- [ARS Technica](https://arstechnica.com/)
 
 # [Evidon](https://www.evidon.com/) from CrownPark => broken
 
@@ -205,18 +206,14 @@ to consensu.org.
 
 ## Sample Pages
 - [iDownlaodPages](https://www.idownloadblog.com/)
-
-# [Conversant](https://www.conversantmedia.eu/de/)
-
-[JavaScript](https://cdn.conversant.mgr.consensu.org/gdpr/cmp/2.6.6/gdpr-cmp-ui.js) is also already loaded via consensu.org
+-  [Conversant](https://www.conversantmedia.eu/de/)
+- [JavaScript](https://cdn.conversant.mgr.consensu.org/gdpr/cmp/2.6.6/gdpr-cmp-ui.js) is also already loaded via consensu.org
 
 ## Sample Pages
 - [Inc.com](https://www.inc.com/)
 
-# [Quantcast](https://www.quantcast.com/)
-
-## Sample Pages
-
+# QuantCast
+- [Quantcast](https://www.quantcast.com/)
 - [programiz](https://www.programiz.com/)
 - [Doodle](https://www.doodle.com)
 - [Quantcast](https://www.pronews.gr)
@@ -225,30 +222,25 @@ to consensu.org.
 
 # [SoloCMP](https://www.solocpm.com)
 
-## Sample Pages
-
 - [FarFetch](https://www.farfetch.com)
 
 # Chandago
 
-## Sample Pages
-
--
 
 # Oath
-
-## Samples Pages
 
 - [tomshardware](https://www.tomshardware.com)
 - [techradar](https://global.techradar.com/de-de)
 
 # SourcePoint
 
-## Samples Pages
-
 - [stornowaygazette](https://www.stornowaygazette.co.uk/)
 - [thetimes](https://www.thetimes.co.uk/)
 - [duden](https://www.duden.de)
+
+
+# Factor.io
+- [LeMonde](https://www.lemonde.fr/)
 
 # Uncovered CMPs
 
@@ -261,3 +253,5 @@ to consensu.org.
 
 - [ARD](https://www.ard.de/) - There are not cookies
 - [Spiegel](https://www.spiegel.de) - There are cookies, but no Banner => Watch!
+
+

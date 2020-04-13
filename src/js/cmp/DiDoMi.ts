@@ -24,52 +24,69 @@ export default class DiDoMi implements ICmp {
         this._cmp.connect();
     }
 
+    /*
+    https://www.marianne.net/, https://www.lavoixdunord.fr/, https://www.tomsguide.fr/
+     */
+
     public handleCmp(): void {
-
-        const details = "button#didomi-notice-agree-button";
+        // Step 1
+        const popup = "div.didomi-popup-container";
+        let popupDiv = this._cmp.queryNodeSelector(popup);
+        const details = "button#didomi-notice-learn-more-button";
         let detailsButton = this._cmp.queryNodeSelector(details);
+        Utils.log("detailsButton: " + JSON.stringify(detailsButton));
 
-        const span = "span";
-        let spanElement = this._cmp.queryNodeSelectorAll(span);
+        // Step1 2
+        const refuser = "button.didomi-components-radio__option";
+        let refuserButton = this._cmp.queryNodeSelectorAll(refuser);
+        Utils.log("refuserButton length: " + refuserButton.length);
 
-        if (Utils.objectClickable(detailsButton) && this._cmp.state === 0) {
-            Utils.log("Clicking to Details");
+
+        const enregistrer = "button.didomi-components-button";
+        let enregistrerButton = this._cmp.queryNodeSelectorAll(enregistrer);
+        Utils.log("enregistrer length: " + enregistrer.length);
+
+
+        Utils.log("State: " + this._cmp.state);
+
+        if (Utils.objectClickable(detailsButton) && Utils.objectClickable(popupDiv) && this._cmp.state === 0) {
+            Utils.log("Clicking on Details");
             detailsButton.click();
             this._cmp.state = 1;
-        } else if (spanElement.lenght > 0 && this._cmp.state === 1) {
-
+        } else if (refuserButton.length > 0 && Utils.objectClickable(popupDiv) && this._cmp.state === 1) {
             Utils.log("Looking for Span1");
             let clicked: boolean = false;
-            spanElement.forEach(function (span: any) {
-                if (span.innerHTML.indexOf("Refuser") !== -1) {
+            refuserButton.forEach(function (span: any) {
+                Utils.log(span.innerHTML);
+                if (span.innerHTML.includes("Refuser")) {
                     span.click();
                     Utils.log("Clicked on Refuser");
+                    clicked = true;
                 }
             });
 
+
             if (clicked) {
+                Utils.log("Clicked, update set");
                 this._cmp.state = 2;
             }
-
-        } else if (spanElement.lenght > 0 && this._cmp.state === 2) {
-
+        } else if (enregistrerButton.length > 0 && Utils.objectClickable(popupDiv) && this._cmp.state === 2) {
             Utils.log("Looking for Span2");
             let clicked: boolean = false;
-            spanElement.forEach(function (span: any) {
-                if (span.innerHTML.indexOf("Enregistrer") !== -1) {
+            enregistrerButton.forEach(function (span: any) {
+                Utils.log(span.innerHTML);
+                if (span.innerHTML.includes("Enregistrer")) {
                     span.click();
                     Utils.log("Clicked on Enregistrer");
+                    clicked = true;
                 }
             });
 
             if (clicked) {
+                Utils.log("Clicked, reset now");
                 this._cmp.reset();
             }
 
         }
-
-        // TODO: Requires a second Step for the ugly guis.
-        // Currently there is a <a href='#' with an on Click Action which is a bit painful to handle
     }
-
 }

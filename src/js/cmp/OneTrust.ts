@@ -24,6 +24,7 @@ export default class OneTrust implements ICmp {
         this._cmp.connect();
     }
 
+
     public handleCmp(): void {
         const optanonDetailsSelectorV1 = "button#onetrust-pc-btn-handler";
         let optananDetailsV1 = this._cmp.queryNodeSelector(optanonDetailsSelectorV1);
@@ -64,21 +65,27 @@ export default class OneTrust implements ICmp {
             Utils.log("Reject all clicked");
             this._cmp.reset();
         }
-        // Variant 1
+            // Variant 1
+        // https://arstechnica.com/
         else if (Utils.objectClickable(optananDetailsV1) && this._cmp.state === 0) {
             Utils.log("V1");
-            optananDetailsV1.click();
+            setTimeout(function () {
+                optananDetailsV1.click()
+            }, 1000);
             Utils.log("Details clicked");
             this._cmp.state = 1;
         } else if (Utils.objectClickable(optanonSaveSettingsV1) && optanonCheckboxesV1.length && this._cmp.state === 1) {
-            Utils.log(optanonCheckboxesV1.length);
+            Utils.log("Amount of Checkboxes:" + optanonCheckboxesV1.length);
             optanonCheckboxesV1.forEach(function (checkbox: any) {
                 checkbox.setAttribute("checked", "false");
                 Utils.log("Checkbox unset");
             });
-            optanonSaveSettingsV1.click();
+            setTimeout(function () {
+                optanonSaveSettingsV1.click()
+            }, 1000);
             Utils.log("Save Settings Clicked click");
-            this._cmp.state = 2;
+            // this._cmp.state = 2;
+            this._cmp.reset();
         } else if (Utils.objectClickable(optanonOnetrustRejectAllandlerButton) && this._cmp.state === 2) {
             Utils.log("V1 (second click)");
             optanonOnetrustRejectAllandlerButton.click();
@@ -86,7 +93,8 @@ export default class OneTrust implements ICmp {
             this._cmp.reset();
         }
 
-        // Variant 2
+            // Variant 2
+        // https://www.mona.nl/, https://www.allianz.de/, https://www.springer.com/gp, https://www.haglofs.com/de/de-de/
         else if (Utils.objectClickable(optanonDetailsButtonV2) && this._cmp.state === 0) {
             Utils.log("V2");
             optanonDetailsButtonV2.click();
