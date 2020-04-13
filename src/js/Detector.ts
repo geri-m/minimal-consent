@@ -18,6 +18,7 @@ import PingResult from "./entities/PingResult";
 import OathCmp from "./cmp/OathCmp";
 import SourcePoint from "./cmp/SourcePoint";
 import DiDoMi from "./cmp/DiDoMi";
+import Borlabs from "./cmp/Borlabs";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -131,6 +132,9 @@ export default class Detector {
                             break;
                         } else if (urlOfScript.includes('didomi.io') || urlOfScript.includes('didomi.mgr.consensu.org') || urlOfScript.includes('privacy-center.org')) {
                             this._cmp = new DiDoMi(this._document, urlOfScript, this._backendCall);
+                            break;
+                        } else if (document.documentElement.innerHTML.includes("borlabs-cookie")) {
+                            this._cmp = new Borlabs(this._document, urlOfScript, this._backendCall);
                             break;
                         }
 
