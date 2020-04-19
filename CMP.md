@@ -98,6 +98,7 @@ this.truste.eu.prefclosebutton();
 - [F5](https://f5.com/)
 - [Docker](https://www.docker.com)
 - [iRobot](https://www.irobot.de/)
+- [IBM](https://newsroom.ibm.com/)
 
 ### Other functions in the notice.js
 

@@ -68,18 +68,6 @@ class BackgroundScript {
                         });
                     });
                 }
-
-                Utils.log("Version for Install: " + chrome.runtime.getManifest().version);
-
-                // For Test Purpose Only
-                // make sure that the uninstall triggers a backend call
-                let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
-                Utils.log("UUID for uninstall: " + uuid);
-                Utils.log("Version for uninstall: " + chrome.runtime.getManifest().version);
-                chrome.runtime.setUninstallURL(uninstallUrl + uuid + "&version=" + chrome.runtime.getManifest().version);
-
-                let request = new Request();
-                request.onInstall(details.reason, uuid, chrome.runtime.getManifest().version);
             }
             // this is now for production
             else {
