@@ -69,6 +69,8 @@ class BackgroundScript {
                     });
 
                 }
+
+                Utils.log("Version for Install: " + chrome.runtime.getManifest().version);
             }
             // this is now for production
             else {
@@ -79,7 +81,8 @@ class BackgroundScript {
                 // make sure that the uninstall triggers a backend call
                 let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
                 Utils.log("UUID for uninstall: " + uuid);
-                chrome.runtime.setUninstallURL(uninstallUrl + uuid);
+                Utils.log("Version for uninstall: " + chrome.runtime.getManifest().version);
+                chrome.runtime.setUninstallURL(uninstallUrl + uuid +  "&version=" + chrome.runtime.getManifest().version);
             }
         });
     }
@@ -122,7 +125,7 @@ class BackgroundScript {
                 // for Security Reasons, we pass each Element separably over to the insert Method.
                 let now = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
                 let he = new HistoryEntry(now, link.host, request.cmp, request.cmpScripUrl, pr, request.implemented);
-                this.logBackend(he);
+                this.logBackend(he, chrome.runtime.getManifest().version);
                 this.switchIcon(he.implemented);
                 this.storeRequest(he);
             }
@@ -158,7 +161,8 @@ class BackgroundScript {
             let requestToBackend = new Request();
             let uuid = await this._deviceId.loadOrGenerate();
             Utils.log("UUID: " + uuid);
-            requestToBackend.urlRequestToImplement(request.url, uuid.deviceId);
+            Utils.log("Version: " + chrome.runtime.getManifest().version);
+            requestToBackend.urlRequestToImplement(request.url, uuid.deviceId, chrome.runtime.getManifest().version);
         }
     }
 
@@ -186,8 +190,8 @@ class BackgroundScript {
         });
     }
 
-    private logBackend(requestJson: any) {
-        this._request.send(requestJson);
+    private logBackend(requestJson: any, version: string) {
+        this._request.send(requestJson, version);
     }
 
     private async storeRequest(requestJson: any) {

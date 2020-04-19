@@ -4,14 +4,6 @@ import ResponseForPopup from "../entities/ResponseForPopup";
 import OnPageLog from "../OnPageLog";
 import Utils from "../Utils";
 
-window.addEventListener('load', onLoad);
-
-function onLoad() {
-    let popup: Popup;
-    popup = new Popup(document);
-    popup.init();
-}
-
 export default class Popup {
 
     private static readonly _fromPage: string = "popupScript";
@@ -128,3 +120,11 @@ export default class Popup {
     }
 }
 
+
+window.addEventListener('load', onLoad);
+
+function onLoad() {
+    let popup: Popup;
+    popup = new Popup(document);
+    popup.init();
+}

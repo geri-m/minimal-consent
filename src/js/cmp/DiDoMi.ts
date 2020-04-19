@@ -25,7 +25,7 @@ export default class DiDoMi implements ICmp {
     }
 
     /*
-    https://www.marianne.net/, https://www.lavoixdunord.fr/, https://www.tomsguide.fr/
+    https://www.marianne.net/, https://www.lavoixdunord.fr/, https://www.tomsguide.fr/, https://www.generation-nt.com/
      */
 
     public handleCmp(): void {
@@ -71,7 +71,7 @@ export default class DiDoMi implements ICmp {
                 this._cmp.state = 2;
             }
         } else if (enregistrerButton.length > 0 && Utils.objectClickable(popupDiv) && this._cmp.state === 2) {
-            Utils.log("Looking for Span2");
+            Utils.log("Looking for Save/Enregistre");
             let clicked: boolean = false;
             enregistrerButton.forEach(function (span: any) {
                 Utils.log(span.innerHTML);

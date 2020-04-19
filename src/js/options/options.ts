@@ -3,14 +3,6 @@
 import HistoryEntry from "../entities/HistoryEntry"
 import Utils from "../Utils";
 
-window.addEventListener('load', onLoad);
-
-function onLoad() {
-    let options: Options;
-    options = new Options(document);
-    options.init();
-}
-
 export default class Options {
 
     private static readonly _fromPage: string = "optionsScript";
@@ -121,4 +113,12 @@ export default class Options {
         let table = document.getElementById("history");
         table.appendChild(row);
     }
+}
+
+window.addEventListener('load', onLoad);
+
+function onLoad() {
+    let options: Options;
+    options = new Options(document);
+    options.init();
 }

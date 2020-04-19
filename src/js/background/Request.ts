@@ -16,7 +16,9 @@ export default class Request {
         this.xhr = new XMLHttpRequest();
     }
 
-    public send(requestJson: { [id: string]: any }): void {
+    public send(requestJson: { [id: string]: any }, version: string): void {
+        // adding Version to Request
+        requestJson["version"] = version;
         this.xhr.open(Request.HTTP_METHOD, Request.URL_CONSENT, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
@@ -25,11 +27,12 @@ export default class Request {
         Utils.log("Backend call done:" + JSON.stringify(requestJson));
     }
 
-    public onInstall(uuid: string, reason: string): void {
+    public onInstall(uuid: string, reason: string, version: string = "0.0.0"): void {
         // Sanity Check, so we only send correct data to the backend.
         let statusToSend: { [id: string]: string; } = {
             uuid: uuid,
-            status: reason
+            status: reason,
+            version: version
         };
 
         Utils.log("Install Data: " + JSON.stringify(statusToSend));
@@ -41,7 +44,7 @@ export default class Request {
         Utils.log("onInstall Info Sent for UUID" + JSON.stringify(statusToSend));
     }
 
-    public urlRequestToImplement(url: string, uuid: string): void {
+    public urlRequestToImplement(url: string, uuid: string, version: string = "0.0.0"): void {
         this.xhr.open(Request.HTTP_METHOD, Request.URL_USER_REQUEST, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
@@ -49,7 +52,8 @@ export default class Request {
 
         let urlToSend: { [id: string]: string; } = {
             uuid: uuid,
-            url: url
+            url: url,
+            version: version
         };
         Utils.log("Send to backend: " + JSON.stringify(urlToSend));
         this.xhr.send(JSON.stringify(urlToSend));

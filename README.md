@@ -24,8 +24,8 @@ Unit tests base on Karma and Jasmine and can be u
 
 ### Requirements
 
-We run builds on OSX 10.15.2
-We currently use Yarn 1.21.1 (latest 1.x Build)
+We run builds on OSX 10.15.5
+We currently use Yarn 1.22.4 (latest 1.x Build)
 We use npm version 6.14.2  (latest)
 We use node version 13.10.1 (latest)
 We use zip 3.0 to create the package for upload
