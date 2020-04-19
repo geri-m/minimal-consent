@@ -31,12 +31,16 @@ def insertUserRequest(request):
         client = bigquery.Client()
         table_id = "minimal-consent-chrome-ext.minimal_consent_production.user_request"
         table = client.get_table(table_id)  # Make an API request.
-        rows_to_insert = [(datetime.now(), user_agent, request_json["url"], request_json["uuid"])]
+
+        # test for Version, not yet added to the database
+        version = "no version"
+        if 'version' in request_json:
+            print("Version found (state change): " + str(request_json["version"]))
+            version = str(request_json["version"])
+
+        rows_to_insert = [(datetime.now(), user_agent, request_json["url"], request_json["uuid"], version)]
         errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
         print("insert done of User Request Record was done")
-
-        if 'version' in request_json:
-            print("Version found (user request): " + str(request_json["version"]))
 
         if not errors:
             return "ok", 200

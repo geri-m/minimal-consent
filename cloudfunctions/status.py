@@ -4,7 +4,7 @@ from flask import redirect
 from google.cloud import bigquery
 
 
-def insertStatus(request):
+def insert_status(request):
     """Responds to any HTTP request.
     Args:
         request (flask.Request): HTTP request object.
@@ -28,20 +28,29 @@ def insertStatus(request):
             client = bigquery.Client()
             table_id = "minimal-consent-chrome-ext.minimal_consent_production.status"
             table = client.get_table(table_id)  # Make an API request.
-            rows_to_insert = [(datetime.now(), user_agent, request_json["status"], request_json["uuid"])]
-            errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
-            print("insert done of Status Record was done")
 
             # test for Version, not yet added to the database
+            version = "no version"
             if 'version' in request_json:
-                print("Version found (state change): " + str(request_json["version"]))
+                version = str(request_json["version"])
 
-            if not errors:
-                return "ok", 200
-            else:
-                print(errors)
-                print(request_json)
+            rows_to_insert = [(datetime.now(), user_agent, request_json["status"], request_json["uuid"], version)]
+
+            try:
+                errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
+                if not errors:
+                    return "ok", 200
+                else:
+                    print(errors)
+                    print(request_json)
+                    return "internal error.", 500
+            except IndexError as ie:
+                print("Index out of bound Exception: " + str(ie))
                 return "internal error.", 500
+            except Exception as e:
+                print("An exception occurred: " + str(e))
+                return "internal error.", 500
+
         else:
             print(request_json)
             return "internal error!", 500
@@ -52,22 +61,17 @@ def insertStatus(request):
 
         # test for Version, not yet added to the database
         version = request.args.get('version')
-        if version:
-            print("Version found (uninstall): " + version)
+        if not version:
+            version = "no version"
 
         uuid = request.args.get('uuid')
-        if not uuid:
-            print("no uuid given")
-
         user_agent = request.headers['user-agent']
-        if not user_agent:
-            print("no user agent given")
 
         if uuid and user_agent:
             client = bigquery.Client()
             table_id = "minimal-consent-chrome-ext.minimal_consent_production.status"
             table = client.get_table(table_id)  # Make an API request.
-            rows_to_insert = [(datetime.now(), user_agent, "uninstall", uuid)]
+            rows_to_insert = [(datetime.now(), user_agent, "uninstall", uuid, version)]
             errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
             print("insert done of Status Record was done")
             if not errors:

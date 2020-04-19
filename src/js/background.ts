@@ -59,7 +59,7 @@ class BackgroundScript {
                     "/options/options.html",
                 ];
 
-                // Only when the extension is installed for the first time
+                // When Extension is refreshed, load the Test Pages in the browser.
                 if (details.reason === "install" || details.reason === "update") {
                     pages.forEach((url) => {
                         chrome.tabs.create({
@@ -70,18 +70,28 @@ class BackgroundScript {
                 }
 
                 Utils.log("Version for Install: " + chrome.runtime.getManifest().version);
+
+                // For Test Purpose Only
+                // make sure that the uninstall triggers a backend call
+                let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
+                Utils.log("UUID for uninstall: " + uuid);
+                Utils.log("Version for uninstall: " + chrome.runtime.getManifest().version);
+                chrome.runtime.setUninstallURL(uninstallUrl + uuid + "&version=" + chrome.runtime.getManifest().version);
+
+                let request = new Request();
+                request.onInstall(details.reason, uuid, chrome.runtime.getManifest().version);
             }
             // this is now for production
             else {
                 // Only when the extension is installed for the first time
                 // send information on install to backend.
-                let request = new Request();
-                request.onInstall(details.reason, uuid);
                 // make sure that the uninstall triggers a backend call
                 let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
                 Utils.log("UUID for uninstall: " + uuid);
                 Utils.log("Version for uninstall: " + chrome.runtime.getManifest().version);
-                chrome.runtime.setUninstallURL(uninstallUrl + uuid +  "&version=" + chrome.runtime.getManifest().version);
+                chrome.runtime.setUninstallURL(uninstallUrl + uuid + "&version=" + chrome.runtime.getManifest().version);
+                let request = new Request();
+                request.onInstall(details.reason, uuid, chrome.runtime.getManifest().version);
             }
         });
     }
