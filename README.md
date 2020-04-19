@@ -72,6 +72,8 @@ To Clean and Start Hot Deploy for the browser: `yarn start`
 To create a Source Code Bundle for Review at Firefox use: `yarn source-zip`
 - Create a ZIP with package.json, webpack-files, Licence File and Source Code in `./src/`
 
+The JavaScript is minified using `terser-webpack-plugin`.
+
 ## Development 
 
 For Development you would only use `yarn start`.
@@ -121,3 +123,10 @@ was successful.
 - Images
 - Logos: 64 x 64 
 
+# History
+
+
+## Version 1.0.3
+
+- Remove Obfuscation
+- Adding DiDoMi
