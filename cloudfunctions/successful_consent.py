@@ -35,7 +35,16 @@ def insertSuccessfulConsent(request):
                            request_json["cmpScriptUrl"], request_json["pingResult"], request_json["implemented"])]
         errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
         print("insert done")
-        if errors == []:
+
+        # test for Version, not yet added to the database
+        if 'version' in request_json:
+            print("Version found (successful consent): " + str(request_json["version"]))
+
+        # test for UUID, not yet added to the database
+        if 'uuid' in request_json:
+            print("DeviceID (successful consent): " + str(request_json["uuid"]))
+
+        if not errors:
             return "ok", 200
         else:
             print(errors)

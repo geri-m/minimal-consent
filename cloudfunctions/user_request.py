@@ -34,7 +34,11 @@ def insertUserRequest(request):
         rows_to_insert = [(datetime.now(), user_agent, request_json["url"], request_json["uuid"])]
         errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
         print("insert done of User Request Record was done")
-        if errors == []:
+
+        if 'version' in request_json:
+            print("Version found (user request): " + str(request_json["version"]))
+
+        if not errors:
             return "ok", 200
         else:
             print(errors)

@@ -31,6 +31,11 @@ def insertStatus(request):
             rows_to_insert = [(datetime.now(), user_agent, request_json["status"], request_json["uuid"])]
             errors = client.insert_rows(table, rows_to_insert)  # Make an API request.
             print("insert done of Status Record was done")
+
+            # test for Version, not yet added to the database
+            if 'version' in request_json:
+                print("Version found (state change): " + str(request_json["version"]))
+
             if not errors:
                 return "ok", 200
             else:
@@ -44,6 +49,11 @@ def insertStatus(request):
     elif request.method == 'GET':
         if 'user-agent' not in request.headers:
             return "no user agent given", 500
+
+        # test for Version, not yet added to the database
+        version = request.args.get('version')
+        if version:
+            print("Version found (uninstall): " + version)
 
         uuid = request.args.get('uuid')
         if not uuid:

@@ -130,3 +130,4 @@ was successful.
 
 - Remove Obfuscation
 - Adding DiDoMi
+- Adding Version and Device UUID to each call.
