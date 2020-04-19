@@ -1,7 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const parentWebPack = require('./webpack.common.js');
-const JavaScriptObfuscator = require('webpack-obfuscator');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(parentWebPack, {
@@ -13,8 +12,7 @@ module.exports = merge(parentWebPack, {
             {from: './src/images/', to: './images/'},
             {from: './src/js/popup/popup.html', to: './popup/'},
             {from: './src/js/options/options.html', to: './options/'},
-            {from: './src/_locales/', to: './_locales/'}]),
-        new JavaScriptObfuscator({rotateUnicodeArray: true})
+            {from: './src/_locales/', to: './_locales/'}])
     ],
     optimization: {
         minimizer: [
