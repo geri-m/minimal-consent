@@ -15,28 +15,28 @@
     "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.100",
-    "@types/lodash": "^4.14.149",
-    "@types/jasmine": "^3.5.9",
-    "copy-webpack-plugin": "5.1.1",
+    "@types/chrome": "^0.0.106",
+    "@types/lodash": "^4.14.150",
+    "@types/jasmine": "^3.5.10",
+    "copy-webpack-plugin": "^5.1.1",
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
-    "karma": "^4.4.1",
+    "karma": "^5.0.4",
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^3.1.1",
     "karma-webpack": "^4.0.2",
     "karma-chrome-launcher": "^3.1.0",
-    "terser-webpack-plugin": "^2.3.5",
-    "webpack": "^4.42.0",
+    "terser-webpack-plugin": "^2.3.6",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-extension-reloader": "^1.1.4",
     "webpack-merge": "^4.2.2",
     "typescript": "^3.8.3",
-    "ts-loader": "^6.2.2"
+    "ts-loader": "^7.0.2"
   },
   "dependencies": {
-    "@types/uuid": "^7.0.2",
+    "@types/uuid": "^7.0.3",
     "dateformat": "^3.0.3"
   },
   "repository": {
