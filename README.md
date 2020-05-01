@@ -104,27 +104,12 @@ was successful.
 4) Choose "Load unpacked"
 5) Point the file finder to `./dist/` directory.
 
-# Store Publishing
-
-## Chrome
-
-- Images: 1280 x 800
-- Logos: 128 x 128
-
-
-## Firefox
-
-- Images: max: 2400 × 1800
-- Logos: 96 x 96 
-
-
-## Opera
-
-- Images
-- Logos: 64 x 64 
-
 # History
 
+## Version 1.0.4
+
+- Remove Active Tabs Permission
+- Update Dependencies
 
 ## Version 1.0.3
 
