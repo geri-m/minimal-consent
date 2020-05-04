@@ -1,7 +1,7 @@
 {
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShort__",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "__MSG_appDesc__",
   "manifest_version": 2,
   "default_locale": "en",
@@ -19,7 +19,7 @@
   "permissions": [
     "tabs",
     "storage",
-    "https://*.cloudfunctions.net/"
+    "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/"
   ],
   "content_scripts": [
     {

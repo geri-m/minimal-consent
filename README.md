@@ -3,7 +3,7 @@
 
 ## Extension Description for Publishing
 
-The extension block a hand full of so call Consent Management Platforms (CMP) asking the user for consent to drop 
+The extension blocks various Consent Management Platforms (CMP) asking the user for consent to drop 
 cookies or for tracking purpose. The extension in the current version blocks already 10 CMPs such as Quantcast, 
 OneTrust or UserCentrics.
 
@@ -105,6 +105,10 @@ was successful.
 5) Point the file finder to `./dist/` directory.
 
 # History
+
+## Version 1.0.5
+
+- Limit Backend Calls in Permissions to `https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/`
 
 ## Version 1.0.4
 
