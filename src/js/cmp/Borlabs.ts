@@ -26,7 +26,7 @@ export default class Borlabs implements ICmp {
     }
 
     /*
-    https://www.123effizientdabei.de/, https://www.abibuch-designer.de/, https://www.staubsauger-berater.de/
+    https://www.123effizientdabei.de/, https://www.abibuch-designer.de/, https://www.staubsauger-berater.de/ https://www.arge.de/
      */
 
     public handleCmp(): void {

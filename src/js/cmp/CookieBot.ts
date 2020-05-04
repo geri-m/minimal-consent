@@ -29,6 +29,10 @@ export default class CookieBot implements ICmp {
         https://www.gitlab.com/
         https://www.applause.com/
         https://www.galeria.de/
+        https://signrequest.com/#/ => CookieBot
+        https://volksblatt.at/ => Cookie Bot
+        https://www.zusammengegencorona.de/
+
      */
     public handleCmp(): void {
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";

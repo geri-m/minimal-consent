@@ -24,6 +24,13 @@ export default class TrustArcIFrame implements ICmp {
         this._cmp.connect();
     }
 
+    /*
+
+        https://docs.oracle.com/
+        https://newsroom.ibm.com/
+
+     */
+
     public handleCmp(): void {
 
         // from within IFrame
