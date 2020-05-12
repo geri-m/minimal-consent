@@ -32,6 +32,7 @@ export default class CookieBot implements ICmp {
         https://signrequest.com/#/ => CookieBot
         https://volksblatt.at/ => Cookie Bot
         https://www.zusammengegencorona.de/
+        https://de.scalable.capital/ => not working!
 
      */
     public handleCmp(): void {

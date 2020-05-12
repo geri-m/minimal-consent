@@ -27,10 +27,9 @@ export default class OneTrust implements ICmp {
 
     /*
 
-     https://www.home24.de/ => OneTrust
-    https://de.coursera.org/ => OneTrust
-    https://www.thoughtworks.com/ => OneTrust
-    https://www.glassdoor.de/ => OneTrust
+
+    > OneTrust
+   => OneTrust
 
      */
 
@@ -57,10 +56,18 @@ export default class OneTrust implements ICmp {
         const optanonCheckboxesSelectorV2 = "input[type*='checkbox']";
         let optanonCheckBoxesV2 = this._cmp.queryNodeSelectorAll(optanonCheckboxesSelectorV2);
 
+        // this button is crappy to find, as there is no ID or class.
+        const optanonSaveSettingsSelectorV3 = "button.save-preference-btn-handler"; //button.optanon-save-settings-button
+        let optanonSaveSettingsV3 = this._cmp.queryNodeSelector(optanonSaveSettingsSelectorV3);
+
+        const optanonListItemsSelectorV3 = "div.category-menu-switch-handler";
+        let optanonListItemsV3 = this._cmp.queryNodeSelectorAll(optanonListItemsSelectorV3);
 
         const optanonOnetrustRejectAllandler = "button#onetrust-reject-all-handler";
         let optanonOnetrustRejectAllandlerButton = this._cmp.queryNodeSelector(optanonOnetrustRejectAllandler);
 
+        const optanonBannerPolicy = "a.banner-policy-link";
+        let optanonBannerPolicyLink = this._cmp.queryNodeSelectorAll(optanonBannerPolicy);
 
         // Variante 3 (Single-Press is prefered over others
         if (Utils.objectClickable(optanonOnetrustRejectAllandlerButton) && this._cmp.state === 0) {
@@ -75,25 +82,48 @@ export default class OneTrust implements ICmp {
             this._cmp.reset();
         }
             // Variant 1
-        // https://arstechnica.com/
+        // https://www.wienerzeitung.at/
         else if (Utils.objectClickable(optananDetailsV1) && this._cmp.state === 0) {
             Utils.log("V1");
             setTimeout(function () {
                 optananDetailsV1.click()
             }, 1000);
-            Utils.log("Details clicked");
+            Utils.log("Details clicked V1");
             this._cmp.state = 1;
-        } else if (Utils.objectClickable(optanonSaveSettingsV1) && optanonCheckboxesV1.length && this._cmp.state === 1) {
-            Utils.log("Amount of Checkboxes:" + optanonCheckboxesV1.length);
+        }
+        // https://www.oralb.de/de-de
+        else if (optanonBannerPolicy.length > 1 && Utils.objectClickable(optanonBannerPolicyLink[1]) && this._cmp.state === 0) {
+            Utils.log("V1.1");
+            optanonBannerPolicyLink[1].click();
+            Utils.log("Details clicked V1.1");
+            this._cmp.state = 1;
+        }
+        // https://arstechnica.com/,   https://www.glassdoor.de/
+        else if (Utils.objectClickable(optanonSaveSettingsV1) && optanonCheckboxesV1.length && this._cmp.state === 1) {
+            Utils.log("Amount of Checkboxes V1: " + optanonCheckboxesV1.length);
             optanonCheckboxesV1.forEach(function (checkbox: any) {
                 checkbox.setAttribute("checked", "false");
-                Utils.log("Checkbox unset");
+                Utils.log("Checkbox unset V1");
             });
             setTimeout(function () {
                 optanonSaveSettingsV1.click()
             }, 1000);
-            Utils.log("Save Settings Clicked click");
+            Utils.log("Save Settings Clicked click V1");
             // this._cmp.state = 2;
+            this._cmp.reset();
+        }
+        // https://de.coursera.org/,  https://www.home24.de/, https://www.thoughtworks.com/ =
+        else if (Utils.objectClickable(optanonSaveSettingsV3) && this._cmp.state === 1) {
+            Utils.log("Save Button V3 found");
+            optanonListItemsV3.forEach(function (listItem: any) {
+                listItem.click();
+                Utils.log("Checkbox unset V3");
+                optanonCheckBoxesV2.forEach(function (checkbox: any) {
+                    checkbox.setAttribute("checked", "false");
+                    Utils.log("Checkbox unset V3");
+                })
+            });
+            optanonSaveSettingsV3.click();
             this._cmp.reset();
         } else if (Utils.objectClickable(optanonOnetrustRejectAllandlerButton) && this._cmp.state === 2) {
             Utils.log("V1 (second click)");
@@ -101,7 +131,6 @@ export default class OneTrust implements ICmp {
             Utils.log("Reject all clicked");
             this._cmp.reset();
         }
-
             // Variant 2
         // https://www.mona.nl/, https://www.allianz.de/, https://www.springer.com/gp, https://www.haglofs.com/de/de-de/
         else if (Utils.objectClickable(optanonDetailsButtonV2) && this._cmp.state === 0) {
@@ -110,13 +139,13 @@ export default class OneTrust implements ICmp {
             Utils.log("Details clicked");
             this._cmp.state = 3;
         } else if (Utils.objectClickable(optanonSaveSettingsV2) && this._cmp.state === 3) {
-            Utils.log("Save Button found");
+            Utils.log("Save Button V2 found");
             optanonListItemsV2.forEach(function (listItem: any) {
                 listItem.click();
-                Utils.log("Checkbox unset");
+                Utils.log("Checkbox unset V2");
                 optanonCheckBoxesV2.forEach(function (checkbox: any) {
                     checkbox.setAttribute("checked", "false");
-                    Utils.log("Checkbox unset");
+                    Utils.log("Checkbox unset V2");
                 })
             });
             optanonSaveSettingsV2.click();
