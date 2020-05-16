@@ -98,7 +98,7 @@ export default class OneTrust implements ICmp {
             Utils.log("Details clicked V1.1");
             this._cmp.state = 1;
         }
-        // https://arstechnica.com/,   https://www.glassdoor.de/
+        // https://arstechnica.com/,   https://www.glassdoor.de/, https://asmp.a1.net/, https://www.zdnet.com/
         else if (Utils.objectClickable(optanonSaveSettingsV1) && optanonCheckboxesV1.length && this._cmp.state === 1) {
             Utils.log("Amount of Checkboxes V1: " + optanonCheckboxesV1.length);
             optanonCheckboxesV1.forEach(function (checkbox: any) {
@@ -112,7 +112,7 @@ export default class OneTrust implements ICmp {
             // this._cmp.state = 2;
             this._cmp.reset();
         }
-        // https://de.coursera.org/,  https://www.home24.de/, https://www.thoughtworks.com/ =
+        // https://de.coursera.org/,  https://www.home24.de/, https://www.thoughtworks.com/, https://jobs.netflix.com/
         else if (Utils.objectClickable(optanonSaveSettingsV3) && this._cmp.state === 1) {
             Utils.log("Save Button V3 found");
             optanonListItemsV3.forEach(function (listItem: any) {
@@ -132,7 +132,7 @@ export default class OneTrust implements ICmp {
             this._cmp.reset();
         }
             // Variant 2
-        // https://www.mona.nl/, https://www.allianz.de/, https://www.springer.com/gp, https://www.haglofs.com/de/de-de/
+        // https://www.mona.nl/, https://www.allianz.de/, https://www.springer.com/gp, https://www.haglofs.com/de/de-de/, https://www.thesaurus.com/, https://www.atlassian.com/de/agile/agile-at-scale/okr
         else if (Utils.objectClickable(optanonDetailsButtonV2) && this._cmp.state === 0) {
             Utils.log("V2");
             optanonDetailsButtonV2.click();
