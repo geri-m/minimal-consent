@@ -106,6 +106,10 @@ was successful.
 
 # History
 
+## Version 1.0.7
+
+- Add Russian Translation.
+
 ## Version 1.0.6
 
 - Update for OneTrust
