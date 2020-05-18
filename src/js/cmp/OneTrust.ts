@@ -24,15 +24,6 @@ export default class OneTrust implements ICmp {
         this._cmp.connect();
     }
 
-
-    /*
-
-
-    > OneTrust
-   => OneTrust
-
-     */
-
     public handleCmp(): void {
         const optanonDetailsSelectorV1 = "button#onetrust-pc-btn-handler";
         let optananDetailsV1 = this._cmp.queryNodeSelector(optanonDetailsSelectorV1);
