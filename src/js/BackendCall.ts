@@ -31,11 +31,11 @@ export default class BackendCall {
         this._dataReceived = false;
     }
 
-    private _pingResult: any;
-
     public static get pageName(): string {
         return BackendCall._fromPage;
     }
+
+    private _pingResult: any;
 
     /**
      * Setter for the Ping Result, if we find a CMP on the Page
@@ -128,15 +128,27 @@ export default class BackendCall {
             this._pingResult.cmpId = this._cmpId;
         }
 
-        // we are sending seperat components in 'sendMessage()' as in the BackendCall, we don't know the URL.
+        // we are sending separate components in 'sendMessage()' as in the BackendCall, we don't know the URL.
         // this class is part of the content-Script and has no access to the URL.
 
-        chrome.runtime.sendMessage({
-            cmp: this._cmp,
-            cmpScripUrl: this._cmpScriptUrl,
-            pingResult: this._pingResult,
-            implemented: this._implemented,
-            from: BackendCall.pageName
-        });
+        if (typeof safari !== 'undefined') {
+            Utils.log("+++ triggerCall on Safari +++");
+            eval("safari.extension.dispatchMessage('someMessage', {cmp: this._cmp," +
+                "cmpScripUrl: this._cmpScriptUrl," +
+                "pingResult: this._pingResult," +
+                "implemented: this._implemented," +
+                "from: BackendCall.pageName})");
+        } else if (typeof chrome !== 'undefined') {
+            Utils.log("+++ triggerCall on Chrome +++");
+            chrome.runtime.sendMessage({
+                cmp: this._cmp,
+                cmpScripUrl: this._cmpScriptUrl,
+                pingResult: this._pingResult,
+                implemented: this._implemented,
+                from: BackendCall.pageName
+            });
+        } else {
+            Utils.log("+++ triggerCall on some other Platform +++")
+        }
     }
 }
