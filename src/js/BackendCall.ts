@@ -134,7 +134,7 @@ export default class BackendCall {
         if (typeof safari !== 'undefined') {
             Utils.log("+++ triggerCall on Safari +++");
             eval("safari.extension.dispatchMessage('someMessage', {cmp: this._cmp," +
-                "cmpScripUrl: this._cmpScriptUrl," +
+                "cmpScriptUrl: this._cmpScriptUrl," +
                 "pingResult: this._pingResult," +
                 "implemented: this._implemented," +
                 "from: BackendCall.pageName})");
