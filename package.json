@@ -12,7 +12,8 @@
     "start": "rm -rf ./dist/; webpack --watch --config webpack.start.js",
     "build-dev": "rm -rf ./dist/; webpack --config webpack.dev.js; cd ./dist/; zip -r ../minimal-consent-dev.zip .; cd ..",
     "build": "rm -rf ./dist/; webpack --config webpack.prod.js; cd ./dist/; zip -r ../minimal-consent-prod.zip .; cd ..",
-    "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt"
+    "source-zip": "zip -r minimal-consent-src.zip ./webpack* ./src/* ./README.md ./package.json ./LICENSE.txt",
+    "macos": "cp ./dist/contentscript.js ../minimal-consent-macos/'minimal-consent-macos Extension'/"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.106",
