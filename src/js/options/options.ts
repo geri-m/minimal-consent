@@ -28,16 +28,19 @@ export default class Options {
         return Options._cmdClearHistory;
     }
 
-
     public init(): void {
         Utils.log("init");
         let _self = this;
-        this._clearHistory.addEventListener('click', function () {
-            _self.clearHistory();
-        });
-        this._closeWindow.addEventListener('click', function () {
-            window.close();
-        });
+        if (Utils.checkIfDefinedAndNotNull(this._clearHistory)) {
+            this._clearHistory.addEventListener('click', function () {
+                _self.clearHistory();
+            });
+        }
+        if (Utils.checkIfDefinedAndNotNull(this._closeWindow)) {
+            this._closeWindow.addEventListener('click', function () {
+                window.close();
+            });
+        }
         chrome.runtime.sendMessage({
             from: Options.pageName,
             cmd: Options.cmdGetHistory
@@ -47,31 +50,34 @@ export default class Options {
     }
 
     private handleResponse(response: HistoryEntry[]): void {
-        Utils.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
-        if (Utils.checkIfDefinedAndNotNull(response) && response.length) {
+        if (Utils.checkIfDefinedAndNotNull(response)) {
+            Utils.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
+            if (Utils.checkIfDefinedAndNotNull(response) && response.length) {
 
-            // Create an Object we can work with.
-            let history = new Array<HistoryEntry>();
-            response.forEach(function (item: HistoryEntry) {
-                history.push(HistoryEntry.class(item));
-            });
+                // Create an Object we can work with.
+                let history = new Array<HistoryEntry>();
+                response.forEach(function (item: HistoryEntry) {
+                    history.push(HistoryEntry.class(item));
+                });
 
+                // sort array by date.
+                history.sort(function (a: HistoryEntry, b: HistoryEntry) {
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds();
+                });
 
-            // sort array by date.
-            history.sort(function (a: HistoryEntry, b: HistoryEntry) {
-                // Turn your strings into dates, and then subtract them
-                // to get a value that is either negative, positive, or zero.
-                return new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds();
-            });
-
-            let _self = this;
-            history.forEach(function (item: HistoryEntry, index: number) {
-                _self.createRow(item)
-            });
-        } else if (response.length === 0) {
-            Utils.log("Result from Storage is/was empty.");
+                let _self = this;
+                history.forEach(function (item: HistoryEntry, index: number) {
+                    _self.createRow(item)
+                });
+            } else if (response.length === 0) {
+                Utils.log("Result from Storage is/was empty.");
+            } else {
+                throw Error("Unable to parse 'HistoryEntry[]' in options.ts");
+            }
         } else {
-            throw Error("Unable to parse 'HistoryEntry[]' in options.ts");
+            throw Error("'HistoryEntry[]' in options.ts is null");
         }
     }
 

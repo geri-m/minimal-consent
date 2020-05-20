@@ -41,6 +41,7 @@ class BackgroundScript {
 
         let _self = this;
 
+
         chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             Utils.log("onMessage");
             return backgroundScript.messageHandler(request, sender, sendResponse);

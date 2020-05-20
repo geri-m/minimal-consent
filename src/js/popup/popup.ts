@@ -55,7 +55,9 @@ export default class Popup {
 
     public init(): void {
         let _self = this;
-        this._toOptionsLink.addEventListener('click', Popup.openOptions);
+        if (Utils.checkIfDefinedAndNotNull(this._toOptionsLink)) {
+            this._toOptionsLink.addEventListener('click', Popup.openOptions);
+        }
         chrome.runtime.sendMessage({
             cmd: Popup.cmdStartup,
             from: Popup.pageName
