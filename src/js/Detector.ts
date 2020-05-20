@@ -41,11 +41,13 @@ export default class Detector {
     _observerForScriptSource: MutationObserver;
     _cmp: ICmp;
     _inIFrame: boolean;
+    _callBackCounter: number;
 
     constructor(document: Document, inIframe: boolean) {
         this._document = document;
         this._backendCall = new BackendCall();
         this._inIFrame = inIframe;
+        this._callBackCounter = 0;
     }
 
     set pingResult(pingResult: PingResult) {
@@ -68,10 +70,12 @@ export default class Detector {
     }
 
     disconnectObserver() {
+        Utils.log("Disconnect from Observer");
         this._observerForScriptSource.disconnect();
     }
 
     handleCMP(mutations: MutationRecord[]) {
+        this._callBackCounter++;
         let allScriptTags = document.querySelectorAll("script");
         let scriptCounter;
         if (this._cmp) {
@@ -530,7 +534,11 @@ export default class Detector {
             // now connect to the Observer.
             this._cmp.connect();
         } else {
-            Utils.log("-- Run Thru completed. No Indicator for JavaScript of a CMP so far.");
+            Utils.log("-- Run Thru completed. No Indicator for JavaScript of a CMP so far. Count: " + this._callBackCounter);
+            if (this._callBackCounter > 10) {
+                Utils.log("Disconnecting from Observer now");
+                this.disconnectObserver();
+            }
         }
     }
 
