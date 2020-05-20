@@ -5,7 +5,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(parentWebPack, {
     mode: 'production',
-    devtool: 'source-map',
     plugins: [
         new CopyWebpackPlugin([
             {from: './src/manifest.prod.json', to: './manifest.json'},

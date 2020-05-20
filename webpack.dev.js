@@ -4,14 +4,9 @@ const parentWebPack = require('./webpack.common.js');
 
 module.exports = merge(parentWebPack, {
     mode: 'development',
-    /**
-     * Only one that works on FF
-     * Issue on webpack: https://github.com/webpack/webpack/issues/1194
-     * Issue on web-ext toolbox: https://github.com/webextension-toolbox/webextension-toolbox/issues/58
-     */
     // FIX: Module not found: Error: Can't resolve 'fs'
     node: {fs: 'empty'},
-    target: 'web',
+    // ATTENTION: If we change this, the integration pages are not shown any more
     devtool: 'inline-source-map',
     plugins: [
         new CopyWebpackPlugin([
@@ -25,7 +20,6 @@ module.exports = merge(parentWebPack, {
             {from: './src/images/', to: './images/'},
             {from: './src/js/popup/popup.html', to: './popup/'},
             {from: './src/js/options/options.html', to: './options/'},
-            {from: './src/js/background.html', to: './background.html'},
             {from: './src/test/', to: './test/'},
             {from: './src/_locales/', to: './_locales/'}])
     ],

@@ -5,13 +5,12 @@ const parentWebPack = require('./webpack.common.js');
 
 module.exports = merge(parentWebPack, {
     mode: 'development',
+    // FIX: Module not found: Error: Can't resolve 'fs'
     node: {fs: 'empty'},
-    target: 'web',
+    // ATTENTION: If we change this, the integration pages are not shown any more
     devtool: 'inline-source-map',
     plugins: [
-        /***********************************************************************/
-        /* By default the plugin will work only when NODE_ENV is "development" */
-        /***********************************************************************/
+        // Auto Start
         new WebpackExtensionReloaderPlugin({
             entries: {
                 contentScript: 'contentscript',
@@ -30,7 +29,7 @@ module.exports = merge(parentWebPack, {
             {from: './src/images/', to: './images/'},
             {from: './src/js/popup/popup.html', to: './popup/'},
             {from: './src/js/options/options.html', to: './options/'},
-            {from: './src/test/test-page/integration.html', to: './test/test-page/integration.html'},
+            {from: './src/test/', to: './test/'},
             {from: './src/_locales/', to: './_locales/'}])
     ],
     /* This is how the test Page will be available on the page */
