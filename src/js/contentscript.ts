@@ -4,33 +4,17 @@ import Utils from "./Utils";
 
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', checkUrl);
+    document.addEventListener('DOMContentLoaded', afterDOMLoaded);
 } else {
-    checkUrl();
+    afterDOMLoaded();
 }
-
-function checkUrl() {
-    // Youtube, Facebook, Google/Gmail
-    if (document.body.innerHTML.length > 100000) {
-        Utils.log("Circut Breaker");
-    }
-
-    if (chrome !== undefined && chrome.tabs !== undefined && chrome.tabs != null) {
-        chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
-            function (tabs) {
-                let url = tabs[0].url.toLowerCase();
-                if (url.includes("google") || url.includes("facebook") || url.includes("youtube") || url.includes("amazon")) {
-                    Utils.log("running on big site.")
-                } else {
-                    afterDOMLoaded();
-                }
-            }
-        );
-    }
-}
-
 
 function afterDOMLoaded() {
+    let url = location.href;
+    if (url.includes("google") || url.includes("facebook") || url.includes("youtube") || url.includes("amazon")) {
+        Utils.log("running on big site.");
+        return;
+    }
 
     if (typeof safari !== 'undefined') {
         Utils.log("+++ Running on Safari +++");
