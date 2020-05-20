@@ -15,6 +15,7 @@ export default class Popup {
     private readonly _details: Element;
 
     constructor(document: Document) {
+        // @ts-ignore: the background Page is a Window, but it works anyhow.
         this._log = new OnPageLog(chrome.extension.getBackgroundPage().console);
         this._toOptionsLink = document.getElementById("go-to-options");
         this._cmpCount = document.getElementById("cmpCount");
