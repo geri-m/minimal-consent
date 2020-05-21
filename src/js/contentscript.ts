@@ -2,7 +2,7 @@
 import Detector from "./Detector";
 import Utils from "./Utils";
 
-
+// This is required as for Safari the script is injected at the beginning. For Chrome is at the end.
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', afterDOMLoaded);
 } else {
@@ -10,12 +10,6 @@ if (document.readyState === 'loading') {
 }
 
 function afterDOMLoaded() {
-    let url = location.href;
-    if (url.includes("google") || url.includes("facebook") || url.includes("youtube") || url.includes("amazon")) {
-        Utils.log("running on big site.");
-        return;
-    }
-
     if (typeof safari !== 'undefined') {
         Utils.log("+++ Running on Safari +++");
     } else if (typeof chrome !== 'undefined') {

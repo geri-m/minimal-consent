@@ -32,7 +32,7 @@ const buttons = {
 
 };
 
-const config = {attributes: true, childList: true, subtree: true};
+const config = {attributes: false, childList: true, subtree: false};
 
 export default class Detector {
 
@@ -60,13 +60,15 @@ export default class Detector {
      */
 
     connectObserver() {
+        this.handleCMP(true);
+
         // Options for the observer (which mutations to observe)
         let self = this;
         this._observerForScriptSource = new MutationObserver(function (mutations) {
-            self.handleCMP(mutations);
+            self.handleCmpImmediately(mutations, self);
         });
         // Select the node that will be observed for mutations
-        this._observerForScriptSource.observe(this._document.getRootNode(), config);
+        this._observerForScriptSource.observe(this._document.body, config);
     }
 
     disconnectObserver() {
@@ -74,7 +76,22 @@ export default class Detector {
         this._observerForScriptSource.disconnect();
     }
 
-    handleCMP(mutations: MutationRecord[]) {
+
+    handleCmpImmediately(mutations: MutationRecord[], _self: Detector) {
+        mutations.forEach(function (mutation) {
+            // console.log(mutation.addedNodes);
+            mutation.addedNodes.forEach(function (value: Node, key: number, parent: NodeList) {
+                if (value.nodeName.toLowerCase().includes("script")) {
+                    setTimeout(function () {
+                        _self.handleCMP(false)
+                    }, 100);
+                }
+            })
+        });
+    }
+
+    handleCMP(firstTime: boolean) {
+        Utils.log("enter");
         this._callBackCounter++;
         let allScriptTags = document.querySelectorAll("script");
         let scriptCounter;
@@ -82,6 +99,9 @@ export default class Detector {
             Utils.log("CMP Defined (we should never end up here, as the observer will disconnect, if this._cmp is set");
             return;
         }
+
+        let start = new Date().getMilliseconds();
+        Utils.log("scripts: " + allScriptTags.length);
 
         // some CMPs run in iFrames and therefore require different handling.
         if (this._inIFrame) {
@@ -530,19 +550,16 @@ export default class Detector {
         if (this._cmp) {
             Utils.log("CMP is set now. Connect to Observer in new context");
             // remove Connection to the local Observer
-            this.disconnectObserver();
-            // now connect to the Observer.
+            if (!firstTime)
+                this.disconnectObserver();
             this._cmp.connect();
         } else {
             Utils.log("-- Run Thru completed. No Indicator for JavaScript of a CMP so far. Count: " + this._callBackCounter);
-            if (this._callBackCounter > 10) {
+            if (this._callBackCounter > 100) {
                 Utils.log("Disconnecting from Observer now");
                 this.disconnectObserver();
             }
         }
-    }
-
-    private inIframe() {
 
     }
 
