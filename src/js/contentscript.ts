@@ -32,10 +32,14 @@ function afterDOMLoaded() {
         Utils.log("Running in IFrame: " + inFrame);
     } catch (e) {
         Utils.log("Error Figuring out if we are running in an iFrame");
-        inFrame = false;
     }
 
-    if (document.doctype && document.body.innerHTML.length > 100) {
+    /* only process files
+       - with a Doc Type
+       - which are longer than 100 chars
+       - which are HTTPS or HTTP file
+     */
+    if (document.doctype && document.body.innerHTML.length > 100 && (document.location.href.toLowerCase().startsWith("https://") || document.location.href.toLowerCase().startsWith("http://"))) {
         Utils.log("Triggering Content Script");
         const messageFrom = "FROM_MINIMAL_CONSENT";
 

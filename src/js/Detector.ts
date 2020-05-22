@@ -29,9 +29,9 @@ const buttons = {
     "span#cmpwelcomebtnno": "Wordpress Plugin https://www.tektutorialshub.com/",
     "a.cmpboxbtnno": "Wordpress Plugin www.mykong.com",
     "p._brlbs-refuse-btn": "Wordpress Plugin https://www.staubsauger-berater.de/ (Borlabs)"
-
 };
 
+// we need to keep load a little a possible.
 const config = {attributes: false, childList: true, subtree: false};
 
 export default class Detector {
@@ -50,7 +50,7 @@ export default class Detector {
         this._callBackCounter = 0;
     }
 
-    set pingResult(pingResult: PingResult) {
+    public set pingResult(pingResult: PingResult) {
         this._backendCall.pingResult = pingResult;
     }
 
@@ -59,7 +59,7 @@ export default class Detector {
      * Only after that the observer can be registered in a save way.
      */
 
-    connectObserver() {
+    public connectObserver() {
         this.handleCMP(true);
 
         // Options for the observer (which mutations to observe)
@@ -71,26 +71,25 @@ export default class Detector {
         this._observerForScriptSource.observe(this._document.body, config);
     }
 
-    disconnectObserver() {
+    public disconnectObserver() {
         Utils.log("Disconnect from Observer");
         this._observerForScriptSource.disconnect();
     }
 
-
-    handleCmpImmediately(mutations: MutationRecord[], _self: Detector) {
+    private handleCmpImmediately(mutations: MutationRecord[], _self: Detector) {
         mutations.forEach(function (mutation) {
             // console.log(mutation.addedNodes);
             mutation.addedNodes.forEach(function (value: Node, key: number, parent: NodeList) {
                 if (value.nodeName.toLowerCase().includes("script")) {
                     setTimeout(function () {
                         _self.handleCMP(false)
-                    }, 100);
+                    }, 25);
                 }
             })
         });
     }
 
-    handleCMP(firstTime: boolean) {
+    private handleCMP(firstTime: boolean) {
         Utils.log("enter");
         this._callBackCounter++;
         let allScriptTags = document.querySelectorAll("script");

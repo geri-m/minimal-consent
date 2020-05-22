@@ -24,6 +24,11 @@ export default class OathCmp implements ICmp {
         this._cmp.connect();
     }
 
+    /*
+    - [tomshardware](https://www.tomshardware.com)
+    - [techradar](https://global.techradar.com/de-de)
+    */
+
     public handleCmp(): void {
 
 

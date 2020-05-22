@@ -26,6 +26,7 @@ export default class QuantCast implements ICmp {
 
     /*
         https://wwd.com/
+        https://www.quantcast.com/ => TODO
      */
 
     public handleCmp(): void {

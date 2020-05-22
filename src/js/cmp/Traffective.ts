@@ -24,6 +24,8 @@ export default class Traffective implements ICmp {
         this._cmp.connect();
     }
 
+    // https://www.mactechnews.de/
+
     public handleCmp(): void {
         const gdprDiv = 'div.gdpr_popup_popup';
         let popup = this._cmp.queryNodeSelector(gdprDiv);
