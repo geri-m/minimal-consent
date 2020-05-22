@@ -94,20 +94,17 @@ export default class Popup {
                 case 1:
                     let textCase1 = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
                     this._log.log("Case 1:" + textCase1);
-                    let textCase1node = document.createTextNode(textCase1);
-                    this._details.appendChild(textCase1node);
+                    this._details.innerHTML = textCase1;
                     break;
                 case 2:
                     let textCase2 = messageCase2.replace("%URL", popupMessage.url.host);
                     this._log.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
-                    let textCase2node = document.createTextNode(textCase2);
-                    this._details.appendChild(textCase2node);
+                    this._details.innerHTML = textCase2;
                     break;
                 case 3:
                     let textCase3 = messageCase3.replace("%URL", popupMessage.url.host);
                     this._log.log("Case 3: Unknown CMP Detected");
-                    let textCase3node = document.createTextNode(textCase3);
-                    this._details.appendChild(textCase3node);
+                    this._details.innerHTML = textCase3;
                     document.querySelector('#submit-this-url').addEventListener('click', function () {
                         Popup.sendUrlToBackendForImplementation(popupMessage.url.host);
                     });
@@ -115,8 +112,7 @@ export default class Popup {
                 case 4:
                     let textCase4 = messageCase4.replace("%URL", popupMessage.url.host);
                     this._log.log("Case 4: No CMP detected");
-                    let textCase4node = document.createTextNode(textCase4);
-                    this._details.appendChild(textCase4node);
+                    this._details.innerHTML = textCase4;
                     document.querySelector('#submit-this-url').addEventListener('click', function () {
                         Popup.sendUrlToBackendForImplementation(popupMessage.url.host);
                     });

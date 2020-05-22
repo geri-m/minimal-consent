@@ -3,10 +3,11 @@
 import Utils from "./Utils";
 import PingResult from "./entities/PingResult";
 import CmpType from "./cmp/CmpType";
+import ConstMessaging from "./ConstMessaging";
 
 export default class BackendCall {
 
-    private static readonly _fromPage: string = "backendCall";
+
     // This is Data we are going to send
     private _cmp: string;
     private _cmpId: number;
@@ -32,7 +33,7 @@ export default class BackendCall {
     }
 
     public static get pageName(): string {
-        return BackendCall._fromPage;
+        return ConstMessaging._backendCallFromPage;
     }
 
     private _pingResult: any;

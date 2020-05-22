@@ -11,9 +11,7 @@ import PingResult from "./entities/PingResult";
 import HistoryEntry from "./entities/HistoryEntry";
 import DeviceId from "./background/DeviceId";
 
-import Popup from "./popup/popup";
-import Options from "./options/options"
-import BackendCall from "./BackendCall";
+import ConstMessaging from "./ConstMessaging";
 
 const dateFormat = require("dateformat");
 
@@ -23,6 +21,7 @@ class BackgroundScript {
     private readonly _history: History;
     private readonly _icon: Icon;
     private readonly _deviceId: DeviceId;
+
 
 
     constructor() {
@@ -87,13 +86,13 @@ class BackgroundScript {
 
     public messageHandler(request: any, sender: any, sendResponse: any): boolean {
         switch (request.from) {
-            case BackendCall.pageName:
+            case ConstMessaging._backendCallFromPage:
                 this.handleBackendCall(request, sender, sendResponse);
                 break;
-            case Popup.pageName:
+            case ConstMessaging._popUpFromPage:
                 this.handlePopupScript(request, sender, sendResponse);
                 break;
-            case Options.pageName:
+            case ConstMessaging._optionsFromPage:
                 this.handleOptionsScript(request, sender, sendResponse);
                 break;
             default:
@@ -102,9 +101,8 @@ class BackgroundScript {
         return true;
     }
 
-
     private async handleBackendCall(request: any, sender: any, sendResponse: any) {
-        Utils.log("Handle: " + BackendCall.pageName);
+        Utils.log("Handle: " + ConstMessaging._backendCallFromPage);
         let link = await this.getUrl();
 
         // check, if we have already something in the local storage.
@@ -134,8 +132,8 @@ class BackgroundScript {
     }
 
     private async handlePopupScript(request: any, sender: any, sendResponse: any) {
-        Utils.log("Handle: " + Popup.pageName);
-        if (request.cmd === Popup.cmdStartup) {
+        Utils.log("Handle: " + ConstMessaging._popUpFromPage);
+        if (request.cmd === ConstMessaging._popUpCmdStartup) {
             let url = await this.getUrl();
             Utils.log("startup: Current URL: " + JSON.stringify(url));
 
@@ -155,7 +153,7 @@ class BackgroundScript {
 
             Utils.log("Response to Popup: " + JSON.stringify(response));
             sendResponse(response);
-        } else if (request.cmd === Popup.cmdUserRequest) {
+        } else if (request.cmd === ConstMessaging._popUpCmdUserRequest) {
             Utils.log("userRequest: Submit URL: " + request.url);
             let requestToBackend = new Request();
             let uuid = await this._deviceId.loadOrGenerate();
@@ -166,11 +164,11 @@ class BackgroundScript {
     }
 
     private async handleOptionsScript(request: any, sender: any, sendResponse: any) {
-        Utils.log("Handle: " + Options.pageName);
-        if (request.cmd === Options.cmdGetHistory) {
+        Utils.log("Handle: " + ConstMessaging._optionsFromPage);
+        if (request.cmd === ConstMessaging._optionsCmdGetHistory) {
             let hist = await this._history.load();
             sendResponse(hist);
-        } else if (request.cmd === Options.cmdClearHistory) {
+        } else if (request.cmd === ConstMessaging._optionsCmdClearHistory) {
             await this._history.clearStorage();
         }
     }

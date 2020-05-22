@@ -2,12 +2,10 @@
 
 import HistoryEntry from "../entities/HistoryEntry"
 import Utils from "../Utils";
+import ConstMessaging from "../ConstMessaging"
 
 export default class Options {
 
-    private static readonly _fromPage: string = "optionsScript";
-    private static readonly _cmdGetHistory: string = "getHistory";
-    private static readonly _cmdClearHistory: string = "clearHistory";
     private readonly _clearHistory: Element;
     private readonly _closeWindow: Element;
 
@@ -17,15 +15,15 @@ export default class Options {
     }
 
     public static get pageName(): string {
-        return Options._fromPage;
+        return ConstMessaging._optionsFromPage;
     }
 
     public static get cmdGetHistory(): string {
-        return Options._cmdGetHistory;
+        return ConstMessaging._optionsCmdGetHistory;
     }
 
     public static get cmdClearHistory(): string {
-        return Options._cmdClearHistory;
+        return ConstMessaging._optionsCmdClearHistory;
     }
 
     public init(): void {
