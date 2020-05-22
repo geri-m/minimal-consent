@@ -1,4 +1,4 @@
-# Chrome Extension, Opera, FireFox and Microsoft Edge AddOn form Minimal Consent
+# Chrome Extension, Opera, FireFox, Safari and Microsoft Edge AddOn form Minimal Consent
 
 
 ## Extension Description for Publishing
@@ -111,6 +111,7 @@ was successful.
 - Add Russian Translation.
 - Performance Improvements (Fix Config on Observer)
 - Safari Integration
+- Fix Build for Application Distribution (Firefox, Opera)
 
 ## Version 1.0.6
 

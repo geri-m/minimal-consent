@@ -92,30 +92,40 @@ export default class Popup {
 
             switch (popupMessage.case) {
                 case 1:
-                    this._log.log("Case 1:" + messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date));
-                    this._details.innerHTML = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
+                    let textCase1 = messageCase1.replace("%URL", popupMessage.url.host).replace("%DATE", popupMessage.lastFound.date);
+                    this._log.log("Case 1:" + textCase1);
+                    let textCase1node = document.createTextNode(textCase1);
+                    this._details.appendChild(textCase1node);
                     break;
                 case 2:
+                    let textCase2 = messageCase2.replace("%URL", popupMessage.url.host);
                     this._log.log("Case 2: CMP '" + popupMessage.lastFound.cmp + "', which is not implemented yes");
-                    this._details.innerHTML = messageCase2.replace("%URL", popupMessage.url.host);
+                    let textCase2node = document.createTextNode(textCase2);
+                    this._details.appendChild(textCase2node);
                     break;
                 case 3:
+                    let textCase3 = messageCase3.replace("%URL", popupMessage.url.host);
                     this._log.log("Case 3: Unknown CMP Detected");
-                    this._details.innerHTML = messageCase3.replace("%URL", popupMessage.url.host);
+                    let textCase3node = document.createTextNode(textCase3);
+                    this._details.appendChild(textCase3node);
                     document.querySelector('#submit-this-url').addEventListener('click', function () {
                         Popup.sendUrlToBackendForImplementation(popupMessage.url.host);
                     });
                     break;
                 case 4:
+                    let textCase4 = messageCase4.replace("%URL", popupMessage.url.host);
                     this._log.log("Case 4: No CMP detected");
-                    this._details.innerHTML = messageCase4.replace("%URL", popupMessage.url.host);
+                    let textCase4node = document.createTextNode(textCase4);
+                    this._details.appendChild(textCase4node);
                     document.querySelector('#submit-this-url').addEventListener('click', function () {
                         Popup.sendUrlToBackendForImplementation(popupMessage.url.host);
                     });
                     break;
                 default:
                     this._log.log("Case 5: No HTTP Page");
-                    this._details.innerHTML = messageCase5;
+                    let textCase5node = document.createTextNode(messageCase5);
+                    this._details.appendChild(textCase5node);
+
             }
         } else {
             throw Error("Unable to parse 'ResponseForPopup' in popup.ts");

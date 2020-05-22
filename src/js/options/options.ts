@@ -95,13 +95,17 @@ export default class Options {
         Utils.log("Item: " + JSON.stringify(historyEntry));
 
         let url = document.createElement('td');
-        url.innerHTML = historyEntry.url;
+        let urlText = document.createTextNode(historyEntry.url);
+        url.appendChild(urlText);
 
         let date = document.createElement('td');
-        date.innerHTML = historyEntry.date;
+        let dateText = document.createTextNode(historyEntry.date);
+        date.appendChild(dateText);
 
         let cmp = document.createElement('td');
-        cmp.innerHTML = historyEntry.cmp;
+        let cmpText = document.createTextNode(historyEntry.cmp);
+        cmp.appendChild(cmpText);
+
 
         /*
         let implemented = document.createElement('td');
