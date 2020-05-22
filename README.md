@@ -109,6 +109,8 @@ was successful.
 ## Version 1.0.7
 
 - Add Russian Translation.
+- Performance Improvements (Fix Config on Observer)
+- Safari Integration
 
 ## Version 1.0.6
 
