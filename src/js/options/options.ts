@@ -103,18 +103,19 @@ export default class Options {
         let cmp = document.createElement('td');
         cmp.innerHTML = historyEntry.cmp;
 
+        /*
         let implemented = document.createElement('td');
         implemented.innerHTML = String(historyEntry.implemented);
 
         let tcf = document.createElement('td');
         tcf.innerHTML = historyEntry.pingResult.tcfVersion;
-
+        */
         let row = document.createElement('tr');
         row.appendChild(date);
         row.appendChild(url);
         row.appendChild(cmp);
-        row.appendChild(tcf);
-        row.appendChild(implemented);
+        // row.appendChild(tcf);
+        // row.appendChild(implemented);
 
         let table = document.getElementById("history");
         table.appendChild(row);
