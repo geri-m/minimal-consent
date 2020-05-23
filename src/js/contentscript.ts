@@ -35,11 +35,11 @@ function afterDOMLoaded() {
     }
 
     /* only process files
-       - with a Doc Type
+       - with a Doc Type => NOT. (document.doctype) -> eg. https://de.scalable.capital/
        - which are longer than 100 chars
        - which are HTTPS or HTTP file
      */
-    if (document.doctype && document.body.innerHTML.length > 100 && (document.location.href.toLowerCase().startsWith("https://") || document.location.href.toLowerCase().startsWith("http://"))) {
+    if (document.body.innerHTML.length > 100 && (document.location.href.toLowerCase().startsWith("https://") || document.location.href.toLowerCase().startsWith("http://"))) {
         Utils.log("Triggering Content Script");
         const messageFrom = "FROM_MINIMAL_CONSENT";
 

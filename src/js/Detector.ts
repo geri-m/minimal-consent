@@ -60,10 +60,15 @@ export default class Detector {
      */
 
     public connectObserver() {
-        this.handleCMP(true);
-
         // Options for the observer (which mutations to observe)
         let self = this;
+        setImmediate(function () {
+            self.handleCMP(true)
+        });
+        // Run somewhen in the future in case we missed something.
+        setTimeout(function () {
+            self.handleCMP(true)
+        }, 3000);
         this._observerForScriptSource = new MutationObserver(function (mutations) {
             self.handleCmpImmediately(mutations, self);
         });
@@ -90,23 +95,27 @@ export default class Detector {
     }
 
     private handleCMP(firstTime: boolean) {
-        Utils.log("enter");
+        Utils.log("Run handleCMP for first time? " + firstTime);
         this._callBackCounter++;
-        let allScriptTags = document.querySelectorAll("script");
+        // result is a static node list.
+        // we only look for scripts which have a source element.
+        let allScriptTags = document.querySelectorAll("script[src]");
+        Utils.log("Amount of Scripts found: " + allScriptTags.length);
+        for (let x = 0; x < allScriptTags.length; x++) {
+            Utils.log(allScriptTags[x].getAttribute("src"));
+        }
+
         let scriptCounter;
         if (this._cmp) {
             Utils.log("CMP Defined (we should never end up here, as the observer will disconnect, if this._cmp is set");
             return;
         }
 
-        let start = new Date().getMilliseconds();
-        Utils.log("scripts: " + allScriptTags.length);
-
         // some CMPs run in iFrames and therefore require different handling.
         if (this._inIFrame) {
             Utils.log("iFrame Scr: " + document.location.toString());
             if (document.location.toString().includes("sp-prod.net") || document.location.toString().includes("sourcepoint.mgr.consensu.org")) {
-                Utils.log("SP: " + document.location.toString());
+                Utils.log("SourcePoint: " + document.location.toString());
                 this._cmp = new SourcePoint(this._document, document.location.toString(), this._backendCall);
             } else if (document.location.toString().includes("trustarc.com")) {
                 this._cmp = new TrustArcIFrame(this._document, document.location.toString(), this._backendCall);
