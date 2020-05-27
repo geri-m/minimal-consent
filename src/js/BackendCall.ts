@@ -134,11 +134,12 @@ export default class BackendCall {
 
         if (typeof safari !== 'undefined') {
             Utils.log("+++ triggerCall on Safari +++");
-            eval("safari.extension.dispatchMessage('someMessage', {cmp: this._cmp," +
-                "cmpScriptUrl: this._cmpScriptUrl," +
-                "pingResult: this._pingResult," +
-                "implemented: this._implemented," +
-                "from: BackendCall.pageName})");
+            // @ts-ignore: 'dispatchMessage' currently is not part of any TypeScript Package so far.
+            safari.extension.dispatchMessage('backend', {cmp: this._cmp,
+                cmpScriptUrl: this._cmpScriptUrl,
+                pingResult: this._pingResult,
+                implemented: this._implemented,
+                from: BackendCall.pageName});
         } else if (typeof chrome !== 'undefined') {
             Utils.log("+++ triggerCall on Chrome +++");
             chrome.runtime.sendMessage({
