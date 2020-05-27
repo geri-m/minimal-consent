@@ -1,5 +1,4 @@
-# Chrome Extension, Opera, FireFox, Safari and Microsoft Edge AddOn form Minimal Consent
-
+# Chrome Opera, FireFox, Safari and Microsoft Edge Version form Minimal Consent
 
 ## Extension Description for Publishing
 
@@ -9,7 +8,7 @@ OneTrust or UserCentrics.
 
 How to Test
 1) Load Extension
-2) Open a Webpage with a CMP (eg: https://www.quancast.com)
+2) Open a Webpage with a CMP (eg: https://www.gitlab.com)
 3) CMP will be managed and the Icon with switch to green for 3 seconds. 
 
 ## Development Setup
@@ -109,7 +108,7 @@ was successful.
 ## Version 1.0.8
 
 - Further Improvement of Performance
-- Integration of First Affiliate Notwork Conversion Junction
+- Integration of First Affiliate Network Conversion Junction
 - Separation of Imports to decrease File Size of Backend Script
 
 ## Version 1.0.7
