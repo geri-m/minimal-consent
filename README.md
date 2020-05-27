@@ -106,6 +106,12 @@ was successful.
 
 # History
 
+## Version 1.0.8
+
+- Further Improvement of Performance
+- Integration of First Affiliate Notwork Conversion Junction
+- Separation of Imports to decrease File Size of Backend Script
+
 ## Version 1.0.7
 
 - Add Russian Translation.
