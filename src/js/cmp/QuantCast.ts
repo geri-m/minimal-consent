@@ -24,44 +24,79 @@ export default class QuantCast implements ICmp {
         this._cmp.connect();
     }
 
-    /*
-        https://wwd.com/
-        https://www.quantcast.com/ => TODO
-     */
-
     public handleCmp(): void {
         const purpose = "a#qc-cmp-purpose-button";
         let purposeButton = this._cmp.queryNodeSelector(purpose);
 
-        const denyAll = "button.qc-cmp-enable-button";
+        const denyAll = "button.qc-cmp-button.qc-cmp-secondary-button";
         let denyAllButton = this._cmp.queryNodeSelector(denyAll);
 
-        const save = "button.qc-cmp-save-and-exit";
+        const save = "button.qc-cmp-button.qc-cmp-save-and-exit";
         let saveButton = this._cmp.queryNodeSelector(save);
 
-        const rejectAll = "button.qc-cmp-secondary-button";
-        let rejectAllButton = this._cmp.queryNodeSelector(rejectAll);
+        // V2
+        const moreInformation = "button[mode*='secondary']";
+        var moreInformationCont = this._cmp.queryNodeSelector(moreInformation);
+
 
         // press on "Options"
-        if (Utils.objectClickable(purposeButton) && this._cmp.state === 0) {
+        /* https://www.programiz.com/, https://wwd.com/ https://www.pronews.gr,  https://news.meine-buchhandlung.wien/, https://imgur.com/, https://www.independent.co.uk/ https://www.cyclingnews.com/ */
+        if ((Utils.objectClickable(purposeButton) || Utils.objectClickable(denyAllButton)) && this._cmp.state === 0) {
+            Utils.log("Case 1, Step 1");
             this._cmp.state = 1;
-            purposeButton.click();
+            if (Utils.objectClickable(purposeButton)) {
+                purposeButton.click();
+            } else if (Utils.objectClickable(denyAllButton)) {
+                denyAllButton.click();
+            } else {
+                Utils.log("We should not end up here");
+            }
         }
         // disable all
         else if (Utils.objectClickable(denyAllButton) && this._cmp.state === 1) {
+            Utils.log("Case 1, Step 2");
             this._cmp.state = 2;
             denyAllButton.click();
         }
         // save settings
         else if (Utils.objectClickable(saveButton) && this._cmp.state === 2) {
+            Utils.log("Case 1, Step 3 & Final");
             saveButton.click();
             this._cmp.reset();
-        }
+        } else if (Utils.objectClickable(moreInformationCont) && this._cmp.state === 0) {
+            Utils.log("Case 2, Step 1");
+            this._cmp.state = 1;
+            moreInformationCont.click();
 
-        // separated Branch, if there is "Reject-All Button"
-        else if (Utils.objectClickable(rejectAllButton) && this._cmp.state === 0) {
-            rejectAllButton.click();
-            this._cmp.reset();
+            let _self = this;
+
+            setTimeout(function () {
+
+                const headlines = "li.qc-cmp2-list-item";
+                let expandHeadlines = _self._cmp.queryNodeSelectorAll(headlines);
+                Utils.log("expandHeadlines: " + expandHeadlines.length);
+                expandHeadlines.forEach(function (value: any, key: number, parent: NodeList) {
+                    Utils.log("Click Headline");
+                    value.click();
+                });
+
+                const switchToggle = "button[aria-pressed='true']";
+                let switchToogleButtons = _self._cmp.queryNodeSelectorAll(switchToggle);
+                Utils.log("Checkboxes: " + switchToogleButtons.length);
+                switchToogleButtons.forEach(function (value: any, key: number, parent: NodeList) {
+                    Utils.log("Click Checkbox");
+                    value.click();
+                });
+
+                moreInformationCont = _self._cmp.queryNodeSelector(moreInformation);
+                Utils.log("Case 2, Step 2");
+                moreInformationCont.click();
+                _self._cmp.reset();
+            }, 500);
+
+
         }
     }
+
+
 }
