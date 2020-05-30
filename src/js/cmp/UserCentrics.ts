@@ -24,6 +24,15 @@ export default class UserCentrics implements ICmp {
         this._cmp.connect();
     }
 
+    /*
+        https://www.dm-paradiesfoto.at/
+        https://www.hirmer.de/
+        https://www.heise.de/
+        https://www.fitnessfirst.de/
+        https://www.usercentrics.de/
+        https://www.andreasstocker.at/
+     */
+
     public handleCmp(): void {
         // we are looking for a banner and if this banner is visible, we then inject the javascript.
         const ucBannerContent = 'div.uc-banner-content';

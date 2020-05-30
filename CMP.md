@@ -60,11 +60,7 @@ So what we do, is inject a button which contains a javascript and then press thi
 
 ## Examples
 
-- [Hirmer](https://www.hirmer.de/)
-- [Heise](https://www.heise.de/)
-- [fitnessfirst](https://www.fitnessfirst.de/)
-- [usercentrics](https://www.usercentrics.de/)
-- [Andreas Stocker](https://www.andreasstocker.at/)
+
 
 # [Trustarc](https://www.trustarc.com) aka TrustArcIFrame
 

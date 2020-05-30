@@ -33,6 +33,7 @@ export default class SourcePoint implements ICmp {
     // https://notice.sp-prod.net/?message_id=101175&amp;mms_origin=https://cmp.thetimes.co.uk/mms/v2%22%20id=%22sp_message_iframe_101175
     // https://www.doodle.com
     // https://www.openthesaurus.de/ => not working.
+    // https://www.vice.com/de
 
     public handleCmp(): void {
 
