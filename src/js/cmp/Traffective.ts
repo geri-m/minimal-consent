@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class Traffective implements ICmp {
 
@@ -37,11 +38,11 @@ export default class Traffective implements ICmp {
         let saveButton = this._cmp.queryNodeSelector(gdprSaveButton);
 
         if (Utils.objectVisible(popup) && this._cmp.state === 0) {
-            Utils.log('Checkboxes found: ' + checkboxes.length);
-            checkboxes.forEach((checkbox: { setAttribute: (arg0: string, arg1: string) => any; }) => checkbox.setAttribute("checked", "false"), Utils.log("Checkbox unset"));
+            Logger.log('Checkboxes found: ' + checkboxes.length);
+            checkboxes.forEach((checkbox: { setAttribute: (arg0: string, arg1: string) => any; }) => checkbox.setAttribute("checked", "false"), Logger.log("Checkbox unset"));
             this._cmp.state = 1;
         } else if (Utils.objectClickable(saveButton) && this._cmp.state === 1) {
-            Utils.log('Button found ...');
+            Logger.log('Button found ...');
             saveButton.click();
             this._cmp.reset();
         }

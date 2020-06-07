@@ -1,6 +1,6 @@
 "use strict";
 
-import Utils from "../Utils";
+import Logger from "../Logger";
 
 export default class Request {
 
@@ -26,7 +26,7 @@ export default class Request {
         this.xhr.setRequestHeader("Content-Type", "application/json");
         // Sanity Check, so we only send correct data to the backend.
         this.xhr.send(JSON.stringify(temp));
-        Utils.log("Backend call done:" + JSON.stringify(temp));
+        Logger.log("Backend call done:" + JSON.stringify(temp));
     }
 
     public onInstall(reason: string, uuid: string, version: string): void {
@@ -37,13 +37,13 @@ export default class Request {
             version: version
         };
 
-        Utils.log("Install Data: " + JSON.stringify(statusToSend));
+        Logger.log("Install Data: " + JSON.stringify(statusToSend));
         this.xhr.open(Request.HTTP_METHOD, Request.URL_STATUS, true);
         //Send the proper header information along with the request
         this.xhr.setRequestHeader("Content-Type", "application/json");
         // Sanity Check, so we only send correct data to the backend.
         this.xhr.send(JSON.stringify(statusToSend));
-        Utils.log("onInstall Info Sent for UUID" + JSON.stringify(statusToSend));
+        Logger.log("onInstall Info Sent for UUID" + JSON.stringify(statusToSend));
     }
 
     public urlRequestToImplement(url: string, uuid: string, version: string): void {
@@ -57,9 +57,9 @@ export default class Request {
             url: url,
             version: version
         };
-        Utils.log("Send to backend: " + JSON.stringify(urlToSend));
+        Logger.log("Send to backend: " + JSON.stringify(urlToSend));
         this.xhr.send(JSON.stringify(urlToSend));
-        Utils.log("URL to revisit requested by User: " + JSON.stringify(urlToSend));
+        Logger.log("URL to revisit requested by User: " + JSON.stringify(urlToSend));
     }
 
 

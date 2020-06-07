@@ -1,6 +1,6 @@
 "use strict";
 
-import Utils from "./Utils";
+import Logger from "./Logger";
 import PingResult from "./entities/PingResult";
 import CmpType from "./cmp/CmpType";
 import ConstMessaging from "./ConstMessaging";
@@ -45,7 +45,7 @@ export default class BackendCall {
      */
 
     set pingResult(pingResult: PingResult) {
-        Utils.log("Pingback in BackendCall set: " + pingResult);
+        Logger.log("Pingback in BackendCall set: " + pingResult);
         this._pingResult = PingResult.class(pingResult);
         this._isPingResultReceived = true;
 
@@ -55,26 +55,26 @@ export default class BackendCall {
 
         if (this._dataReceived) {
             if (this._implemented && this._isSuccessfulBlock) {
-                Utils.log("We have an implemented for CMP and succesful Block happend. Sent Backend call");
+                Logger.log("We have an implemented for CMP and succesful Block happend. Sent Backend call");
                 // check if there is a timeout and cancel if necessary.
                 clearTimeout(this._timeoutForBackendCall);
                 // trigger the call right now.
                 this.triggerCall();
             } else if (this._implemented && !this._isSuccessfulBlock) {
-                Utils.log("We have an implementation, but not yet a successful block. We don't do anything. successfulBloc() will handle");
+                Logger.log("We have an implementation, but not yet a successful block. We don't do anything. successfulBloc() will handle");
             } else if (!this._implemented && this._isSuccessfulBlock) {
-                Utils.log("This CMP is not yet implemented (or not yet set)")
+                Logger.log("This CMP is not yet implemented (or not yet set)")
             } else {
-                Utils.log("There is no implementation and no successful Bock")
+                Logger.log("There is no implementation and no successful Bock")
             }
         } else {
-            Utils.log("We don't have a CMP Implementation yet, but already PingBack Data. For Saftey Reasons, we schedule backendcall");
+            Logger.log("We don't have a CMP Implementation yet, but already PingBack Data. For Saftey Reasons, we schedule backendcall");
             this._timeoutForBackendCall = setTimeout(this.triggerCall.bind(this), 5000);
         }
     }
 
     public cmpData(cmpId: number, cmp: string, cmpScriptUrl: string, type: CmpType, implemented: boolean): void {
-        Utils.log("Data set by CMP");
+        Logger.log("Data set by CMP");
         this._cmpId = cmpId;
         this._cmp = cmp;
         this._cmpScriptUrl = cmpScriptUrl;
@@ -84,11 +84,11 @@ export default class BackendCall {
     }
 
     public successfulBlock(): void {
-        Utils.log("succefulblock in BackendCall");
+        Logger.log("succefulblock in BackendCall");
         this._isSuccessfulBlock = true;
 
         if (this._isPingResultReceived) {
-            Utils.log("Ping is here, successful bock too. Trigger BackendCall");
+            Logger.log("Ping is here, successful bock too. Trigger BackendCall");
             // check if there is a timeout and cancel if necessary.
             clearTimeout(this._timeoutForBackendCall);
             // we have everything, trigger backend call
@@ -99,15 +99,15 @@ export default class BackendCall {
                 case CmpType.WAIT_FOR_ASYNC_CALLBACK:
                     // if we wait for the callback, the backend call is done in the 'setPingResult';
                     // we already have click away the CMP so, wait for the pingresult and go.
-                    Utils.log("We are waiting for the Website to send the PingResult");
+                    Logger.log("We are waiting for the Website to send the PingResult");
                     break;
                 case CmpType.WAIT_FOR_TIME_FRAME:
-                    Utils.log("We are waiting five seconds to trigger the backend call");
+                    Logger.log("We are waiting five seconds to trigger the backend call");
                     clearTimeout(this._timeoutForBackendCall);
                     this._timeoutForBackendCall = setTimeout(this.triggerCall.bind(this), 5000);
                     break;
                 case CmpType.DO_NOT_WAIT:
-                    Utils.log("We Trigger the Backend Call right now");
+                    Logger.log("We Trigger the Backend Call right now");
                     clearTimeout(this._timeoutForBackendCall);
                     this.triggerCall();
                     break;
@@ -122,7 +122,7 @@ export default class BackendCall {
      */
 
     private triggerCall(): void {
-        Utils.log("Call now Triggered");
+        Logger.log("Call now Triggered");
 
         // If the CMP-ID is not set in the Ping Result, put it there.
         if (typeof this._pingResult.cmpId === "undefined") {
@@ -133,7 +133,7 @@ export default class BackendCall {
         // this class is part of the content-Script and has no access to the URL.
 
         if (typeof safari !== 'undefined') {
-            Utils.log("+++ triggerCall on Safari +++");
+            Logger.log("+++ triggerCall on Safari +++");
             // @ts-ignore: 'dispatchMessage' currently is not part of any TypeScript Package so far.
             safari.extension.dispatchMessage('backend', {cmp: this._cmp,
                 cmpScriptUrl: this._cmpScriptUrl,
@@ -141,7 +141,7 @@ export default class BackendCall {
                 implemented: this._implemented,
                 from: BackendCall.pageName});
         } else if (typeof chrome !== 'undefined') {
-            Utils.log("+++ triggerCall on Chrome +++");
+            Logger.log("+++ triggerCall on Chrome +++");
             chrome.runtime.sendMessage({
                 cmp: this._cmp,
                 cmpScripUrl: this._cmpScriptUrl,
@@ -150,7 +150,7 @@ export default class BackendCall {
                 from: BackendCall.pageName
             });
         } else {
-            Utils.log("+++ triggerCall on some other Platform +++")
+            Logger.log("+++ triggerCall on some other Platform +++")
         }
     }
 }

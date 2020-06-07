@@ -1,6 +1,6 @@
 "use strict";
 
-import Utils from "../Utils";
+import Logger from "../Logger";
 import {v4 as uuid} from 'uuid';
 
 const deviceIdKeyInStorage = "deviceId";
@@ -19,7 +19,7 @@ export default class DeviceId {
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.get(deviceIdKeyInStorage, function (result: { [id: string]: any }) {
                 // The JSON is simply empty if there is no UUID yet in the Storage.
-                Utils.log("DeviceID in Storage: " + JSON.stringify(result));
+                Logger.log("DeviceID in Storage: " + JSON.stringify(result));
 
                 let uuidToStore: any;
 
@@ -31,7 +31,7 @@ export default class DeviceId {
                         deviceId: tempUuid
                     };
 
-                    Utils.log("UUID loaded: " + tempUuid);
+                    Logger.log("UUID loaded: " + tempUuid);
 
                 }
                 // Case 2: In this case we generate a random UUID and store it and send it back.
@@ -42,10 +42,10 @@ export default class DeviceId {
                         deviceId: tempUuid
                     };
 
-                    Utils.log("UUID Generated: " + tempUuid);
+                    Logger.log("UUID Generated: " + tempUuid);
 
                     chrome.storage.sync.set(uuidToStore, function () {
-                        Utils.log('Saved UUID in Storage' + JSON.stringify(uuidToStore));
+                        Logger.log('Saved UUID in Storage' + JSON.stringify(uuidToStore));
                         // store worked, resolve now.
                         chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve();
                     });
@@ -61,7 +61,7 @@ export default class DeviceId {
 
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.remove(deviceIdKeyInStorage, function () {
-                Utils.log('Storage Cleared');
+                Logger.log('Storage Cleared');
                 // store worked, resolve now.
                 chrome.runtime.lastError ? reject(Error(chrome.runtime.lastError.message)) : resolve();
             });

@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class Borlabs implements ICmp {
 
@@ -36,7 +37,7 @@ export default class Borlabs implements ICmp {
 
         const checkboxIndictor = "div._brlbs-checkbox-indicator";
         let checkboxIndictorDiv = this._cmp.queryNodeSelectorAll(checkboxIndictor);
-        Utils.log("checkboxIndictorDiv: " + checkboxIndictorDiv.length);
+        Logger.log("checkboxIndictorDiv: " + checkboxIndictorDiv.length);
 
         const media = "input#checkbox-external-media";
         let inputMedia = this._cmp.queryNodeSelector(media);
@@ -50,27 +51,27 @@ export default class Borlabs implements ICmp {
 
         const save = "a._brlbs-btn";
         let saveButtons = this._cmp.queryNodeSelectorAll(save);
-        Utils.log("saveButtons: " + saveButtons.length);
+        Logger.log("saveButtons: " + saveButtons.length);
 
 
-        Utils.log("State: " + this._cmp.state);
+        Logger.log("State: " + this._cmp.state);
 
         if (Utils.objectClickable(popupDiv) && this._cmp.state === 0) {
-            Utils.log("Div Found");
+            Logger.log("Div Found");
 
             if (Utils.objectClickable(inputMedia)) {
-                Utils.log("Clicked inputMedia");
+                Logger.log("Clicked inputMedia");
                 inputMedia.setAttribute("checked", "false");
             }
 
             if (Utils.objectClickable(inputStats)) {
-                Utils.log("Clicked inputStatst");
+                Logger.log("Clicked inputStatst");
                 inputStats.setAttribute("checked", "false");
             }
 
 
             if (Utils.objectClickable(inputMarketing)) {
-                Utils.log("Clicked inputMarketing");
+                Logger.log("Clicked inputMarketing");
                 inputMarketing.setAttribute("checked", "false");
             }
 
@@ -79,14 +80,14 @@ export default class Borlabs implements ICmp {
 
             if (saveButtons && saveButtons.length > 0) {
                 saveButtons.forEach(function (span: any) {
-                    Utils.log(span.innerHTML);
+                    Logger.log(span.innerHTML);
                     if (span.innerHTML.includes("essenzielle")) {
                         span.click();
-                        Utils.log("Clicked on essenzielle");
+                        Logger.log("Clicked on essenzielle");
                         clicked = true;
                     } else if (span.innerHTML.includes("Speichern")) {
                         span.click();
-                        Utils.log("Clicked on Speichern");
+                        Logger.log("Clicked on Speichern");
                         clicked = true;
                     }
 
@@ -94,7 +95,7 @@ export default class Borlabs implements ICmp {
             }
 
             if (clicked) {
-                Utils.log("Clicked, reset now");
+                Logger.log("Clicked, reset now");
                 this._cmp.reset();
             }
         }

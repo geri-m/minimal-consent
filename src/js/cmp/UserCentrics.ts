@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class UserCentrics implements ICmp {
 
@@ -41,7 +42,7 @@ export default class UserCentrics implements ICmp {
         // typeof button !== 'undefined' && button && typeof button.parentElement !== 'undefined'
         // case like on hse24.de
         if (Utils.objectVisible(banner) && this._cmp.state === 0) {
-            Utils.log('Deny All button found');
+            Logger.log('Deny All button found');
             let script = this._cmp.node.createElement('script');
             script.type = 'text/javascript';
             script.async = true;

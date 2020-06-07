@@ -1,7 +1,7 @@
 "use strict";
 
 import DeviceId from "../../../js/background/DeviceId";
-import Utils from "../../../js/Utils";
+import Logger from "../../../js/Logger";
 
 describe('DeviceId Tests', () => {
 
@@ -41,7 +41,7 @@ describe('DeviceId Tests', () => {
         expect(uuid1).toEqual(uuid2);
         expect(uuid1).not.toEqual(uuid3);
 
-        Utils.log(JSON.stringify(uuid1));
+        Logger.log(JSON.stringify(uuid1));
 
     });
 

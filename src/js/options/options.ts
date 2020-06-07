@@ -3,6 +3,7 @@
 import HistoryEntry from "../entities/HistoryEntry"
 import Utils from "../Utils";
 import ConstMessaging from "../ConstMessaging"
+import Logger from "../Logger";
 
 export default class Options {
 
@@ -27,7 +28,7 @@ export default class Options {
     }
 
     public init(): void {
-        Utils.log("init");
+        Logger.log("init");
         let _self = this;
         if (Utils.checkIfDefinedAndNotNull(this._clearHistory)) {
             this._clearHistory.addEventListener('click', function () {
@@ -49,7 +50,7 @@ export default class Options {
 
     private handleResponse(response: HistoryEntry[]): void {
         if (Utils.checkIfDefinedAndNotNull(response)) {
-            Utils.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
+            Logger.log("Response: " + JSON.stringify(response) + ", Len: " + response.length);
             if (Utils.checkIfDefinedAndNotNull(response) && response.length) {
 
                 // Create an Object we can work with.
@@ -70,7 +71,7 @@ export default class Options {
                     _self.createRow(item)
                 });
             } else if (response.length === 0) {
-                Utils.log("Result from Storage is/was empty.");
+                Logger.log("Result from Storage is/was empty.");
             } else {
                 throw Error("Unable to parse 'HistoryEntry[]' in options.ts");
             }
@@ -84,13 +85,13 @@ export default class Options {
             from: Options.pageName,
             cmd: Options.cmdClearHistory
         }, function (response) {
-            Utils.log("History cleared");
+            Logger.log("History cleared");
         });
         window.close();
     }
 
     private createRow(historyEntry: HistoryEntry): void {
-        Utils.log("Item: " + JSON.stringify(historyEntry));
+        Logger.log("Item: " + JSON.stringify(historyEntry));
 
         let url = document.createElement('td');
         let urlText = document.createTextNode(historyEntry.url);

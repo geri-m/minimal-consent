@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class CustomImpl implements ICmp {
 
@@ -30,7 +31,7 @@ export default class CustomImpl implements ICmp {
         let button = this._cmp.queryNodeSelector(this._button);
 
         if (Utils.objectClickable(button) && this._cmp.state === 0) {
-            Utils.log("Button Found, clicking");
+            Logger.log("Button Found, clicking");
             button.click();
             this._cmp.reset();
         }

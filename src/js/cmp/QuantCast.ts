@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class QuantCast implements ICmp {
 
@@ -42,29 +43,29 @@ export default class QuantCast implements ICmp {
         // press on "Options"
         /* https://www.programiz.com/, https://wwd.com/ https://www.pronews.gr,  https://news.meine-buchhandlung.wien/, https://imgur.com/, https://www.independent.co.uk/ https://www.cyclingnews.com/ */
         if ((Utils.objectClickable(purposeButton) || Utils.objectClickable(denyAllButton)) && this._cmp.state === 0) {
-            Utils.log("Case 1, Step 1");
+            Logger.log("Case 1, Step 1");
             this._cmp.state = 1;
             if (Utils.objectClickable(purposeButton)) {
                 purposeButton.click();
             } else if (Utils.objectClickable(denyAllButton)) {
                 denyAllButton.click();
             } else {
-                Utils.log("We should not end up here");
+                Logger.log("We should not end up here");
             }
         }
         // disable all
         else if (Utils.objectClickable(denyAllButton) && this._cmp.state === 1) {
-            Utils.log("Case 1, Step 2");
+            Logger.log("Case 1, Step 2");
             this._cmp.state = 2;
             denyAllButton.click();
         }
         // save settings
         else if (Utils.objectClickable(saveButton) && this._cmp.state === 2) {
-            Utils.log("Case 1, Step 3 & Final");
+            Logger.log("Case 1, Step 3 & Final");
             saveButton.click();
             this._cmp.reset();
         } else if (Utils.objectClickable(moreInformationCont) && this._cmp.state === 0) {
-            Utils.log("Case 2, Step 1");
+            Logger.log("Case 2, Step 1");
             this._cmp.state = 1;
             moreInformationCont.click();
 
@@ -74,22 +75,22 @@ export default class QuantCast implements ICmp {
 
                 const headlines = "li.qc-cmp2-list-item";
                 let expandHeadlines = _self._cmp.queryNodeSelectorAll(headlines);
-                Utils.log("expandHeadlines: " + expandHeadlines.length);
+                Logger.log("expandHeadlines: " + expandHeadlines.length);
                 expandHeadlines.forEach(function (value: any, key: number, parent: NodeList) {
-                    Utils.log("Click Headline");
+                    Logger.log("Click Headline");
                     value.click();
                 });
 
                 const switchToggle = "button[aria-pressed='true']";
                 let switchToogleButtons = _self._cmp.queryNodeSelectorAll(switchToggle);
-                Utils.log("Checkboxes: " + switchToogleButtons.length);
+                Logger.log("Checkboxes: " + switchToogleButtons.length);
                 switchToogleButtons.forEach(function (value: any, key: number, parent: NodeList) {
-                    Utils.log("Click Checkbox");
+                    Logger.log("Click Checkbox");
                     value.click();
                 });
 
                 moreInformationCont = _self._cmp.queryNodeSelector(moreInformation);
-                Utils.log("Case 2, Step 2");
+                Logger.log("Case 2, Step 2");
                 moreInformationCont.click();
                 _self._cmp.reset();
             }, 500);

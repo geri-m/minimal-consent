@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class OathCmp implements ICmp {
 
@@ -42,15 +43,15 @@ export default class OathCmp implements ICmp {
         let leaveButton = this._cmp.queryNodeSelector(leave);
 
         if (Utils.objectClickable(moreInformationButton) && this._cmp.state === 0) {
-            Utils.log("Button 1 found");
+            Logger.log("Button 1 found");
             moreInformationButton.click();
             this._cmp.state = 1;
         } else if (Utils.objectClickable(rejectAllButton) && this._cmp.state === 1) {
-            Utils.log("Button 2 found");
+            Logger.log("Button 2 found");
             rejectAllButton.click();
             this._cmp.state = 2;
         } else if (Utils.objectClickable(leaveButton) && this._cmp.state === 2) {
-            Utils.log("Button 3 found");
+            Logger.log("Button 3 found");
             leaveButton.click();
             this._cmp.reset();
         }

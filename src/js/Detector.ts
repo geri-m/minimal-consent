@@ -20,6 +20,7 @@ import SourcePoint from "./cmp/SourcePoint";
 import DiDoMi from "./cmp/DiDoMi";
 import Borlabs from "./cmp/Borlabs";
 import Conversant from "./cmp/Conversant";
+import Logger from "./Logger";
 
 // this is some static stuff for the long tail.
 const buttons = {
@@ -63,6 +64,7 @@ export default class Detector {
     public connectObserver() {
         // Options for the observer (which mutations to observe)
         let self = this;
+        // TODO: Evaluate if this is really required.
         setImmediate(function () {
             self.handleCMP(true)
         });
@@ -78,7 +80,7 @@ export default class Detector {
     }
 
     public disconnectObserver() {
-        Utils.log("Disconnect from Observer");
+        Logger.log("Disconnect from Observer");
         this._observerForScriptSource.disconnect();
     }
 
@@ -96,30 +98,30 @@ export default class Detector {
     }
 
     private handleCMP(firstTime: boolean) {
-        Utils.log("Run handleCMP for first time? " + firstTime);
+        Logger.log("Run handleCMP for first time? " + firstTime);
         this._callBackCounter++;
         // result is a static node list.
         // we only look for scripts which have a source element.
         let allScriptTags = document.querySelectorAll("script[src]");
 
         /*
-        Utils.log("Amount of Scripts found: " + allScriptTags.length);
+        Logger.log("Amount of Scripts found: " + allScriptTags.length);
         for (let x = 0; x < allScriptTags.length; x++) {
-            Utils.log(allScriptTags[x].getAttribute("src"));
+            Logger.log(allScriptTags[x].getAttribute("src"));
         }
         */
 
         let scriptCounter;
         if (this._cmp) {
-            Utils.log("CMP Defined (we should never end up here, as the observer will disconnect, if this._cmp is set");
+            Logger.log("CMP Defined (we should never end up here, as the observer will disconnect, if this._cmp is set");
             return;
         }
 
         // some CMPs run in iFrames and therefore require different handling.
         if (this._inIFrame) {
-            Utils.log("iFrame Scr: " + document.location.toString());
+            Logger.log("iFrame Scr: " + document.location.toString());
             if (document.location.toString().includes("sp-prod.net") || document.location.toString().includes("sourcepoint.mgr.consensu.org")) {
-                Utils.log("SourcePoint: " + document.location.toString());
+                Logger.log("SourcePoint: " + document.location.toString());
                 this._cmp = new SourcePoint(this._document, document.location.toString(), this._backendCall);
             } else if (document.location.toString().includes("trustarc.com")) {
                 this._cmp = new TrustArcIFrame(this._document, document.location.toString(), this._backendCall);
@@ -141,7 +143,7 @@ export default class Detector {
                         if (urlOfScript && typeof urlOfScript !== 'undefined') {
                             // if the script defined, make it lowercase.
                             urlOfScript = urlOfScript.toLowerCase();
-                            // Utils.log(urlOfScript);
+                            // Logger.log(urlOfScript);
                             if (urlOfScript.includes('truste.com') || urlOfScript.includes('trustarc.com') || urlOfScript.includes('trustarc.mgr.consensu.org')) {
                                 this._cmp = new TrustArcBanner(this._document, urlOfScript, this._backendCall);
                                 break;
@@ -551,7 +553,7 @@ export default class Detector {
                                 for (let key in buttons) {
                                     let button = this._document.querySelector(key);
                                     if (Utils.objectClickable(button)) {
-                                        Utils.log("Backend: " + this._backendCall);
+                                        Logger.log("Backend: " + this._backendCall);
                                         this._cmp = new CustomImpl(this._document, key, this._backendCall);
                                         break allScripts;
                                     }
@@ -564,15 +566,15 @@ export default class Detector {
 
 
         if (this._cmp) {
-            Utils.log("CMP is set now. Connect to Observer in new context");
+            Logger.log("CMP is set now. Connect to Observer in new context");
             // remove Connection to the local Observer
             if (!firstTime)
                 this.disconnectObserver();
             this._cmp.connect();
         } else {
-            Utils.log("-- Run Thru completed. No Indicator for JavaScript of a CMP so far. Count: " + this._callBackCounter);
+            Logger.log("-- Run Thru completed. No Indicator for JavaScript of a CMP so far. Count: " + this._callBackCounter);
             if (this._callBackCounter > 100) {
-                Utils.log("Disconnecting from Observer now");
+                Logger.log("Disconnecting from Observer now");
                 this.disconnectObserver();
             }
         }

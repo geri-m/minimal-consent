@@ -5,7 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
-
+import Logger from "../Logger";
 
 export default class Chandago implements ICmp {
 
@@ -30,10 +30,10 @@ export default class Chandago implements ICmp {
         let chandagoButtonDeny = this._cmp.queryNodeSelector(chandagoButtonDenyCss);
 
         if (Utils.objectClickable(chandagoButtonDeny) && this._cmp.state === 0) {
-            Utils.log("Click Deny now");
+            Logger.log("Click Deny now");
             // looks like this does not work.
             chandagoButtonDeny.click();
-            Utils.log('Consent on denied.');
+            Logger.log('Consent on denied.');
             this._cmp.reset();
         }
     }

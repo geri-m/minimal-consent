@@ -1,6 +1,6 @@
 "use strict";
 import Detector from "./Detector";
-import Utils from "./Utils";
+import Logger from "./Logger";
 
 // This is required as for Safari the script is injected at the beginning. For Chrome is at the end.
 if (document.readyState === 'loading') {
@@ -11,27 +11,27 @@ if (document.readyState === 'loading') {
 
 function afterDOMLoaded() {
     if (typeof safari !== 'undefined') {
-        Utils.log("+++ Running on Safari +++");
+        Logger.log("+++ Running on Safari +++");
     } else if (typeof chrome !== 'undefined') {
-        Utils.log("+++ Running on Chromium Platform +++")
+        Logger.log("+++ Running on Chromium Platform +++")
     } else {
-        Utils.log("+++ Running on some other Platform +++")
+        Logger.log("+++ Running on some other Platform +++")
     }
 
     // only execute the content script
     // - if there is doc type
     // - if there is body with a defined length
     // - if there are some child nodes in the body
-    Utils.log("Consent Script Parameter: " + JSON.stringify(document.doctype) + ", Len: " + document.body.innerHTML.length + ", Nodes: " + document.body.childNodes.length);
+    Logger.log("Consent Script Parameter: " + JSON.stringify(document.doctype) + ", Len: " + document.body.innerHTML.length + ", Nodes: " + document.body.childNodes.length);
 
 
     let inFrame: boolean = false;
 
     try {
         inFrame = window.self !== window.top;
-        Utils.log("Running in IFrame: " + inFrame);
+        Logger.log("Running in IFrame: " + inFrame);
     } catch (e) {
-        Utils.log("Error Figuring out if we are running in an iFrame");
+        Logger.log("Error Figuring out if we are running in an iFrame");
     }
 
     /* only process files
@@ -40,7 +40,7 @@ function afterDOMLoaded() {
        - which are HTTPS or HTTP file
      */
     if (document.body.innerHTML.length > 100 && (document.location.href.toLowerCase().startsWith("https://") || document.location.href.toLowerCase().startsWith("http://"))) {
-        Utils.log("Triggering Content Script");
+        Logger.log("Triggering Content Script");
         const messageFrom = "FROM_MINIMAL_CONSENT";
 
         // This is the script for checking whether there is a TCF 1.1 or TCF 2.0 compliant CMP.

@@ -1,6 +1,6 @@
 "use strict";
 
-import Utils from "./Utils";
+import Logger from "./Logger";
 import Request from "./background/Request";
 import History from "./background/History";
 import Icon from "./background/Icon"
@@ -42,13 +42,13 @@ class BackgroundScript {
 
 
         chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-            Utils.log("onMessage");
+            Logger.log("onMessage");
             return backgroundScript.messageHandler(request, sender, sendResponse);
         });
 
         /* Open Test and Option Pages on Startup */
         chrome.runtime.onInstalled.addListener(async function (details) {
-            Utils.log("onInstalled");
+            Logger.log("onInstalled");
 
             let u = await _self._deviceId.loadOrGenerate();
             let uuid = u.deviceId;
@@ -75,8 +75,8 @@ class BackgroundScript {
                 // send information on install to backend.
                 // make sure that the uninstall triggers a backend call
                 let uninstallUrl = "https://europe-west1-minimal-consent-chrome-ext.cloudfunctions.net/status?uuid=";
-                Utils.log("UUID for uninstall: " + uuid);
-                Utils.log("Version for uninstall: " + chrome.runtime.getManifest().version);
+                Logger.log("UUID for uninstall: " + uuid);
+                Logger.log("Version for uninstall: " + chrome.runtime.getManifest().version);
                 chrome.runtime.setUninstallURL(uninstallUrl + uuid + "&version=" + chrome.runtime.getManifest().version);
                 let request = new Request();
                 request.onInstall(details.reason, uuid, chrome.runtime.getManifest().version);
@@ -102,7 +102,7 @@ class BackgroundScript {
     }
 
     private async handleBackendCall(request: any, sender: any, sendResponse: any) {
-        Utils.log("Handle: " + ConstMessaging._backendCallFromPage);
+        Logger.log("Handle: " + ConstMessaging._backendCallFromPage);
         let link = await this.getUrl();
 
         // check, if we have already something in the local storage.
@@ -110,14 +110,14 @@ class BackgroundScript {
 
         // if there is already something, don't process further.
         if (lastFound !== null) {
-            Utils.log("The Page is already in the History. Don't consider further");
+            Logger.log("The Page is already in the History. Don't consider further");
         }
         // only HTTP Pages will be supported
         else if (link.isHttp) {
             if (request.cmp && request.cmpScripUrl && typeof request.pingResult !== 'undefined' && typeof request.implemented !== 'undefined') {
                 let pr = PingResult.class(request.pingResult);
 
-                Utils.log("Ping Result: " + JSON.stringify(pr));
+                Logger.log("Ping Result: " + JSON.stringify(pr));
                 // for Security Reasons, we pass each Element separably over to the insert Method.
                 let now = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss');
                 let he = new HistoryEntry(now, link.host, request.cmp, request.cmpScripUrl, pr, request.implemented);
@@ -127,44 +127,44 @@ class BackgroundScript {
                 this.storeRequest(he);
             }
         } else {
-            Utils.log("handleBackendCall: Current Page is not HTTP/HTTPS");
+            Logger.log("handleBackendCall: Current Page is not HTTP/HTTPS");
         }
     }
 
     private async handlePopupScript(request: any, sender: any, sendResponse: any) {
-        Utils.log("Handle: " + ConstMessaging._popUpFromPage);
+        Logger.log("Handle: " + ConstMessaging._popUpFromPage);
         if (request.cmd === ConstMessaging._popUpCmdStartup) {
             let url = await this.getUrl();
-            Utils.log("startup: Current URL: " + JSON.stringify(url));
+            Logger.log("startup: Current URL: " + JSON.stringify(url));
 
             let lastFound: HistoryEntry;
 
             // only HTTP Pages will be supported
             if (url.isHttp) {
                 lastFound = await this._history.getLastFound(url.host);
-                Utils.log("handlePopupScript: lastFound: " + JSON.stringify(lastFound));
+                Logger.log("handlePopupScript: lastFound: " + JSON.stringify(lastFound));
             } else {
-                Utils.log("handlePopupScript: Current Page is not HTTP/HTTPS");
+                Logger.log("handlePopupScript: Current Page is not HTTP/HTTPS");
             }
 
             // counting all elements we blocked.
             let count = await this._history.getAmountOfUrlsBlocked();
             let response = new ResponseForPopup(url, lastFound, count);
 
-            Utils.log("Response to Popup: " + JSON.stringify(response));
+            Logger.log("Response to Popup: " + JSON.stringify(response));
             sendResponse(response);
         } else if (request.cmd === ConstMessaging._popUpCmdUserRequest) {
-            Utils.log("userRequest: Submit URL: " + request.url);
+            Logger.log("userRequest: Submit URL: " + request.url);
             let requestToBackend = new Request();
             let uuid = await this._deviceId.loadOrGenerate();
-            Utils.log("UUID: " + uuid);
-            Utils.log("Version: " + chrome.runtime.getManifest().version);
+            Logger.log("UUID: " + uuid);
+            Logger.log("Version: " + chrome.runtime.getManifest().version);
             requestToBackend.urlRequestToImplement(request.url, uuid.deviceId, chrome.runtime.getManifest().version);
         }
     }
 
     private async handleOptionsScript(request: any, sender: any, sendResponse: any) {
-        Utils.log("Handle: " + ConstMessaging._optionsFromPage);
+        Logger.log("Handle: " + ConstMessaging._optionsFromPage);
         if (request.cmd === ConstMessaging._optionsCmdGetHistory) {
             let hist = await this._history.load();
             sendResponse(hist);
@@ -180,7 +180,7 @@ class BackgroundScript {
                     let url = new URL(tabs[0].url);
                     resolve(url);
                 } else {
-                    Utils.log("Tabs length is 0");
+                    Logger.log("Tabs length is 0");
                     reject();
                 }
             });

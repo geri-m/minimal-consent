@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class TrustArcIFrame implements ICmp {
 
@@ -39,43 +40,43 @@ export default class TrustArcIFrame implements ICmp {
 
         const advanced = ".advance";
         let advancedButton = this._cmp.queryNodeSelector(advanced);
-        Utils.log("advanced: " + advancedButton);
+        Logger.log("advanced: " + advancedButton);
 
         const spanOn = '.on';
         let spanOnGroup = this._cmp.queryNodeSelectorAll(spanOn);
-        Utils.log(spanOnGroup);
-        Utils.log("Span on Group Length: " + spanOnGroup.length);
+        Logger.log(spanOnGroup);
+        Logger.log("Span on Group Length: " + spanOnGroup.length);
 
         const submit = ".submit";
         let submitButton = this._cmp.queryNodeSelector(submit);
-        Utils.log("submit: '" + submitButton + "' " + JSON.stringify(submitButton));
+        Logger.log("submit: '" + submitButton + "' " + JSON.stringify(submitButton));
 
         const close = ".close";
         let closeButton = this._cmp.queryNodeSelector(close);
-        Utils.log("Close: " + closeButton);
-        Utils.log("State: " + this._cmp.state);
+        Logger.log("Close: " + closeButton);
+        Logger.log("State: " + this._cmp.state);
 
 
         if (Utils.objectClickable(moreInformationButton) && this._cmp.state < 1) {
-            Utils.log("moreInformationButton clicked");
+            Logger.log("moreInformationButton clicked");
             moreInformationButton.click();
             this._cmp.state = 1;
         } else if (Utils.objectClickable(advancedButton) && this._cmp.state < 2) {
-            Utils.log("advanced clicked");
+            Logger.log("advanced clicked");
             advancedButton.click();
             this._cmp.state = 2;
         } else if (spanOnGroup && spanOnGroup.length > 1 && this._cmp.state < 3) {
             spanOnGroup.forEach((span: any) => {
-                Utils.log("Changing Button");
+                Logger.log("Changing Button");
                 span.click();
             });
             this._cmp.state = 3;
         } else if (Utils.objectClickable(submitButton) && this._cmp.state === 3) {
-            Utils.log("Click Submit");
+            Logger.log("Click Submit");
             submitButton.click();
             this._cmp.state = 4;
         } else if (Utils.objectClickable(closeButton) && this._cmp.state === 4) {
-            Utils.log("closeButton clicked");
+            Logger.log("closeButton clicked");
             closeButton.click();
             this._cmp.reset();
         }

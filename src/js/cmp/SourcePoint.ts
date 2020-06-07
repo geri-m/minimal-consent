@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class SourcePoint implements ICmp {
 
@@ -40,7 +41,7 @@ export default class SourcePoint implements ICmp {
         // This is the first Iframe, we need to handle. Here we click on details.
         // for some reason the Observer does not detect the changes.
         if (document.location.toString().includes("sp-prod.net") && !this._firstStepCompleted) {
-            Utils.log("in 1st IFrame");
+            Logger.log("in 1st IFrame");
             let _self = this;
             let _counter = 0;
             this._firstTimeout = setTimeout(function () {
@@ -51,7 +52,7 @@ export default class SourcePoint implements ICmp {
         // This is the Second Iframe, we need to handle. Here we uncheck all the checkboxes and save.
         // for some reason the Observer does not detect the changes.
         if (document.location.toString().includes("sourcepoint.mgr.consensu.org") && !this._secondStepCompleted) {
-            Utils.log("in 2nd IFrame");
+            Logger.log("in 2nd IFrame");
             let _self = this;
             let _counter = 0;
             this._secondTimeout = setTimeout(function () {
@@ -67,7 +68,7 @@ export default class SourcePoint implements ICmp {
         // press on "Options"
         if (Utils.objectClickable(allpopupButtons[0]) && allpopupButtons.length > 0) {
 
-            Utils.log("Details clicked.");
+            Logger.log("Details clicked.");
             _counter = 51;
             _self._firstStepCompleted = true;
             clearTimeout(_self._firstTimeout);
@@ -77,26 +78,26 @@ export default class SourcePoint implements ICmp {
                 _self.secondButton(_self, _counter);
             }, 1000);
             _counter++;
-            Utils.log("Counter: (1st Button)" + _counter);
+            Logger.log("Counter: (1st Button)" + _counter);
         }
     }
 
     private secondButton(_self: SourcePoint, _counter: number) {
         const switchesAll = "div.sp-switch-arrow-block";
         let switchesAllDiv = _self._cmp.queryNodeSelectorAll(switchesAll);
-        Utils.log("All switchesAll: " + switchesAllDiv.length);
+        Logger.log("All switchesAll: " + switchesAllDiv.length);
 
         const switchesOn = "div.sp-switch-arrow-block a.on";
         let switchesOnDiv = _self._cmp.queryNodeSelectorAll(switchesOn);
-        Utils.log("On switchesAll: " + switchesOnDiv.length);
+        Logger.log("On switchesAll: " + switchesOnDiv.length);
 
         const save = "button.priv-save-btn";
         let saveButton = _self._cmp.queryNodeSelector(save);
-        Utils.log("Save Button: " + saveButton);
+        Logger.log("Save Button: " + saveButton);
 
         const save2 = "button#tab-saveandexit";
         let saveButton2 = _self._cmp.queryNodeSelector(save2);
-        Utils.log("Save2 Button: " + saveButton2);
+        Logger.log("Save2 Button: " + saveButton2);
 
         // if there is at least one switch and if there is at least on switch "ON"
         if (switchesAllDiv.length > 0 && (Utils.objectClickable(saveButton) || Utils.objectClickable(saveButton2))) {
@@ -104,7 +105,7 @@ export default class SourcePoint implements ICmp {
             // if there as switches to switch off, do so.
             if (switchesOnDiv.length > 0) {
                 switchesOnDiv.forEach((href: any) => {
-                    Utils.log("Changing Button from ON to Off");
+                    Logger.log("Changing Button from ON to Off");
                     href.click();
                 });
             }
@@ -126,7 +127,7 @@ export default class SourcePoint implements ICmp {
                 _self.secondButton(_self, _counter);
             }, 1000);
             _counter++;
-            Utils.log("Counter (2nd Button): " + _counter);
+            Logger.log("Counter (2nd Button): " + _counter);
         }
     }
 

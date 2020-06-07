@@ -5,7 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
-
+import Logger from "../Logger";
 
 export default class CookieBot implements ICmp {
 
@@ -40,7 +40,7 @@ export default class CookieBot implements ICmp {
     public handleCmp(): void {
         const cookiebotCheckboxesSelector = "input[type*='checkbox']";
         let cookiebotCheckBoxes = this._cmp.queryNodeSelectorAll(cookiebotCheckboxesSelector);
-        Utils.log("cookiebotCheckBoxes: " + cookiebotCheckBoxes.length);
+        Logger.log("cookiebotCheckBoxes: " + cookiebotCheckBoxes.length);
 
         const allowSelectedSelector1 = "a#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection";
         let allowAllButton1 = this._cmp.queryNodeSelector(allowSelectedSelector1);
@@ -63,41 +63,41 @@ export default class CookieBot implements ICmp {
         // if there is the option to deny already on the first page - do so.
         // Test Page: https://www.possiblenow.com/, https://emojiterra.com/ (click on "only relevant cookies)
         if ((Utils.objectClickable(detailsButton1) || Utils.objectClickable(detailsButton2)) && this._cmp.state === 0) {
-            Utils.log("Step 1: Show Details");
+            Logger.log("Step 1: Show Details");
 
             if (Utils.objectClickable(detailsButton1)) {
-                Utils.log("Details Type 1");
+                Logger.log("Details Type 1");
                 detailsButton1.click();
             }
 
             if (Utils.objectClickable(detailsButton2)) {
-                Utils.log("Details Type 2");
+                Logger.log("Details Type 2");
                 detailsButton2.click();
             }
 
             this._cmp.state = 1;
         } // Test Page: https://www.cookiebot.com/de/, https://www.gitlab.com/, https://www.applause.com/ (check boxes on Banner)
         else if (cookiebotCheckBoxes.length > 0 && (Utils.objectClickable(allowAllButton1) || Utils.objectClickable(allowAllButton2) || Utils.objectClickable(allowAllButton3)) && this._cmp.state === 1) {
-            Utils.log("Case 2: CookieBot Banner + Checkboxes found");
+            Logger.log("Case 2: CookieBot Banner + Checkboxes found");
             cookiebotCheckBoxes.forEach(function (checkbox: any) {
                 checkbox.setAttribute("checked", "false");
-                Utils.log("Checkbox unset");
+                Logger.log("Checkbox unset");
             });
 
             if (Utils.objectClickable(allowAllButton1)) {
-                Utils.log("Accept Type 1");
+                Logger.log("Accept Type 1");
                 allowAllButton1.click();
                 setTimeout(allowAllButton1.click(), 500);
             }
 
             if (Utils.objectClickable(allowAllButton2)) {
-                Utils.log("Accept Type 2");
+                Logger.log("Accept Type 2");
                 allowAllButton2.click();
                 setTimeout(allowAllButton2.click(), 500);
             }
 
             if (Utils.objectClickable(allowAllButton3)) {
-                Utils.log("Accept Type 3");
+                Logger.log("Accept Type 3");
                 allowAllButton3.click();
                 setTimeout(allowAllButton3.click(), 500);
             }

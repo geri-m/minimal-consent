@@ -1,6 +1,6 @@
 "use strict";
 
-import Utils from "../Utils";
+import Logger from "../Logger";
 import BackendCall from "../BackendCall"
 import ICmp from "./ICmp";
 
@@ -84,14 +84,14 @@ export default class CMP {
      */
 
     mainCmpHandler(mutations: MutationRecord[]): void {
-        Utils.log("Handling " + this._cmpImplementation.name);
+        Logger.log("Handling " + this._cmpImplementation.name);
         this._callCounter++;
         // if after x changes to the DOM there as not popup, we stop listening to the changes.
         if (this._callCounter < this._maximalLimitOfDomChangeTillStop) {
             this._cmpImplementation.handleCmp();
         } else {
             this.disconnect();
-            Utils.log("Looks like, CMP was already given consent.");
+            Logger.log("Looks like, CMP was already given consent.");
         }
     }
 
@@ -104,7 +104,7 @@ export default class CMP {
         this._observer.disconnect();
         this._state = -1;
         this._backendCall.successfulBlock();
-        Utils.log('Consent for ' + this._cmpImplementation.name + ' denied.');
+        Logger.log('Consent for ' + this._cmpImplementation.name + ' denied.');
     }
 
     /**

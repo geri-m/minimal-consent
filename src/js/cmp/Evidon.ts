@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class Evidon implements ICmp {
 
@@ -43,7 +44,7 @@ export default class Evidon implements ICmp {
         if (Utils.objectClickable(evidonOptionsButton) && !this._trigger1) {
             this._trigger1 = true;
             await this.sleep(1000);
-            Utils.log("Button 1, 300 ms waited. Trigger released");
+            Logger.log("Button 1, 300 ms waited. Trigger released");
             this._trigger1 = false;
             evidonOptionsButton.click();
         }
@@ -52,7 +53,7 @@ export default class Evidon implements ICmp {
         if (Utils.objectClickable(evidonCookieBannerNextSpan) && !this._trigger1) {
             this._trigger1 = true;
             await this.sleep(1000);
-            Utils.log("Button 2, 300 ms waited. Trigger released");
+            Logger.log("Button 2, 300 ms waited. Trigger released");
             this._trigger1 = false;
             evidonCookieBannerNextSpan.click();
         }
@@ -60,7 +61,7 @@ export default class Evidon implements ICmp {
         if (Utils.objectClickable(evidonL2DeclineButton) && !this._trigger1) {
             this._trigger1 = true;
             await this.sleep(1000);
-            Utils.log("Button 3, 300 ms waited. Trigger released");
+            Logger.log("Button 3, 300 ms waited. Trigger released");
             this._trigger1 = false;
             evidonL2DeclineButton.click();
             // example evidon page here we do have a defined end.
@@ -71,7 +72,7 @@ export default class Evidon implements ICmp {
         if (Utils.objectClickable(evidonDenyAllButton) && !this._trigger1) {
             this._trigger1 = true;
             await this.sleep(1000);
-            Utils.log("Button 4, 300 ms waited. Trigger released");
+            Logger.log("Button 4, 300 ms waited. Trigger released");
             this._trigger1 = false;
             evidonDenyAllButton.click();
             // example Crownpeak here we do have a defined end.

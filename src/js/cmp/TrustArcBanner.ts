@@ -5,6 +5,7 @@ import CMP from "./CMP";
 import ICmp from "./ICmp"
 import CmpType from "./CmpType";
 import BackendCall from "../BackendCall"
+import Logger from "../Logger";
 
 export default class TrustArcBanner implements ICmp {
 
@@ -31,12 +32,12 @@ export default class TrustArcBanner implements ICmp {
 
         const required = "#truste-show-consent";
         let requiredButton = this._cmp.queryNodeSelector(required);
-        Utils.log("details: " + requiredButton);
+        Logger.log("details: " + requiredButton);
 
-        Utils.log("State: " + this._cmp.state);
+        Logger.log("State: " + this._cmp.state);
 
         if (Utils.objectClickable(requiredButton) && Utils.objectClickable(contentDiv) && this._cmp.state === 0) {
-            Utils.log("detailsButton clicked");
+            Logger.log("detailsButton clicked");
             this.delayedClick(0);
             this._cmp.state = 1;
         }
@@ -46,15 +47,15 @@ export default class TrustArcBanner implements ICmp {
         const required = "#truste-show-consent";
         let requiredButton = this._cmp.queryNodeSelector(required);
         requiredButton.click();
-        Utils.log("Current Count:" + count);
+        Logger.log("Current Count:" + count);
         if (count < 1) {
             let _self = this;
             setTimeout(function () {
                 _self.delayedClick(count + 1);
-                Utils.log("Clicked");
+                Logger.log("Clicked");
             }, 1000);
         } else {
-            Utils.log("maximum reached");
+            Logger.log("maximum reached");
             this._cmp.reset();
         }
 
