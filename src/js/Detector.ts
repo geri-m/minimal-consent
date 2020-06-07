@@ -64,11 +64,10 @@ export default class Detector {
     public connectObserver() {
         // Options for the observer (which mutations to observe)
         let self = this;
-        // TODO: Evaluate if this is really required.
-        setImmediate(function () {
-            self.handleCMP(true)
-        });
+        // TODO: Evaluate if the check without "immediate()" is working properly
+        self.handleCMP(true);
         // Run somewhen in the future in case we missed something.
+        // TODO: when do we need this? (zusammen gegen corona?)
         setTimeout(function () {
             self.handleCMP(true)
         }, 3000);
