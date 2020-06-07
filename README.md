@@ -7,9 +7,10 @@ cookies or for tracking purpose. The extension in the current version blocks alr
 OneTrust or UserCentrics.
 
 How to Test
+0) Remove Cookies/Application Data for eg: https://www.gitlab.com
 1) Load Extension
 2) Open a Webpage with a CMP (eg: https://www.gitlab.com)
-3) CMP will be managed and the Icon with switch to green for 3 seconds. 
+3) CMP will be auto-declined and the Icon with switch to blue for 3 seconds. 
 
 ## Development Setup
 
@@ -104,6 +105,11 @@ was successful.
 5) Point the file finder to `./dist/` directory.
 
 # History
+
+## Version 1.0.9
+- Reduce package size and performance by changing packaging
+- Update Icons
+- Update Implementation of QuantCast
 
 ## Version 1.0.8
 
