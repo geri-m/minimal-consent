@@ -23,7 +23,6 @@ class BackgroundScript {
     private readonly _deviceId: DeviceId;
 
 
-
     constructor() {
         this._request = new Request();
         this._history = new History();

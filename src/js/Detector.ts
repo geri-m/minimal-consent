@@ -86,7 +86,6 @@ export default class Detector {
 
     private handleCmpImmediately(mutations: MutationRecord[], _self: Detector) {
         mutations.forEach(function (mutation) {
-            // console.log(mutation.addedNodes);
             mutation.addedNodes.forEach(function (value: Node, key: number, parent: NodeList) {
                 if (value.nodeName.toLowerCase().includes("script")) {
                     setTimeout(function () {

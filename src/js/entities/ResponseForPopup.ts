@@ -45,7 +45,6 @@ export default class ResponseForPopup {
 
     public get case(): number {
         if (this.url.isHttp) {
-            console.log(this._lastFound);
             if (this._lastFound !== null && Object.entries(this._lastFound).length > 0) {
                 if (this._lastFound.cmp !== HistoryEntry.CMP_UNKNOWN) {
                     // found, known, implemented - case 1
