@@ -39,7 +39,7 @@ export default class Traffective implements ICmp {
 
         if (Utils.objectVisible(popup) && this._cmp.state === 0) {
             Logger.log('Checkboxes found: ' + checkboxes.length);
-            checkboxes.forEach((checkbox: { setAttribute: (arg0: string, arg1: string) => any; }) => checkbox.setAttribute("checked", "false"), Logger.log("Checkbox unset"));
+            checkboxes.forEach((checkbox: { setAttribute: (arg0: string, arg1: string) => any; }) => checkbox.setAttribute("checked", "false"));
             this._cmp.state = 1;
         } else if (Utils.objectClickable(saveButton) && this._cmp.state === 1) {
             Logger.log('Button found ...');
